@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>PFS Introduction - PFS Pipe2D</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="css/pfs.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "PFS Introduction";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = "/pfs_helpdesk_tutorial/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href=".">
+          <img src="img/logo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">PFS Introduction</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#overview">Overview</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#wide-field-corrector-wfc">Wide Field Corrector (WFC)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#prime-focus-instrument-pfi">Prime Focus Instrument (PFI)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#spectrograph-system-sps">Spectrograph System (SpS)</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#fiber-system">Fiber System</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#metrology-camera-system-mcs">Metrology Camera System (MCS)</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#data-fits-header">Data FITS Header</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#pfs-fits-header-keywords">PFS FITS Header Keywords</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#pfs-instrument-fits-cards">PFS instrument FITS cards</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#publications">Publications</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="00_01_pfs_datamodel/">PFS Datamodel</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="00_02_pfs_pipeline/">PFS 2D Pipeline</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="01_01_install_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="01_02_install_pipe2d/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="01_03_integration_test/">Integration Test</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="02_01_run_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="02_02_run_ingestion/">Data Ingestion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="02_03_run_calib/">Build Calibs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="02_04_run_science/">Procees Science Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="02_05_run_qa/">Quality Assurance (QA)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Data Analysis</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="03_01_ana_file/">File Access</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="03_02_ana_visit/">Analyze Visit-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="03_03_ana_coadd/">Analyze Coadd-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="03_04_ana_1d/">Run 1D DRP</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Q&A</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="04_00_faq_general/">General</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="04_01_faq_install/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="04_02_faq_run/">Run 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="04_03_faq_analysis/">Data Analysis</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href=".">PFS Pipe2D</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Introduction</li>
+      <li class="breadcrumb-item active">PFS Introduction</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/index.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="pfs-introduction">PFS Introduction</h1>
+<p>This webpage is mainly for introducing the information of Subaru Prime Focus Spectrograph (PFS) data reduction and data inspection.
+Regarding the Subaru PFS instrument, one can check more information from the <a href="https://www.naoj.org/Observing/Instruments/PFS/instrument/">PFS intrument page</a>. 
+Here, we selected the necessary information that you may need for understanding the PFS pipeline.</p>
+<h2 id="overview">Overview</h2>
+<hr />
+<p><img alt="Graphic description of PFS" src="img/inst_dome.png" /></p>
+<p>The PFS instrument consists of several components. See also <a href="https://pfs.ipmu.jp/instrumentation.html">here</a>.</p>
+<h3 id="wide-field-corrector-wfc">Wide Field Corrector (WFC)</h3>
+<p>The WFC is an optical system consisting of 7 lenses designed to correct imaging aberrations for Hyper Suprime-Cam (HSC) and PFS. The largest lens has an effective area of 820 mm (32 inch) in diameter, and the total lens system is 1845 mm (73 inch) long.</p>
+<h3 id="prime-focus-instrument-pfi">Prime Focus Instrument (PFI)</h3>
+<p>Together with the WFC, the Prime Focus Instrument (PFI) is installed on the prime focus of the Subaru telescope.</p>
+<p>At the focal plane, approximately 2400 fibers are arranged across the ~1.25 deg² hexagonal-shaped field of view. There are two types of fibers: 2394 science fibers and 96 fiducial fibers. Each science fiber is attached to a small actuator, the fiber positioner (see below), and moved to the location of the targets on the focal plane. The fiducial fibers are fixed in their position and used as position references when the science fibers are moved. The fibers are equipped with a microlens on their surface to make the F-ratio slower (F/2.8) and reduce degradation of image quality after passing through the long fiber cable.</p>
+<p>A ~54 mm-thick glass plate, the so-called field element, is installed in front of the fibers to achieve the same image quality as HSC. The field element has opaque dots to hide the fibers behind them and block light from reaching the fibers. By doing so, more sparse spectra can be taken by the spectrograph, which enables better understanding of the spectra on the detectors.</p>
+<p>Surrounding the hexagonal-shaped field of view, six imaging cameras are accommodated for sky-field acquisition and auto-guiding. Six calibration lamps (one quartz lamp for continuum and five arc lamps: Kr, Ar, Ne, Xe, and HgCd) are installed on the top of PFI to uniformly illuminate the screen on the dome ceiling.</p>
+<p><strong>Fiber Positioner ("Cobra")</strong></p>
+<p>Each science fiber tip is controllable in-plane by the fiber positioner, nicknamed "Cobra," which is a piezo actuator with two rotational axes. The fibers are arranged in a hexagonal pattern with 8 mm separation, with each fiber being able to cover a region of 9.5 mm in diameter. The overlap between adjacent regions enables 100% sky coverage within the hexagonal field.</p>
+<p><strong>Focal Plane Map</strong></p>
+<p>Fiber distribution on the PFI focal plane highlighting the broken/disabled fibers. See the legend for details.</p>
+<p><img alt="Focal plane map" src="img/PFI_focal_plane_map.png" /></p>
+<h3 id="spectrograph-system-sps">Spectrograph System (SpS)</h3>
+<p>The four identical spectrograph modules provide the simultaneous measurement of ~2400 spectra. Each spectrograph module has three independent channels (blue, red, and near-infrared) separated by two dichroic mirrors so that the whole system can cover a wide wavelength range from 0.38 μm to 1.26 μm in one exposure. 
+More related parameters are summarized in the table below:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Specification</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number of Modules</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Channels per Module</td>
+<td>3 (Blue, Red, Near-Infrared)</td>
+</tr>
+<tr>
+<td>Wavelength Coverage</td>
+<td>0.38 μm to 1.26 μm</td>
+</tr>
+<tr>
+<td>Resolution</td>
+<td>Low: ∼2300–4300</td>
+</tr>
+<tr>
+<td></td>
+<td>Medium (Red Channel): ∼5000</td>
+</tr>
+<tr>
+<td>Grating Type</td>
+<td>Volume Phase Holographic (VPH)</td>
+</tr>
+<tr>
+<td>Operating Temperature</td>
+<td>5 ± 1 °C</td>
+</tr>
+</tbody>
+</table>
+<p>The three channels are also called <code>arms</code> in the pipeline, and in the Red-arm, there are two chices of the resolutions (<strong>Low</strong> and <strong>Medium</strong>). 
+You can find the parameters listed below:</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Blue</th>
+<th>Red (Low Res.)</th>
+<th>Red (Med Res.)</th>
+<th>NIR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Spectral Coverage (nm)</td>
+<td>380 – 650</td>
+<td>630 – 970</td>
+<td>710 – 885</td>
+<td>940 – 1260</td>
+</tr>
+<tr>
+<td>Dispersion (Å/pix)</td>
+<td>∼0.7</td>
+<td>∼0.9</td>
+<td>∼0.4</td>
+<td>∼0.8</td>
+</tr>
+<tr>
+<td>Spectral Resolution (Å)</td>
+<td>∼2.1</td>
+<td>∼2.7</td>
+<td>∼1.6</td>
+<td>∼2.4</td>
+</tr>
+<tr>
+<td>Resolving Power (R)</td>
+<td>∼2500 (@500nm)</td>
+<td>∼3000 (@800nm)</td>
+<td>∼5500 (@800nm)</td>
+<td>∼4500 (@1100nm)</td>
+</tr>
+<tr>
+<td>Throughput (%)</td>
+<td>∼49% (@500nm)</td>
+<td>∼52% (@800nm)</td>
+<td>∼48% (@800nm)</td>
+<td>∼39% (@1100nm)</td>
+</tr>
+</tbody>
+</table>
+<p>The total throughputs of these channels:</p>
+<p><img alt="Sps Througput" src="img/pfs_thr_tot_commissioning.png" /></p>
+<h3 id="fiber-system">Fiber System</h3>
+<p>The fiber system consists of ~2400 optical fibers which relay light collected at the focal plane to the four spectrographs located in the clean room. A fiber cable consists of three parts, to develop and operate the instrument easily. The first part is accommodated within PFI as fiber modules with their "Cobra" positioners, one part is integrated to SpS as fiber slit assembly, and the third part is developed as a long fiber cable routed on the telescope and in the dome building. The total length of each fiber is 65 meters, assembled into four groups providing 600 inputs to each spectrograph. In addition to the ~2400 science fibers, the monitoring fibers are accommodated to check connection at installation.</p>
+<h3 id="metrology-camera-system-mcs">Metrology Camera System (MCS)</h3>
+<p>The MCS is attached to the Cassegrain Focus of the Subaru telescope and measures the positions of the fibers on the prime focus. MCS can take an image of all ~2400 fibers in a single exposure using a large format (8960 pixels x 5778 pixels) CMOS camera. The primary mirror of MCS is 380 mm in diameter to average out the local surface error of WFC.</p>
+<h2 id="data-fits-header">Data FITS Header</h2>
+<hr />
+<h3 id="pfs-fits-header-keywords">PFS FITS Header Keywords</h3>
+<p>Examples of the FITS header for PFS data are accessible from the list below.</p>
+<table>
+<thead>
+<tr>
+<th>Since</th>
+<th>PFSA</th>
+<th>PFSB</th>
+<th>PFSC</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2024.05</td>
+<td><a href="https://www.naoj.org/Observing/Instruments/PFS/fits/HeaderSample_PFSA.txt">HeaderSample_PFSA.txt</a></td>
+<td><a href="https://www.naoj.org/Observing/Instruments/PFS/fits/HeaderSample_PFSB.txt">HeaderSample_PFSB.txt</a></td>
+<td><a href="https://www.naoj.org/Observing/Instruments/PFS/fits/HeaderSample_PFSC.txt">HeaderSample_PFSC.txt</a></td>
+</tr>
+</tbody>
+</table>
+<h3 id="pfs-instrument-fits-cards">PFS instrument FITS cards</h3>
+<p><a href="https://www.naoj.org/Observing/Instruments/PFS/fits/PFSInstrumentCard/">Latest (ics_actorkeys 1.6.22 etc.)</a></p>
+<h2 id="publications">Publications</h2>
+<hr />
+<ul>
+<li>Naoyuki Tamura et al., <a href="https://ui.adsabs.harvard.edu/abs/2024SPIE13096E..05T/abstract">"Prime Focus Spectrograph (PFS) for Subaru Telescope: progressing final steps to science operation", SPIE 13096, 1309605 (2024)</a></li>
+<li>Naoyuki Tamura et al., <a href="https://ui.adsabs.harvard.edu/abs/2022SPIE12184E..10T/abstract">"Prime Focus Spectrograph (PFS) for the Subaru Telescope: its start of the last development phase", SPIE 12184, 1218410 (2022)</a></li>
+<li>Shiang-Yu Wang et al., <a href="https://ui.adsabs.harvard.edu/abs/2022SPIE12184E..6RW/abstract">"Prime focus spectrograph (PFS) for the Subaru Telescope: the prime focus instrument", SPIE 12184, 121846R (2022)</a></li>
+<li>Stephen A. Smee et al., <a href="https://ui.adsabs.harvard.edu/abs/2022SPIE12184E..7LS/abstract">"Performance of the near-infrared camera for the Subaru Prime Focus Spectrograph", SPIE 12184, 121847L (2022)</a></li>
+<li>Antonio Cesar de Oliveira et al., <a href="https://ui.adsabs.harvard.edu/abs/2022SPIE12184E..74D/abstract">"Prime Focus Spectrograph (PFS): fiber optical cable and connector system (FOCCoS) - integration", SPIE 12184, 1218474 (2022)</a></li>
+<li>Neven Capler et al., <a href="https://ui.adsabs.harvard.edu/abs/2022SPIE12184E..70C/abstract">"Prime focus spectrograph (PFS) for the Subaru Telescope: 2D modeling of the point spread function", SPIE 12184, 1218470 (2022)</a> </li>
+<li>Shiang-Yu Wang, <a href="https://ui.adsabs.harvard.edu/abs/2020SPIE11447E..84W/abstract">"Prime Focus Spectrograph (PFS): the metrology camera system", SPIE 11447 (2020)</a></li>
+<li>Alain Schmitt, <a href="https://ui.adsabs.harvard.edu/abs/2019ASPC..521..398S/abstract">AMAZED: Algorithm for Massive Automated Z Evaluation and Determination</a></li>
+<li>Hajime Sugai, <a href="https://ui.adsabs.harvard.edu/abs/2015JATIS...1c5001S/abstract">"Prime Focus Spectrograph for the Subaru telescope: massively multiplexed optical and near-infrared fiber spectrograph", JATIS 1(3) 035001 (2015)</a></li>
+</ul>
+<p>For more publications, please see <a href="https://pfs.ipmu.jp/research/publication.html">here</a>.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="00_01_pfs_datamodel/" class="btn btn-neutral float-right" title="PFS Datamodel">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+    
+      <span><a href="00_01_pfs_datamodel/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

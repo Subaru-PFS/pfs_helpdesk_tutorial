@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/02_01_run_prepare/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Preparation - PFS Pipe2D</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/pfs.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Preparation";
+        var mkdocs_page_input_path = "02_01_run_prepare.md";
+        var mkdocs_page_url = "/pfs_helpdesk_tutorial/02_01_run_prepare/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../img/logo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_datamodel/">PFS Datamodel</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_02_pfs_pipeline/">PFS 2D Pipeline</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_01_install_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_02_install_pipe2d/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Preparation</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#software-setup">Software Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#data-setup">Data Setup</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#repository-setup">Repository Setup</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">Build Calibs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Data Analysis</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_01_ana_file/">File Access</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_02_ana_visit/">Analyze Visit-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_03_ana_coadd/">Analyze Coadd-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_04_ana_1d/">Run 1D DRP</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Q&A</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_00_faq_general/">General</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_01_faq_install/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_02_faq_run/">Run 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PFS Pipe2D</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Run 2D PDR</li>
+      <li class="breadcrumb-item active">Preparation</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/02_01_run_prepare.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="preparation-of-running-pfs-2d-drp">Preparation of Running PFS 2D DRP</h1>
+<h2 id="software-setup">Software Setup</h2>
+<hr />
+<p>First, we need to set up the 2D DRP environment:</p>
+<pre><code>$ source $WORKDIR/(username)/pfs/stack_26_0_2/loadLSST.bash
+$ setup pfs_pipe2d
+$ setup -jr $WORKDIR/(username)/packages/fluxmodeldata-ambre-20230608-full
+</code></pre>
+<p>If you are using a public pipeline on a server, you will need to set up a local <code>drp_pfs_data</code> as follows:</p>
+<pre><code>$ setup -jr $WORKDIR/(username)/packages/drp_pfs_data
+</code></pre>
+<h2 id="data-setup">Data Setup</h2>
+<hr />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This step is not necessary for processing <strong>Science Data</strong>. </p>
+<p>Skip over this unless you’re running the <strong>Integration Test</strong> for yourself.</p>
+</div>
+<p>The integration test uses simulated data from the <a href="https://github.com/Subaru-PFS/drp_stella_data">drp_stella_data package</a>, which must be available locally.
+Some of the headers in the simulated data are inaccurate (and have not been fixed upstream), so we need to check and fix them before running the integration test:</p>
+<pre><code>$ checkPfsRawHeaders.py --fix drp_stella_data/raw/PFSA*.fits
+$ checkPfsConfigHeaders.py --fix drp_stella_data/raw/pfsConfig-*.fits
+</code></pre>
+<p>These scripts check the headers of raw data files (<code>checkPfsRawHeaders.py</code>) and pfsConfig files
+(<code>checkPfsConfigHeaders.py</code>). They can be run without the <code>--fix</code> option to test for errors without fixing them.</p>
+<h2 id="repository-setup">Repository Setup</h2>
+<hr />
+<p>The data repository is a directory containing data products and configuration files for the Gen3 middleware.
+For this tutorial, we will store the data repository in the <code>$DATASTORE</code> directory on a local disk. However, the Gen3 middleware supports storing data products on remote storage and various cloud services.</p>
+<p>The first step is to copy the default <code>butler.yaml</code>:</p>
+<pre><code>$ cp $OBS_PFS_DIR/gen3/butler.yaml $WORKDIR/(username)/data/butler.yaml
+</code></pre>
+<!-- and we need to modify the `registry` section:
+
+
+<pre><code>registry:
+  db: postgresql+psycopg2://localhost:5435/drp
+</code></pre>
+
+
+!!! note 
+    Remember to update this file every time when there is an update of pipeline. -->
+
+<p>Next, create this directory and set up the Gen3 configuration files:</p>
+<pre><code>$ butler create $DATASTORE --seed-config $OBS_PFS_DIR/gen3/butler.yaml --dimension-config $OBS_PFS_DIR/gen3/dimensions.yaml --override
+</code></pre>
+<p>This specifies two configuration files that are important for the Gen3 middleware. <code>butler.yaml</code> contains the configuration
+for the data butler, specifying the registry and how the pipeline will read and write the various data products.
+Most of this can be ignored by the pipeline user, except for the <code>registry</code> section, which specifies the location of the
+registry database. The default is to use a SQLite database in the repository directory (suitable for small-scale testing
+without extensive parallelization), but this can be changed to use a PostgreSQL database for better performance. For
+example, the following snippet configures the use of the <code>drp</code> database:</p>
+<pre><code>registry:
+  db: postgresql+psycopg2://pfsa-db:5435/drp
+</code></pre>
+<p><code>dimensions.yaml</code> contains the configuration for the dimensions of the data products. Dimensions are a very important
+concept in the Gen3 middleware, as they are used to specify data products and control the parallelization levels of
+different operations. Some important dimensions are:</p>
+<ul>
+<li><code>instrument</code>: the instrument that produced the data. The datastore can contain data from multiple instruments,
+but we probably only care about the PFS instrument. Usually this will be PFS for data from Subaru, but in the
+case of the simulated data in the integration test it is <code>PFS-F</code> (the <code>F</code> stands for fake).</li>
+<li><code>exposure</code>: the exposure number. This is the unique identifier for an exposure, what we would call a <code>visit</code> in
+the Gen2 pipeline. In the Gen3 pipeline, visit is a separate dimension that groups multiple exposures together.
+We may make use of this in the future, but for now you should use <code>exposure</code> (almost) everywhere you used to
+use <code>visit</code>.</li>
+<li><code>arm</code>: the spectrograph arm: <code>b</code>, <code>r</code>, <code>n</code>, or <code>m</code>.</li>
+<li><code>spectrograph</code>: the spectrograph module: 1, 2, 3, or 4.</li>
+<li><code>detector</code>: the detector number in the camera configuration. You shouldn’t need to worry about this dimension,
+since it is specified by the combination of arm and <code>spectrograph</code>.</li>
+<li><code>pfs_design_id</code>: the unique identifier for the PFS design. Note the spelling (not <code>pfsDesignId</code>), as this is a database table name.</li>
+<li><code>dither</code>: the slit dither. This is a new dimension that was not present in the Gen2 pipeline, which is used in
+creating fiber flats.</li>
+<li><code>cat_id</code>: the unique identifier for the catalog. Again, notice the spelling (not <code>catId</code>). There is no <code>obj_id</code>
+dimension, as the large number of objects would overwhelm the database.</li>
+<li><code>skymap</code>, <code>tract</code>, <code>patch</code>: these specify the sky tessellation. They are currently unused in the pipeline, but might
+be used in the future.</li>
+</ul>
+<p>Next, register the instrument with <code>butler</code>. This also copies the camera configuration into the repository:</p>
+<pre><code>$ butler register-instrument $DATASTORE lsst.obs.pfs.PrimeFocusSpectrograph
+</code></pre>
+<p>The following commands import the defects files (and any other “curated” calibration files) from the <code>drp_pfs_data</code>
+package (you’ll need to be using your own copy of <code>drp_pfs_data</code>, not the shared version):</p>
+<pre><code>$ makePfsDefects --mko
+$ butler write-curated-calibrations $DATASTORE PFS
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../01_03_integration_test/" class="btn btn-neutral float-left" title="Integration Test"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../02_02_run_ingestion/" class="btn btn-neutral float-right" title="Data Ingestion">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../01_03_integration_test/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../02_02_run_ingestion/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
