@@ -1,0 +1,40 @@
+site_name: "PFS Pipe2D"
+repo_url: "https://github.com/Subaru-PFS/pfs_helpdesk_tutorial"
+site_url: "https://Subaru-PFS.github.io/pfs_helpdesk_tutorial"
+
+nav:
+  - Introduction: 
+    - PFS Introduction: index.md
+    - PFS Datamodel: 00_01_pfs_datamodel.md
+    - PFS 2D Pipeline: 00_02_pfs_pipeline.md
+  - Installation:
+    - Preparation: 01_01_install_prepare.md
+    - Install 2D DRP: 01_02_install_pipe2d.md
+    - Integration Test: 01_03_integration_test.md
+  - Run 2D PDR:
+    - Preparation: 02_01_run_prepare.md
+    - Data Ingestion: 02_02_run_ingestion.md
+    - Build Calibs: 02_03_run_calib.md
+    - Procees Science Data: 02_04_run_science.md
+    - Quality Assurance (QA): 02_05_run_qa.md
+  - Data Analysis:
+    - File Access: 03_01_ana_file.md
+    - Analyze Visit-level Data: 03_02_ana_visit.md
+    - Analyze Coadd-level Data: 03_03_ana_coadd.md
+    - Run 1D DRP: 03_04_ana_1d.md
+  - Q&A:
+    - General: 04_00_faq_general.md
+    - Install 2D DRP: 04_01_faq_install.md
+    - Run 2D DRP: 04_02_faq_run.md
+    - Data Analysis: 04_03_faq_analysis.md
+ 
+theme: 
+  name: readthedocs
+  logo: img/logo.png
+extra_css:
+  - css/pfs.css
+markdown_extensions:
+  - admonition
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js

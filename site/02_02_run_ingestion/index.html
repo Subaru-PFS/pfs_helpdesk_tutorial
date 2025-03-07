@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/02_02_run_ingestion/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Data Ingestion - PFS Pipe2D</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/pfs.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Data Ingestion";
+        var mkdocs_page_input_path = "02_02_run_ingestion.md";
+        var mkdocs_page_url = "/pfs_helpdesk_tutorial/02_02_run_ingestion/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../img/logo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_datamodel/">PFS Datamodel</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_02_pfs_pipeline/">PFS 2D Pipeline</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_01_install_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_02_install_pipe2d/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../02_01_run_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Data Ingestion</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">Build Calibs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Data Analysis</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_01_ana_file/">File Access</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_02_ana_visit/">Analyze Visit-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_03_ana_coadd/">Analyze Coadd-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_04_ana_1d/">Run 1D DRP</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Q&A</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_00_faq_general/">General</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_01_faq_install/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_02_faq_run/">Run 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PFS Pipe2D</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Run 2D PDR</li>
+      <li class="breadcrumb-item active">Data Ingestion</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/02_02_run_ingestion.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="data-ingestion">Data Ingestion</h1>
+<hr />
+<p>We can ingest data into the butler repository. 
+There are two kinds of data that we need to ingest: raw images and the <code>pfsConfig</code> files. 
+These are ingested using two separate commands:</p>
+<pre><code>$ butler ingest-raws $DATASTORE $drp_stella_data/raw/PFSA*.fits --ingest-task lsst.obs.pfs.gen3.PfsRawIngestTask --transfer link --fail-fast
+$ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $drp_stella_data/raw/pfsConfig*.fits --transfer link
+</code></pre>
+<p>The parameters include:</p>
+<ul>
+<li><code>--transfer</code>: The method by which data is added to the repository, including <code>link</code>, <code>copy</code>, and <code>move</code>. </li>
+<li><code>--fail-fast</code>: The process will immediately stop the ingestion process if an error occurs. This is useful for debugging.</li>
+</ul>
+<p>The ingestion process places the files (referred to as “datasets” in the butler) in the repository and records them in the registry database. Each file is placed in a <strong>collection</strong>, which can be thought of as a <em>directory</em> (i.e., <code>$DATASTORE/PFS/</code> in the example) in the butler (and in the case of the datastore on a traditional filesystem, it is implemented as a directory). 
+The raw data is placed in the collection &lt;instrument&gt;/raw/all, while we’ve specified above that the <code>pfsConfig</code> files are placed in the collection <code>PFS/raw/pfsConfig</code>.</p>
+<p>There are different kinds of <a href="https://pipelines.lsst.io/modules/lsst.daf.butler/organizing.html#collections">collections</a>:</p>
+<ul>
+<li><code>RUN</code> collection always associates the datasets. </li>
+<li><code>CALIBRATION</code> collections associate datasets with a timespan indicating the validity range. </li>
+<li><code>CHAINED</code> collections provide a search path through multiple collections.</li>
+</ul>
+<p>Each dataset is specified by a “<code>dataId</code>”, which is a dictionary of key-value pairs representing the dimensions.</p>
+<p>For example, </p>
+<ul>
+<li><code>raw</code> image may have a <code>dataId</code> like {'<code>instrument</code>': '<code>PFS</code>', '<code>exposure</code>': <code>123</code>, '<code>arm</code>': '<code>r</code>', '<code>spectrograph</code>': <code>3</code>}. </li>
+<li><code>pfsConfig</code> file is valid for an entire exposure, so may have a <code>dataId</code> like {'<code>instrument</code>': '<code>PFS</code>', '<code>exposure</code>': <code>123</code>}.</li>
+</ul>
+<p>In general, users should treat the files in the datastore as a <code>butler</code> implementation detail, and use the <code>butler</code> commands and Python API to access the data products. 
+There are some kinds of datastores that do not use a traditional filesystem (e.g., the S3 datastore), and so the files may not be directly accessible.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The registry database tracks all files in the datastore. Do not delete files from the datastore without using the appropriate butler commands.</p>
+</div>
+<p>You can see what raw datasets are in the datastore with the following command:</p>
+<pre><code>$ butler query-datasets $DATASTORE --collections PFS/raw/all
+</code></pre>
+<p>The result looks something like this:</p>
+<pre><code>type     run                         id                 instrument arm dither pfs_design_id spectrograph detector exposure
+---- ------------- ------------------------------------ ---------- --- ------ ------------- ------------ -------- --------
+raw  PFS/raw/all 27217522-a357-5071-a32b-af97b5b8bee6          PFS   b  0.0             1            1        0        0
+raw  PFS/raw/all 0ce0cbea-fe7c-589e-8259-30060bf20500          PFS   b  0.0             1            1        0        1
+[...]
+raw  PFS/raw/all 570092eb-f571-5631-8d20-11acbeabc640          PFS   r  0.0             3            1        1        26
+raw  PFS/raw/all f8e3ae71-2cdf-5e55-bc42-4a4fb913770c          PFS   r  0.0             4            1        1        27
+</code></pre>
+<p>Datasets can be accessed from Python using the <code>butler</code> API, which has some similarities to the Gen2 <code>butler</code>:</p>
+<pre><code>from lsst.daf.butler import Butler
+
+butler = Butler(&quot;/path/to/datastore&quot;, collections=&quot;PFS/raw/all&quot;)
+raw = butler.get(&quot;raw&quot;, instrument=&quot;PFS&quot;, exposure=12, arm=&quot;r&quot;, spectrograph=1)
+rawImage = raw.getImage()
+</code></pre>
+<p>Note that the raw data returned from the butler is now of type <code>PfsRaw</code>, which provides a common interface for both CCD and NIR detectors. 
+You can use <code>butler.get("raw.exposure", ...)</code> to get the exposure from the raw data directly.</p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../02_01_run_prepare/" class="btn btn-neutral float-left" title="Preparation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../02_03_run_calib/" class="btn btn-neutral float-right" title="Build Calibs">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../02_01_run_prepare/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../02_03_run_calib/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

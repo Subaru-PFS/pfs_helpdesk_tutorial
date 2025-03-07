@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/02_03_run_calib/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Build Calibs - PFS Pipe2D</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/pfs.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Build Calibs";
+        var mkdocs_page_input_path = "02_03_run_calib.md";
+        var mkdocs_page_url = "/pfs_helpdesk_tutorial/02_03_run_calib/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../img/logo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_datamodel/">PFS Datamodel</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_02_pfs_pipeline/">PFS 2D Pipeline</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_01_install_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_02_install_pipe2d/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../02_01_run_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Build Calibs</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#build-bias">Build Bias</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#build-dark">Build Dark</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#build-flat">Build Flat</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#build-detector-map">Build Detector Map</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#build-fiber-profile">Build Fiber Profile</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#build-fiber-norm">Build Fiber Norm</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Data Analysis</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_01_ana_file/">File Access</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_02_ana_visit/">Analyze Visit-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_03_ana_coadd/">Analyze Coadd-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_04_ana_1d/">Run 1D DRP</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Q&A</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_00_faq_general/">General</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_01_faq_install/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_02_faq_run/">Run 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PFS Pipe2D</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Run 2D PDR</li>
+      <li class="breadcrumb-item active">Build Calibs</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/02_03_run_calib.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="build-calibration-frames">Build Calibration Frames</h1>
+<p>After the preparation, we will need to build calibration data before running the processing of science data.</p>
+<p>First, let's assume we have default variables as in the following example, where a user works in the public directory <code>$WORKDIR/pfs/</code> and using a publicly install pipeline: </p>
+<pre><code>DATASTORE=&quot;$WORKDIR/pfs/data/datastore&quot;
+DATADIR=&quot;$WORKDIR/pfs/data&quot;
+CORES=16
+INSTRUMENT=&quot;lsst.obs.pfs.PrimeFocusSpectrograph&quot;
+RERUN=&quot;u/(username)/&quot;
+</code></pre>
+<p>In this case, you may want to set up the rerun directory specified by your username so that multiple users won't mix things up.</p>
+<h2 id="build-bias">Build Bias</h2>
+<hr />
+<p>Next, we’ll build the calibration products, starting from the bias frames:</p>
+<pre><code>pipetask run \
+--register-dataset-types \                                # register the dataset types from the pipeline
+-j $CORES \                                               # number of cores to use in parallel
+-b $DATASTORE \                                           # datastre directory to use
+--instrument lsst.obs.pfs.PrimeFocusSpectrograph \        # the instrument PFS
+-i PFS/raw/sps,PFS/calib \                                # input collection (comma-separated)
+-o &quot;$RERUN&quot;/bias \                                        # output CHAINED collection
+-p $DRP_STELLA_DIR/pipelines/bias.yaml \                  # pipeline configuration file to use
+-d &quot;instrument='PFS' AND exposure.target_name = 'BIAS'&quot; \ # or, for example: -d &quot;visit IN (123456..123466)&quot; \
+--fail-fast \                                             # immediately stop the ingestion process if error
+-c isr:doCrosstalk=True                                   # (optional) turn on the crosstalk correction 
+</code></pre>
+<p>The <code>pipetask run</code> command is used to run a pipeline. 
+A task is an operation within the pipeline, characterized by a set of dimensions that define the level at which it parallelizes, and a set of inputs and outputs. An instance of a task running on a single set of data at its parallelization level is called a "quantum". 
+A pipeline is built from the "quantum graph", which tracks the inputs and outputs between various tasks. 
+When you run a pipeline with <code>pipetask run</code>, it first builds the pipeline and reports the number of quanta that will be run for each task:</p>
+<pre><code>lsst.ctrl.mpexec.cmdLineFwk INFO: QuantumGraph contains 12 quanta for 2 tasks, graph ID: '1726845383.   6842682-77840''
+Quanta     Tasks    
+------ -------------
+    10          isr
+     2 cpBiasCombine
+</code></pre>
+<p>The bias pipeline has only two tasks. 
+In this case, they are operating on 5 exposures, each with <code>b</code> and <code>r</code> arms, so there are 10 <code>isr</code> quanta (instrument signature removal from each camera image) and 2 <code>cpBiasCombine</code> quanta (combining the bias frames from each of the cameras). 
+The summary for a more complicated pipeline (running the full science pipeline on 17 exposures) is shown later.</p>
+<ul>
+<li>
+<p><code>-j</code> option specifies the number of cores to use in parallel.</p>
+</li>
+<li>
+<p><code>-b</code> option specifies the datastore to use.</p>
+</li>
+<li>
+<p><code>--instrument</code> option specifies the instrument. The proper PFS is <code>lsst.obs.pfs.PrimeFocusSpectrograph</code></p>
+</li>
+<li>
+<p><code>-i</code> option specifies the input collections (comma-separated). In this case, we are using the raw data and the calibration data (for the defects). Later we’ll add other collections as we need them.</p>
+</li>
+<li>
+<p><code>-o</code> option specifies an output <code>CHAINED</code> collection. The pipeline will write the output datasets to a <code>RUN</code> collection named after this, with a timestamp appended (e.g., <code>$RERUN/bias/20240918T181715Z</code>), all chained together in the nominated output collection.</p>
+</li>
+<li>
+<p><code>-p</code> option specifies the pipeline configuration file to use. This is a <code>YAML</code> file in <code>drp_stella/pipelines</code> that describes the pipeline to run. A pipeline is composed of multiple tasks, each operating on a (potentially different) set of dimensions. The pipeline configuration can also specify configuration overrides for each task, including different dataset names to use as connections between the tasks (useful for providing slightly different versions of the same dataset; there’ll be an example of this later).</p>
+</li>
+<li>
+<p><code>-d</code> option specifies the data selection query. The query syntax is similar to the <code>WHERE</code> clause in SQL, with some extensions. In this case, we are selecting all the exposures that have a target name of BIAS and are from the PFS instrument. Strings must be quoted with single quotes (<code>'</code>). Ranges can be specified, like exposure <code>IN (12..34:5)</code>, which means all exposures from 12 to 34 (inclusive) in steps of 5.
+The <code>exposure</code> dimension can be used directly to mean the exposure identifier, but also has a variety of additional fields that can be used, including:</p>
+<blockquote>
+<ul>
+<li><code>exposure.exposure_time</code>: exposure time in seconds</li>
+<li><code>exposure.observation_type</code>: type of observation (e.g., <code>BIAS</code>, <code>DARK</code>, <code>FLAT</code>, <code>ARC</code>)</li>
+<li><code>exposure.target_name</code>: target name</li>
+<li><code>exposure.science_program</code>: science program name</li>
+<li><code>exposure.tracking_ra</code>, <code>tracking_dec</code>: boresight position (ICRS)</li>
+<li><code>exposure.zenith_angle</code>: zenith angle in degrees</li>
+<li><code>exposure.lamps</code>: comma-separated list of lamps that were on</li>
+<li>Other dimensions can also be used, for example: <code>exposure IN (12..34:5) AND arm = 'r' AND spectrograph = 3</code>.</li>
+</ul>
+</blockquote>
+</li>
+<li>
+<p><code>-c</code> option provides configuration overrides for the pipeline<sup><a href="#diff_gen2_c">1</a></sup>. In this case, we are turning on the crosstalk correction.</p>
+</li>
+<li>
+<p><code>--register-dataset-types</code> option is used to register the dataset types from the pipeline in the butler registry. 
+It is only necessary to run this once for each pipeline, and then it can be dropped for future runs of the same pipeline.</p>
+</li>
+</ul>
+<p>Some additional helpful options when debugging are:</p>
+<ul>
+<li>
+<p><code>--skip-existing-in &lt;COLLECTION&gt;</code>: don’t re-produce a dataset if it’s present in the specified collection.
+This is helpful when you want to pick up from where a previous run stopped. 
+Usually the <code>&lt;COLLECTION&gt;</code> specified here is the same as the output collection.</p>
+</li>
+<li>
+<p><code>--clobber-outputs</code>: clobber any existing datasets for a task (usually logging or metadata by-products of running the task).</p>
+</li>
+<li>
+<p><code>--pdb</code>: drop into the python debugger on an exception. 
+This won’t work with parallel processing, so check that you’re not also using <code>-j</code>.</p>
+</li>
+</ul>
+<p>The above three options (used together) are very useful when debugging a python exception in a pipeline run.</p>
+<p>Once the pipeline has run and produced the bias frame, we need to certify the calibration products:</p>
+<pre><code>$ butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/bias PFS/calib bias --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
+</code></pre>
+<p>This command tells the butler to certify the bias datasets in the <code>$RERUN/bias</code> collection as calibration products in the <code>PFS/calib</code> calib collection. 
+The <code>--begin-date</code> and <code>--end-date</code> options specify the validity range of the calibration products.</p>
+<p>To manage calibrations, it may be necessary to certify and decertify individual datasets.
+This capability is not available with LSST’s command-line tools, but we have some scripts that can do this. Here are some examples from working on real Subaru data:</p>
+<pre><code>$ butlerDecertify.py /work/datastore PFS/calib dark --begin-date 2024-08-24T00:00:00 --id instrument=PFS arm=r spectrograph=2
+$ butlerDecertify.py /work/datastore PFS/calib dark --begin-date 2024-05-01T00:00:00 --end-date 2024-08-23T23:59:59 --id instrument=PFS arm=r spectrograph=2
+$ butlerCertify.py /work/datastore price/pipe2d-1036/dark/run16 PFS/calib dark --begin-date 2024-05-01T00:00:00 --id instrument=PFS arm=r spectrograph=2
+</code></pre>
+<hr />
+<blockquote>
+<p><strong>Warning</strong>: Certifying a dataset as a calibration product tags it in the database as a calibration product and associates it with a validity timespan. It does not copy the dataset: the dataset is still a part of the <code>$RERUN/bias/&lt;timestamp&gt; RUN</code> collection, and removing that collection will remove the calibration dataset from the datastore.</p>
+</blockquote>
+<hr />
+<p>However, that RUN collection also contains a bunch of intermediate datasets which are unnecessarily consuming space, in particular the <code>biasProc</code> datasets (which are the outputs of running the isr task in the bias pipeline). We can remove these with the following command:</p>
+<pre><code>$ butlerCleanRun.py $DATASTORE $RERUN/bias/* biasProc
+</code></pre>
+<p>This will leave the <code>$RERUN/bias/&lt;timestamp&gt;</code> collection containing only the bias dataset and some other small metadata datasets. Note that our pipetask command specifies an output collection of <code>$RERUN/bias</code>, but we're specifying <code>$RERUN/bias/*</code> for the <code>butlerCleanRun.py</code> command, which will delete all the timestamped <code>RUN</code> collections in the <code>$RERUN/bias CHAINED</code> collection.</p>
+<p>You can also use the <code>butler remove-runs</code> command to completely remove <code>RUN</code> collections and <code>butler remove-collections</code> to remove <code>CHAINED</code> collections.</p>
+<h2 id="build-dark">Build Dark</h2>
+<hr />
+<p>With the bias calibration product built and certified, we can move on to the dark, which follow the same pattern:</p>
+<p>First run the builder:</p>
+<pre><code>pipetask run \
+--register-dataset-types -j $CORES -b $DATASTORE \
+--instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+-i PFS/raw/all,PFS/calib \
+-o &quot;$RERUN&quot;/dark \
+-p $DRP_STELLA_DIR/pipelines/dark.yaml \
+-d &quot;instrument='PFS' AND exposure.target_name = 'DARK'&quot; \
+--fail-fast \
+-c isr:doCrosstalk=True
+</code></pre>
+<p>Then, certify the products:</p>
+<pre><code>$ butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/dark PFS/calib dark --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
+$ butlerCleanRun.py $DATASTORE $RERUN/dark/* darkProc
+</code></pre>
+<h2 id="build-flat">Build Flat</h2>
+<hr />
+<p>Building Flats follows the same pattern. </p>
+<p>First run the builder:</p>
+<pre><code>pipetask run \
+--register-dataset-types -j $CORES -b $DATASTORE \
+--instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+-i PFS/raw/all,PFS/calib \
+-o &quot;$RERUN&quot;/flat \
+-p $DRP_STELLA_DIR/pipelines/flat.yaml \
+-d &quot;instrument='PFS' AND exposure.target_name = 'FLAT'&quot; \
+--fail-fast \
+-c isr:doCrosstalk=True
+</code></pre>
+<p>Then, certify the products:</p>
+<pre><code>$ butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/flat PFS/calib flat --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
+$ butlerCleanRun.py $DATASTORE $RERUN/flat/* flatProc
+</code></pre>
+<h2 id="build-detector-map">Build Detector Map</h2>
+<hr />
+<p>The bias, dark, and flat frames characterize the detector, so now it’s time to determine the <code>detectorMap</code>. We first bootstrap a
+detectorMap from an arc and quartz:</p>
+<pre><code>pipetask run \
+--register-dataset-types -j $CORES -b $DATASTORE \
+--instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+-i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib 
+-o &quot;$RERUN&quot;/bootstrap \
+-p $DRP_STELLA_DIR/pipelines/bootstrap.yaml' \
+-d &quot;instrument='PFS' AND exposure IN (11,22)&quot; \
+--fail-fast \
+-c isr:doCrosstalk=True
+</code></pre>
+<p>Then, certify the products:</p>
+<pre><code>$ butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/bootstrap PFS/bootstrap detectorMap_bootstrap --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
+$ butlerCleanRun.py $DATASTORE $RERUN/bootstrap/* postISRCCD
+</code></pre>
+<p>Here, we have added the <code>PFS/raw/pfsConfig</code> collection to the input since we need the <code>pfsConfig</code> files to determine which fibers are illuminated. Note that the arc and quartz are both specified as inputs in the same <code>-d</code> option. 
+The Gen3 middleware does not support multiple <code>-d</code> options to specify them independently, but the task can determine which is which from the <code>lamps</code> field in the exposure. 
+The bootstrap pipeline writes a <code>detectorMap_bootstrap</code> dataset for each camera, and we’re certifying that in the <code>PFS/bootstrap</code> collection (so it’s independent of the best-quality detectorMaps we’ll certify in <code>PFS/calibs</code>).</p>
+<p>When working with real data, it will probably be necessary to run the bootstrap pipeline on each camera separately, so that different <code>-c bootstrap:spectralOffset=&lt;WHATEVER&gt;</code> values can be used for each camera.</p>
+<p>Now we have a rough detectorMap, we can refine it and create the proper detectorMap:</p>
+<pre><code>pipetask run \
+--register-dataset-types -j $CORES -b $DATASTORE \
+--instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+-i PFS/raw/all,PFS/raw/pfsConfig,PFS/bootstrap,PFS/calib \
+-o &quot;$RERUN&quot;/detectorMap \
+-p '$DRP_STELLA_DIR/pipelines/detectorMap.yaml' \
+-d &quot;instrument='PFS' AND exposure.target_name = 'ARC'&quot; \
+-c isr:doCrosstalk=True \
+-c measureCentroids:connections.calibDetectorMap=detectorMap_bootstrap \
+-c fitDetectorMap:connections.slitOffsets=detectorMap_bootstrap.slitOffsets \
+--fail-fast
+</code></pre>
+<p>Then, certify the products:</p>
+<pre><code>$ certifyDetectorMaps.py INTEGRATION $RERUN/detectorMap PFS/calib --instrument PFS --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
+$ butlerCleanRun.py $DATASTORE $RERUN/detectorMap/* postISRCCD
+</code></pre>
+<p>Here, we have modified two connections in the pipeline. The <code>measureCentroids</code> task’s <code>calibDetectorMap</code> input is a detectorMap that provides the position at which to measure the centroids of the arc lines. 
+Usually this is set to the calibration detectorMap (detectorMap_calib), but we don’t have one of those yet. 
+Instead, we will configure this to use the bootstrap detectorMap (<code>detectorMap_bootstrap</code>) instead; notice also that we’re including the <code>PFS/ boostrap</code> collection in the input. 
+Similarly, the <code>fitDetectorMap</code> task’s <code>slitOffsets</code> input is set to use the slit offsets from the bootstrap detectorMap.</p>
+<p>The detectorMap pipeline writes a <code>detectorMap_candidate</code> dataset for each camera. 
+The <code>certifyDetectorMaps.py</code> script is used to certify the detectorMap datasets instead of the usual <code>butler certify-calibrations</code> command. 
+This script copies the <code>detectorMap_candidate</code> as a <code>detectorMap_calib</code> and certifies it.</p>
+<h2 id="build-fiber-profile">Build Fiber Profile</h2>
+<hr />
+<p>Fiber profiles can be built in two different ways. 
+The <code>fitFiberProfiles</code> pipeline is equivalent to the Gen2 <code>reduceProfiles</code> script: it fits a profile to multiple exposures simultaneously. 
+The <code>measureFiberProfiles</code> pipeline is equivalent to the Gen2 <code>constructFiberProfiles</code> script: it measures the profile from a single exposure. Here’s how you run them:</p>
+<pre><code># fitFiberProfiles:
+defineFiberProfilesInputs.py $DATASTORE PFS integrationProfiles --bright 26 --bright 27
+pipetask run \
+--register-dataset-types -j $CORES -b $DATASTORE \
+--instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+-i PFS/raw/all,PFS/fiberProfilesInputs,PFS/raw/pfsConfig,PFS/calib \
+-o &quot;$RERUN&quot;/fitFiberProfiles \
+-p '$DRP_STELLA_DIR/pipelines/fitFiberProfiles.yaml \
+-d &quot;profiles_run = 'integrationProfiles'&quot; \
+-c fitProfiles:profiles.profileSwath=2000 \
+-c fitProfiles:profiles.profileOversample=3 \
+--fail-fast
+
+# measureFiberProfiles:
+pipetask run \
+--register-dataset-types -j $CORES -b $DATASTORE \
+--instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+-i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
+-o &quot;$RERUN&quot;/measureFiberProfiles \
+-p '$DRP_STELLA_DIR/pipelines/measureFiberProfiles.yaml' \
+-d &quot;instrument='PFS' AND exposure.target_name IN ('FLAT_ODD', 'FLAT_EVEN')&quot; \
+-c isr:doCrosstalk=True \
+--fail-fast
+
+# certify the fiberProfile product
+butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/fitFiberProfiles PFS/calibfiberProfiles --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
+butlerCleanRun.py $DATASTORE $RERUN/fitFiberProfiles/* postISRCCD
+</code></pre>
+<p>Because it involves multiple groups of exposures, the <code>fitFiberProfiles</code> pipeline is a bit more complicated and requires defining the inputs to the pipeline ahead of time. 
+The <code>defineFiberProfilesInputs.py</code> script is used to define the inputs for the different groups of exposures. 
+When working on real data, we typically have four groups of several exposures each, and each group contains “bright” (select fibers deliberately exposed) and “dark” (all fibers hidden) exposures. 
+In the integration test, we only have two groups with a single bright exposure each, and no dark exposures. 
+For real data, the command might look like:</p>
+<pre><code>defineFiberProfilesInputs.py $DATASTORE PFS run18_brn \
+--bright 113855..113863 --dark 113845..113853 \
+--bright 113903..113911 --dark 113893..113901 \
+--bright 114190..114198 --dark 114180..114188 \
+--bright 114238..114246 --dark 114228..114236
+</code></pre>
+<p>This creates a profiles_run dimension value and associates those exposures with it. 
+A file describing the roles of the exposures is written in the<code>&lt;instrument&gt;/fiberProfilesInputs</code> collection, so this must be included in the inputs for the <code>fitFiberProfiles</code> pipeline. 
+We can use the profiles_run value in the data selection query, as that is linked to all the required exposures.</p>
+<h2 id="build-fiber-norm">Build Fiber Norm</h2>
+<hr />
+<p>Note that in the Gen3 pipeline, <code>fiberProfiles</code> do not include quartz spectrum normalization. The quartz spectrum used for normalization is supplied by the <code>fiberNorms</code>:</p>
+<pre><code>pipetask run \
+--register-dataset-types -j $CORES -b $DATASTORE \
+--instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+-i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
+-o &quot;$RERUN&quot;/fiberNorms \
+-p '$DRP_STELLA_DIR/pipelines/fiberNorms.yaml' \
+-d &quot;instrument='PFS' AND exposure.target_name = 'FLAT' AND dither = 0.0&quot; \
+-c isr:doCrosstalk=True \
+-c reduceExposure:doApplyScreenResponse=False \
+-c reduceExposure:doBlackSpotCorrection=False \
+--fail-fast
+
+butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/fiberNorms PFS/calib fiberNorms_calib --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
+butlerCleanRun.py $DATASTORE $RERUN/fiberNorms/* postISRCCD
+</code></pre>
+<p>The <code>fiberNorms</code> pipeline combines the extracted spectra from multiple quartz exposures, and writes the output as
+<code>fiberNorms_calib</code></p>
+<hr />
+<p><a name="diff_gen2_c">1</a> 
+Note the difference in syntax from Gen2: each configuration override requires a separate <code>-c</code> option, and the overrides include a colon (<code>:</code>) between the task name and the configuration parameter name. </p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../02_02_run_ingestion/" class="btn btn-neutral float-left" title="Data Ingestion"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../02_04_run_science/" class="btn btn-neutral float-right" title="Procees Science Data">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../02_02_run_ingestion/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../02_04_run_science/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

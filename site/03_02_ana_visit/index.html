@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/03_02_ana_visit/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>Analyze Visit-level Data - PFS Pipe2D</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/pfs.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Analyze Visit-level Data";
+        var mkdocs_page_input_path = "03_02_ana_visit.md";
+        var mkdocs_page_url = "/pfs_helpdesk_tutorial/03_02_ana_visit/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../img/logo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_datamodel/">PFS Datamodel</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_02_pfs_pipeline/">PFS 2D Pipeline</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_01_install_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_02_install_pipe2d/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_01_run_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">Build Calibs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Data Analysis</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../03_01_ana_file/">File Access</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Analyze Visit-level Data</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#check-fiber-distribution">Check Fiber Distribution</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#check-pfsarm-data">Check pfsArm data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#check-pfsmerged-data">Check pfsMerged data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#check-pfssingle-data">Check pfsSingle data</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_03_ana_coadd/">Analyze Coadd-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_04_ana_1d/">Run 1D DRP</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Q&A</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_00_faq_general/">General</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_01_faq_install/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_02_faq_run/">Run 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PFS Pipe2D</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Data Analysis</li>
+      <li class="breadcrumb-item active">Analyze Visit-level Data</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/03_02_ana_visit.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="analyze-visit-level-data">Analyze Visit-level Data</h1>
+<p>Now that we have our processed data, let's start exploring the output files! In this section, we'll focus on analyzing visit-level data, working with individual exposures from a single visit. This will give us a more detailed look at the spectra before moving on to coadds, which combine data from multiple visits for improved signal-to-noise and calibration.</p>
+<h2 id="check-fiber-distribution">Check Fiber Distribution</h2>
+<hr />
+<p>Before we dive into analyzing the data, the first step is to import the necessary modules. These modules provide essential functions for interacting with the pipeline outputs.
+The <code>butler</code> interface, a key component of the LSST Science Pipelines, provides a structured and efficient way to access processed data. It manages datasets through a hierarchical system, allowing you to query and retrieve data in an organized manner. Unless you have specific needs that require direct file access, using <code>butler</code> is highly recommended for consistency and ease of use.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>As discussed above, each pipeline output file is defined in <a href="https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt"><code>datamodel.txt</code></a>. If you have a desperate reason not to use the butler, then the Python module from the datamodel repository can be used. The module allows you to read/write the pipeline files and is written deliberately to be independent of the LSST stack.</p>
+</div>
+<p>To use the <code>butler</code>, you will need to initiate PFS pipeline environment before launching the Python:</p>
+<pre><code>$ source $WORKDIR/(username)/packages/stack_26_0_2/loadLSST.bash
+$ setup pfs_pipe2d
+</code></pre>
+<p>Then in your Python environment (e.g., a Jupyter notebook), you can import the necessary modules:</p>
+<pre><code>from lsst.daf.butler import Butler
+import pfs.datamodel as datamodel
+</code></pre>
+<p>We will need to first initialize the <code>butler</code>:</p>
+<pre><code>$DATASTORE = &quot;$WORKDIR/pfs/data/datastore&quot;
+$COLLECTION = 'u/(username)/20250218'
+butler =Butler($DATASTORE, collection=[$COLLECTION])
+</code></pre>
+<p>Let's assume we want to inspect a <code>visit=98336</code>:</p>
+<pre><code>visit=98336
+pfsConfig = butler.get('pfsConfig', visit=visit)
+for i in range (1,4):
+    index = np.where(pfsConfig.targetType == i)
+    plt.plot(pfsConfig.ra[index], pfsConfig.dec[index], 
+             '.', label=datamodel.TargetType(i))
+plt.legend()
+plt.xlabel('R.A. [deg]')
+plt.ylabel('Dec. [deg]')
+</code></pre>
+<p>Running the code above will generate a figure that visualizes the sky distribution of fibers for a given visit. Each data point represents a fiber assigned to a specific target, the flux standards, or the sky. This allows you to quickly inspect the spatial arrangement of targets and verify the fiber allocation for the sky fiber or flux standard sampling.</p>
+<p><img alt="Fiber Distribution" src="../img/out_fiberdist.png" /></p>
+<h2 id="check-pfsarm-data">Check <code>pfsArm</code> data</h2>
+<hr />
+<p>Now that we've visualized the fiber distribution, let's take a closer look at the spectrum of a specific target. The <code>pfsArm</code> files contain the extracted 1D spectra for each spectrograph arm (<code>b</code>, <code>r</code>, <code>n</code>, <code>m</code>).</p>
+<p>For example, if you want to inspect <code>pfsArm</code> with a list of <code>fiberId</code>:</p>
+<pre><code># fiberID
+fiberId = np.array([1163, ])
+# Index of the fiber in the pfsConfig
+index = np.where(pfsConfig.fiberId == fiberId)[0][0]
+
+# Spectrograph; here, it is 2.
+from pfs.utils.fibers import spectrographFromFiberId
+spectrograph = spectrographFromFiberId(fiberId).item()
+
+# for pfsArm, we need to know which spectrograph the object is observed with. We get the spectrograph ID with a utility function.
+for arm in ('b','r','n'):
+    pfsArm = butler.get('pfsArm', dataId=dict(visit=visit, arm=arm, spectrograph=spectrograph))
+    idx_arm = np.where(pfsArm.fiberId == pfsConfig.fiberId[index])[0][0] 
+    plt.plot(pfsArm.wavelength[idx_arm], pfsArm.flux[idx_arm], '-', label=arm, linewidth=0.1)
+# Skipped unrelated parts #
+plt.show()
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>dataId</code> for retriving <code>pfsArm</code> is <code>dataId</code>=dict(<code>visit</code>, <code>arm</code>, <code>spectrograph</code>) </p>
+</div>
+<p>You will have the fingure showing spectra from the three arms (<code>b</code>, <code>r</code>, and <code>n</code>) without wavelength calibration in one figure:</p>
+<p><img alt="Output of pfsArm" src="../img/out_pfsArm.png" /></p>
+<h2 id="check-pfsmerged-data">Check <code>pfsMerged</code> data</h2>
+<hr />
+<p>If you want to inspect <code>pfsMerged</code>:</p>
+<pre><code>pfsMerged = butler.get('pfsMerged', dataId=dict(visit=visit, spectrograph=spectrograph))
+
+bad = pfsMerged.mask[index] &amp; pfsMerged.flags.get('BAD', 'CR', 'SAT') != 0
+good = ~bad
+
+plt.plot(pfsMerged.wavelength[index][good], pfsMerged.flux[index][good], '-', linewidth=0.2, label='flux')
+plt.plot(pfsMerged.wavelength[index][good], np.sqrt(pfsMerged.variance[index][good]), '-', linewidth=0.2, label='noise')
+plt.plot(pfsMerged.wavelength[index][bad], pfsMerged.flux[index][bad], '.', color='red', label='bad pixels')
+# Skipped unrelated parts #
+plt.show()
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code>dataId</code> for retriving <code>pfsMerged</code> is <code>dataId</code>=dict(<code>visit</code>, <code>spectrograph</code>) </p>
+</div>
+<p>The resulting figure will display the spectrum after merging data from the three arms (<code>b</code>, <code>r</code>, and <code>n</code>). At this stage, wavelength calibration has been applied, but flux calibration has not yet been performed. This step provides a crucial intermediate product, allowing you to check for artifacts, discontinuities between arms, and the overall quality of spectral extraction before applying flux corrections.</p>
+<p><img alt="Output of pfsMerged" src="../img/out_pfsMerged.png" /></p>
+<h2 id="check-pfssingle-data">Check <code>pfsSingle</code> data</h2>
+<hr />
+<p>If you want to inspect <code>pfsSingle</code>:</p>
+<pre><code>pfsSingle = butler.get('pfsSingle', dataId=dict(visit=visit, objId=pfsConfig.objId[index], tract=1, patch='1,1', catId=4))
+
+bad = pfsSingle.mask &amp; pfsSingle.flags.get('BAD', 'CR', 'SAT') != 0
+good = ~bad
+
+plt.plot(pfsSingle.wavelength[good], pfsSingle.flux[good], '-', linewidth=0.2, label='flux')
+plt.plot(pfsSingle.wavelength[good], np.sqrt(pfsSingle.variance[good]), '-', linewidth=0.2, label='noise')
+plt.plot(pfsSingle.wavelength, pfsSingle.sky, '-', linewidth=0.2, label='sky')
+plt.plot(pfsSingle.wavelength[bad], pfsSingle.flux[bad], '.', color='red', label='bad pixels')
+# Skipped unrelated parts #
+plt.show()
+</code></pre>
+<p>Finally, we analyze the fully calibrated <code>pfsSingle</code> spectrum. This dataset represents a single-visit spectrum with both wavelength and flux calibrations applied. The plotted figure will provide insights into the final processed spectrum, including signal quality, noise levels, sky subtraction, and flagged bad pixels.</p>
+<p><img alt="Output of pfsSingle" src="../img/out_pfsSingle.png" /></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../03_01_ana_file/" class="btn btn-neutral float-left" title="File Access"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../03_03_ana_coadd/" class="btn btn-neutral float-right" title="Analyze Coadd-level Data">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../03_01_ana_file/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../03_03_ana_coadd/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

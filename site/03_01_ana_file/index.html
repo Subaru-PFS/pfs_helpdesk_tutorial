@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/03_01_ana_file/" />
+      <link rel="shortcut icon" href="../img/favicon.ico" />
+    <title>File Access - PFS Pipe2D</title>
+    <link rel="stylesheet" href="../css/theme.css" />
+    <link rel="stylesheet" href="../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+        <link href="../css/pfs.css" rel="stylesheet" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "File Access";
+        var mkdocs_page_input_path = "03_01_ana_file.md";
+        var mkdocs_page_url = "/pfs_helpdesk_tutorial/03_01_ana_file/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="..">
+          <img src="../img/logo.png" class="logo" alt="Logo"/>
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption"><span class="caption-text">Introduction</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_datamodel/">PFS Datamodel</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_02_pfs_pipeline/">PFS 2D Pipeline</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_01_install_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_02_install_pipe2d/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_01_run_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">Build Calibs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Data Analysis</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">File Access</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#the-location-of-data-products">The Location of Data Products</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#export-the-data-products">Export the Data Products</a>
+    </li>
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_02_ana_visit/">Analyze Visit-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_03_ana_coadd/">Analyze Coadd-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_04_ana_1d/">Run 1D DRP</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Q&A</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_00_faq_general/">General</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_01_faq_install/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_02_faq_run/">Run 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="..">PFS Pipe2D</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
+          <li class="breadcrumb-item">Data Analysis</li>
+      <li class="breadcrumb-item active">File Access</li>
+    <li class="wy-breadcrumbs-aside">
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/03_01_ana_file.md" class="icon icon-github"> Edit on GitHub</a>
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="file-access">File Access</h1>
+<p>After running the PFS 2D DRP, data reduction are performed and the spectrum products are constructed.</p>
+<h2 id="the-location-of-data-products">The Location of Data Products</h2>
+<hr />
+<p>First, where can we find the product files? 
+In this assumed working directory and user rerun, the output files are located under <code>$WORKDIR/pfs/data/datastore/u/(username)/object/</code>. </p>
+<p>You can check by:</p>
+<pre><code>ls $WORKDIR/pfs/data/datastore/u/(username)/object/
+</code></pre>
+<p>You may find a folder named by date and time, e.g., <code>20250218T070224Z</code>. This is one of the reruns for your <code>object</code> collection. 
+If you run the processing multiple times, different folders with specific timestamps will be created.</p>
+<p>Let's inspect the contents of  <code>20250218T070224Z/</code>:</p>
+<pre><code>$ ls 20250218T070224Z
+
+apCorr                 cosmicray2_metadata         fitPfsFluxReference_metadata  mergeArms_log       pfsCoadd               reduceExposure_log
+calexp                 detectorMap                 fluxCal                       mergeArms_metadata  pfsCoaddLsf            reduceExposure_metadata
+coaddSpectra_config    fitFluxCal_config           isr_config                    packages            pfsFluxReference       sky1d
+coaddSpectra_log       fitFluxCal_log              isr_log                       pfsArm              pfsMerged
+coaddSpectra_metadata  fitFluxCal_metadata         isr_metadata                  pfsArmLsf           pfsMergedLsf
+cosmicray2_config      fitPfsFluxReference_config  lines                         pfsCalibrated       postISRCCD
+cosmicray2_log         fitPfsFluxReference_log     mergeArms_config              pfsCalibratedLsf    reduceExposure_config
+</code></pre>
+<p>You will see a bunch of directories. Refer to the release document as well as to the <a href="https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt">datamodel</a> for details.
+Here is a brief summary of some of the most important files: <code>pfsArm</code> contains 1D-extracted, wavelength-calibrated spectra for each arm (<code>b</code>, <code>r</code>, <code>n</code>, <code>m</code>) separately. Here, <code>b</code>=blue, <code>r</code>=red, <code>n</code>=nearIR, and <code>m</code>=medium resolution red-arm. The arms are combined in a <code>pfsMerged</code> file. Note that the sky subtraction has been performed in <code>pfsMerged</code>. Then the pipeline applies the flux calibration and <code>pfsSingle</code> is a fully calibrated 1d spectrum for a visit. Finally, <code>pfsCoadd</code> is a coadd spectrum from multiple visits.</p>
+<h2 id="export-the-data-products">Export the Data Products</h2>
+<hr />
+<p>You may notice that <code>pfsObject</code>, which is specified in the data model, is missing from the current directory. 
+Since Gen3 PFS 2D DRP, the products have been stored in<code>pfsCoadd</code>. However, after running:</p>
+<pre><code>$ exportPfsProducts.py -b $DATASTORE -i PFS/raw/pfsConfig,&quot;$RERUN&quot;/science -o $EXPORT
+</code></pre>
+<p>You may still be able to retrieve the data structure as follows:</p>
+<pre><code>$EXPORT/
+ ├── detectorMap : directory for detectorMap of different arm &amp; spectrograph
+ ├── images : directory for raw 2D images of each visit
+ ├── pfsConfig : directory for pfsConfig files
+ ├── pfsArm : directory for pfsArm products
+ ├── pfsMerged : directory for pfsMerged products
+ │     ├── 20241024 : exposures on date 2024/10/24
+ │     ├── 20241025 : exposures on date 2024/10/25
+ │     └── 20241026 : exposures on date 2024/10/26
+ │           ├── pfsMerged-116413.fits : psfMerged spectra of visit=116413
+ │           ├── pfsMergedLsf-116413.pickle : psfMerged LSF of visit=116413
+ │           ├── ...
+ ├── pfsSingle : directory for pfsSingle products
+ │     ├── -0001 : targets with catId=-1
+ │     ├── 01002 : targets with catId=1002, i.e., PS1
+ │     ├── 03006 : targets with catId=3006
+ │     └── 10086 : targets with catId=10086
+ │           └── 00001 : tract number, meaningless at the moment
+ │                 └── 1,1 : patch number, meaningless at the moment
+ │                      ├── pfsSingle-[catId]-[tract]-[patch]-[objId]-[visit].fits : psfSingle spectra of catId=10086
+ │                      ├── pfsSingleLsf-[catId]-[tract]-[patch]-[objId]-[visit].fits : psfSingle LSF of catId=10086
+ │                      ├── ... 
+ └── pfsObject
+       ├── -0001: (same as above)
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This is not recommended since Gen3, and we suggest working directly with <code>pfsCoadd</code> instead.</p>
+</div>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../02_05_run_qa/" class="btn btn-neutral float-left" title="Quality Assurance (QA)"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../03_02_ana_visit/" class="btn btn-neutral float-right" title="Analyze Visit-level Data">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+        <span>
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial" class="fa fa-github" style="color: #fcfcfc"> GitHub</a>
+        </span>
+    
+    
+      <span><a href="../02_05_run_qa/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../03_02_ana_visit/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "..";</script>
+    <script src="../js/theme_extra.js"></script>
+    <script src="../js/theme.js"></script>
+      <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+      <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+      <script src="../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
