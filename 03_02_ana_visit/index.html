@@ -86,6 +86,8 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#check-pfssingle-data">Check pfsSingle data</a>
     </li>
+    <li class="toctree-l2"><a class="reference internal" href="#check-pfscalibrated-data">Check pfsCalibrated data</a>
+    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../03_03_ana_coadd/">Analyze Coadd-level Data</a>
@@ -137,7 +139,7 @@
 The <code>butler</code> interface, a key component of the LSST Science Pipelines, provides a structured and efficient way to access processed data. It manages datasets through a hierarchical system, allowing you to query and retrieve data in an organized manner. Unless you have specific needs that require direct file access, using <code>butler</code> is highly recommended for consistency and ease of use.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>As discussed above, each pipeline output file is defined in <a href="https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt"><code>datamodel.txt</code></a>. If you have a desperate reason not to use the butler, then the Python module from the datamodel repository can be used. The module allows you to read/write the pipeline files and is written deliberately to be independent of the LSST stack.</p>
+<p>As discussed in <a href="../00_01_pfs_datamodel/">PFS Datamodel Section</a>, each pipeline output file is defined in <a href="https://github.com/Subaru-PFS/datamodel/tree/master"><code>datamodel</code></a>. If you have a desperate reason not to use the <code>butler</code>, then the Python module from the datamodel repository can be used. The module allows you to read/write the pipeline files and is written deliberately to be independent of the LSST stack.</p>
 </div>
 <p>To use the <code>butler</code>, you will need to initiate PFS pipeline environment before launching the Python:</p>
 <pre><code>$ source $WORKDIR/(username)/packages/stack_26_0_2/loadLSST.bash
@@ -190,7 +192,7 @@ plt.show()
 <p class="admonition-title">Note</p>
 <p>The <code>dataId</code> for retriving <code>pfsArm</code> is <code>dataId</code>=dict(<code>visit</code>, <code>arm</code>, <code>spectrograph</code>) </p>
 </div>
-<p>You will have the fingure showing spectra from the three arms (<code>b</code>, <code>r</code>, and <code>n</code>) without wavelength calibration in one figure:</p>
+<p>You will have the figure showing spectra from the three arms (<code>b</code>, <code>r</code>, and <code>n</code>) without wavelength calibration in one figure:</p>
 <p><img alt="Output of pfsArm" src="../img/out_pfsArm.png" /></p>
 <h2 id="check-pfsmerged-data">Check <code>pfsMerged</code> data</h2>
 <hr />
@@ -229,6 +231,18 @@ plt.show()
 </code></pre>
 <p>Finally, we analyze the fully calibrated <code>pfsSingle</code> spectrum. This dataset represents a single-visit spectrum with both wavelength and flux calibrations applied. The plotted figure will provide insights into the final processed spectrum, including signal quality, noise levels, sky subtraction, and flagged bad pixels.</p>
 <p><img alt="Output of pfsSingle" src="../img/out_pfsSingle.png" /></p>
+<h2 id="check-pfscalibrated-data">Check <code>pfsCalibrated</code> data</h2>
+<p>In case of the direct output from the Gen3 2D DRP, there is no <code>pfsSingle</code>, and the fully reduced spectra of single exposures are stored in <code>pfsCalibrated</code>. Note that different from <code>pfsSingle</code>, <code>pfsCalibrated</code> is a collection of calibrated spectra for a single visit.</p>
+<p>Now, let's assume we want to retrieve spectra for specific objects, given their <code>objId</code> values in a list:</p>
+<pre><code>ObjId_list = [123, 456]     # List of target object IDs
+pfsCalibrated = butler.get('pfsCalibrated', dataId=dict(visit=visit, spectrograph=spectrograph))
+
+for _, target in enumerate(pfsCalibrated): 
+    if target.objId not in ObjId_list:         
+        continue     
+    pfsSingle = pfsCalibrated[target] 
+</code></pre>
+<p>Then, the <code>pfsSingle</code> can be manipulated as above.</p>
               
             </div>
           </div><footer>

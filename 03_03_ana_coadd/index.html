@@ -80,7 +80,7 @@
                   </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Analyze Coadd-level Data</a>
     <ul class="current">
-    <li class="toctree-l2"><a class="reference internal" href="#check-pfsobject-data-from-fiber-index">Check pfsObject Data from Fiber Index</a>
+    <li class="toctree-l2"><a class="reference internal" href="#check-pfsobject-data-from-object-index">Check pfsObject Data from Object Index</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#check-pfscoadd-data-from-object-id">Check pfsCoadd Data from Object ID</a>
     </li>
@@ -129,9 +129,9 @@
 <p>For most scientific analyses, users are typically more interested in coadded spectra, which combine multiple exposures to improve signal-to-noise and minimize observational systematics. Instead of working with single-visit spectra, astronomers often use coadded spectra for tasks such as redshift determination, spectral classification, and emission-line measurements.</p>
 <p>In this section, we will retrieve coadded data, exploring both <code>pfsObject</code> (from the conventional PFS datamodel) and <code>pfsCoadd</code> (the recommended format in Gen3). While <code>pfsObject</code> was commonly used in earlier pipeline versions, Gen3 introduces <code>pfsCoadd</code> as a more efficient way to handle coadded spectra, bundling multiple spectra into a single file.</p>
 <p>Since the initialization of the <code>butler</code> interface follows the same steps as in the previous section, we will skip that setup here and jump straight into data retrieval.</p>
-<h2 id="check-pfsobject-data-from-fiber-index">Check <code>pfsObject</code> Data from Fiber Index</h2>
+<h2 id="check-pfsobject-data-from-object-index">Check <code>pfsObject</code> Data from Object Index</h2>
 <hr />
-<p>To start, let's assume we are interested in a particular target with catalog ID <code>catId = 4</code> and a specific fiber index.</p>
+<p>To start, let's assume we are interested in a particular target with catalog ID <code>catId = 4</code> and a specific object index (NOT the object ID).</p>
 <pre><code>import glob
 
 catId = 4

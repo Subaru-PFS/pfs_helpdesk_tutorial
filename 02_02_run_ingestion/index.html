@@ -173,7 +173,7 @@ butler = Butler(&quot;/path/to/datastore&quot;, collections=&quot;PFS/raw/all&qu
 raw = butler.get(&quot;raw&quot;, instrument=&quot;PFS&quot;, exposure=12, arm=&quot;r&quot;, spectrograph=1)
 rawImage = raw.getImage()
 </code></pre>
-<p>Note that the raw data returned from the butler is now of type <code>PfsRaw</code>, which provides a common interface for both CCD and NIR detectors. 
+<p>Note that the raw data returned from the <code>butler</code> is now of type <code>PfsRaw</code>, which provides a common interface for both CCD and NIR detectors. 
 You can use <code>butler.get("raw.exposure", ...)</code> to get the exposure from the raw data directly.</p>
               
             </div>
