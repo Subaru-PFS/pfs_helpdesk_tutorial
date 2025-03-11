@@ -59,7 +59,7 @@
                   <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
                   </li>
               </ul>
-              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <p class="caption"><span class="caption-text">Run 2D DRP</span></p>
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="../02_01_run_prepare/">Preparation</a>
                   </li>
@@ -110,7 +110,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Run 2D PDR</li>
+          <li class="breadcrumb-item">Run 2D DRP</li>
       <li class="breadcrumb-item active">Data Ingestion</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/02_02_run_ingestion.md" class="icon icon-github"> Edit on GitHub</a>
@@ -123,7 +123,7 @@
               
                 <h1 id="data-ingestion">Data Ingestion</h1>
 <hr />
-<p>We can ingest data into the butler repository. 
+<p>We can ingest data into the <code>butler</code> repository. 
 There are two kinds of data that we need to ingest: raw images and the <code>pfsConfig</code> files. 
 These are ingested using two separate commands:</p>
 <pre><code>$ butler ingest-raws $DATASTORE $drp_stella_data/raw/PFSA*.fits --ingest-task lsst.obs.pfs.gen3.PfsRawIngestTask --transfer link --fail-fast
@@ -134,7 +134,7 @@ $ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $drp_stella_data/raw/pfsCo
 <li><code>--transfer</code>: The method by which data is added to the repository, including <code>link</code>, <code>copy</code>, and <code>move</code>. </li>
 <li><code>--fail-fast</code>: The process will immediately stop the ingestion process if an error occurs. This is useful for debugging.</li>
 </ul>
-<p>The ingestion process places the files (referred to as “datasets” in the butler) in the repository and records them in the registry database. Each file is placed in a <strong>collection</strong>, which can be thought of as a <em>directory</em> (i.e., <code>$DATASTORE/PFS/</code> in the example) in the butler (and in the case of the datastore on a traditional filesystem, it is implemented as a directory). 
+<p>The ingestion process places the files (referred to as “datasets” in the <code>butler</code>) in the repository and records them in the registry database. Each file is placed in a <strong>collection</strong>, which can be thought of as a <em>directory</em> (i.e., <code>$DATASTORE/PFS/</code> in the example) in the <code>butler</code> (and in the case of the datastore on a traditional filesystem, it is implemented as a directory). 
 The raw data is placed in the collection &lt;instrument&gt;/raw/all, while we’ve specified above that the <code>pfsConfig</code> files are placed in the collection <code>PFS/raw/pfsConfig</code>.</p>
 <p>There are different kinds of <a href="https://pipelines.lsst.io/modules/lsst.daf.butler/organizing.html#collections">collections</a>:</p>
 <ul>
@@ -152,7 +152,7 @@ The raw data is placed in the collection &lt;instrument&gt;/raw/all, while we’
 There are some kinds of datastores that do not use a traditional filesystem (e.g., the S3 datastore), and so the files may not be directly accessible.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The registry database tracks all files in the datastore. Do not delete files from the datastore without using the appropriate butler commands.</p>
+<p>The registry database tracks all files in the datastore. Do not delete files from the datastore without using the appropriate <code>butler</code> commands.</p>
 </div>
 <p>You can see what raw datasets are in the datastore with the following command:</p>
 <pre><code>$ butler query-datasets $DATASTORE --collections PFS/raw/all
