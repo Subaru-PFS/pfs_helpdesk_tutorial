@@ -11,7 +11,7 @@ nav:
     - Preparation: 01_01_install_prepare.md
     - Install 2D DRP: 01_02_install_pipe2d.md
     - Integration Test: 01_03_integration_test.md
-  - Run 2D PDR:
+  - Run 2D DRP:
     - Preparation: 02_01_run_prepare.md
     - Data Ingestion: 02_02_run_ingestion.md
     - Build Calibs: 02_03_run_calib.md
