@@ -33,14 +33,14 @@ cosmicray2_log         fitPfsFluxReference_log     mergeArms_config             
 ```
 
 You will see a bunch of directories. Refer to the release document as well as to the [datamodel](https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt) for details.
-Here is a brief summary of some of the most important files: `pfsArm` contains 1D-extracted, wavelength-calibrated spectra for each arm (`b`, `r`, `n`, `m`) separately. Here, `b`=blue, `r`=red, `n`=nearIR, and `m`=medium resolution red-arm. The arms are combined in a `pfsMerged` file. Note that the sky subtraction has been performed in `pfsMerged`. Then the pipeline applies the flux calibration and `pfsSingle` is a fully calibrated 1d spectrum for a visit. Finally, `pfsCoadd` is a coadd spectrum from multiple visits.
+Here is a brief summary of some of the most important files: `pfsArm` contains 1D-extracted, wavelength-calibrated spectra for each arm (`b`, `r`, `n`, `m`) separately. Here, `b`=blue, `r`=red, `n`=nearIR, and `m`=medium resolution red-arm. The arms are combined in a `pfsMerged` file. Note that the sky subtraction has been performed in `pfsMerged`. Then the pipeline applies the flux calibration and `pfsCalibrated` is a fully calibrated 1d spectrum for a visit. Finally, `pfsCoadd` is a coadd spectrum from multiple visits.
 
 ## Export the Data Products
 
 ---
 
-You may notice that `pfsObject`, which is specified in the data model, is missing from the current directory. 
-Since Gen3 PFS 2D DRP, the products have been stored in`pfsCoadd`. However, after running:
+You may notice that `pfsSingle` and `pfsObject`, which are specified in the [datamodel](https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt), are missing from the current directory. 
+Since Gen3 PFS 2D DRP, the products have been stored in `pfsCalibrated` and `pfsCoadd`, respectively. However, after running:
 
 ```
 $ exportPfsProducts.py -b $DATASTORE -i PFS/raw/pfsConfig,"$RERUN"/science -o $EXPORT
@@ -76,6 +76,6 @@ $EXPORT/
 ```
 
 !!! note
-      This is not recommended since Gen3, and we suggest working directly with `pfsCoadd` instead.
+      This is not recommended since Gen3, and we suggest working directly with `pfsCalibrated` and `pfsCoadd` instead.
 
 

@@ -1,8 +1,8 @@
 # PFS Introduction
 
 This webpage is mainly for introducing the information of Subaru Prime Focus Spectrograph (PFS) data reduction and data inspection.
-Regarding the Subaru PFS instrument, one can check more information from the [PFS intrument page](https://www.naoj.org/Observing/Instruments/PFS/instrument/). 
-Here, we selected the necessary information that you may need for understanding the PFS pipeline.
+Regarding the Subaru PFS instrument, one can check more information on the [PFS intrument page](https://www.naoj.org/Observing/Instruments/PFS/instrument/). 
+Here, we selected the necessary information that you may need to understand the PFS pipeline.
 
 ## Overview
 
@@ -20,11 +20,17 @@ The WFC is an optical system consisting of 7 lenses designed to correct imaging 
 
 Together with the WFC, the Prime Focus Instrument (PFI) is installed on the prime focus of the Subaru telescope.
 
-At the focal plane, approximately 2400 fibers are arranged across the ~1.25 deg² hexagonal-shaped field of view. There are two types of fibers: 2394 science fibers and 96 fiducial fibers. Each science fiber is attached to a small actuator, the fiber positioner (see below), and moved to the location of the targets on the focal plane. The fiducial fibers are fixed in their position and used as position references when the science fibers are moved. The fibers are equipped with a microlens on their surface to make the F-ratio slower (F/2.8) and reduce degradation of image quality after passing through the long fiber cable.
+The basic information about PFI is listed in the table:
 
-A ~54 mm-thick glass plate, the so-called field element, is installed in front of the fibers to achieve the same image quality as HSC. The field element has opaque dots to hide the fibers behind them and block light from reaching the fibers. By doing so, more sparse spectra can be taken by the spectrograph, which enables better understanding of the spectra on the detectors.
-
-Surrounding the hexagonal-shaped field of view, six imaging cameras are accommodated for sky-field acquisition and auto-guiding. Six calibration lamps (one quartz lamp for continuum and five arc lamps: Kr, Ar, Ne, Xe, and HgCd) are installed on the top of PFI to uniformly illuminate the screen on the dome ceiling.
+| Component                  | Description |
+|----------------------------|-------------|
+| **FOV**                    | a ~1.25 deg² hexagonal |
+| **Fibers Number**          | ~2400 fibers |
+| **Types of Fibers**        | - **2394 science fibers**: Movable, attached to actuators (fiber positioners).<br>- **96 fiducial fibers**: Fixed, used as position references. |
+| **Microlens on Fibers**    | Slows F-ratio to F/2.8 to reduce image degradation after passing through the fiber cable. |
+| **Field Element**          | - ~54 mm-thick glass plate in front of fibers.<br>- Ensures same image quality as HSC.<br>- Has opaque dots to block light and improve spectral analysis. |
+| **Imaging Cameras**        | Six cameras around the hexagonal field for sky-field acquisition and auto-guiding. |
+| **Calibration Lamps**      | Six lamps installed on top of PFI:<br>- 1 quartz lamp (continuum).<br>- 5 arc lamps (Kr, Ar, Ne, Xe, HgCd) for uniform illumination of the dome screen. |
 
 **Fiber Positioner ("Cobra")**
 
@@ -68,11 +74,26 @@ The total throughputs of these channels:
 
 ### Fiber System
 
-The fiber system consists of ~2400 optical fibers which relay light collected at the focal plane to the four spectrographs located in the clean room. A fiber cable consists of three parts, to develop and operate the instrument easily. The first part is accommodated within PFI as fiber modules with their "Cobra" positioners, one part is integrated to SpS as fiber slit assembly, and the third part is developed as a long fiber cable routed on the telescope and in the dome building. The total length of each fiber is 65 meters, assembled into four groups providing 600 inputs to each spectrograph. In addition to the ~2400 science fibers, the monitoring fibers are accommodated to check connection at installation.
+The basic information about the Fiber System: 
+
+| Component               | Description |
+|-------------------------|-------------|
+| **Fiber System**       | ~2400 optical fibers relay light from the focal plane to four spectrographs in the clean room. |
+| **Fiber Cable** | Divided into three parts for ease of development and operation:<br>- **PFI fiber modules**: Includes "Cobra" positioners.<br>- **SpS fiber slit assembly**: Integrated into the spectrograph system.<br>- **Long fiber cable**: Routed on the telescope and in the dome building. |
+| **Fiber Length & Grouping** | Each fiber is **65 meters long**, assembled into **four groups**, with **600 inputs per spectrograph**. |
+| **Monitoring Fibers**  | Additional fibers included to check connections during installation. |
+
 
 ### Metrology Camera System (MCS)
 
-The MCS is attached to the Cassegrain Focus of the Subaru telescope and measures the positions of the fibers on the prime focus. MCS can take an image of all ~2400 fibers in a single exposure using a large format (8960 pixels x 5778 pixels) CMOS camera. The primary mirror of MCS is 380 mm in diameter to average out the local surface error of WFC.
+The basic information about the Metrology Camera System (MCS):
+
+| Component          | Description |
+|--------------------|-------------|
+| **MCS** | Attached to the Cassegrain Focus of the Subaru telescope to measure fiber positions at the prime focus. |
+| **Imaging Capability** | Captures all ~2400 fibers in a single exposure using a large-format CMOS camera (8960 × 5778 pixels). |
+| **Primary Mirror** | Diameter of 380 mm, designed to average out local surface errors of the WFC. |
+
 
 ## Data FITS Header
 

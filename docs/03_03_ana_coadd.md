@@ -6,11 +6,11 @@ In this section, we will retrieve coadded data, exploring both `pfsObject` (from
 
 Since the initialization of the `butler` interface follows the same steps as in the previous section, we will skip that setup here and jump straight into data retrieval.
 
-## Check `pfsObject` Data from Fiber Index
+## Check `pfsObject` Data from Object Index
 
 ---
 
-To start, let's assume we are interested in a particular target with catalog ID `catId = 4` and a specific fiber index.
+To start, let's assume we are interested in a particular target with catalog ID `catId = 4` and a specific object index (NOT the object ID).
 
 ```
 import glob

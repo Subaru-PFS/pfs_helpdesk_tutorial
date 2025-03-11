@@ -10,7 +10,7 @@ Before we dive into analyzing the data, the first step is to import the necessar
 The `butler` interface, a key component of the LSST Science Pipelines, provides a structured and efficient way to access processed data. It manages datasets through a hierarchical system, allowing you to query and retrieve data in an organized manner. Unless you have specific needs that require direct file access, using `butler` is highly recommended for consistency and ease of use.
 
 !!! note
-    As discussed above, each pipeline output file is defined in [`datamodel.txt`](https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt). If you have a desperate reason not to use the butler, then the Python module from the datamodel repository can be used. The module allows you to read/write the pipeline files and is written deliberately to be independent of the LSST stack.
+    As discussed in [PFS Datamodel Section](00_01_pfs_datamodel.md), each pipeline output file is defined in [`datamodel`](https://github.com/Subaru-PFS/datamodel/tree/master). If you have a desperate reason not to use the `butler`, then the Python module from the datamodel repository can be used. The module allows you to read/write the pipeline files and is written deliberately to be independent of the LSST stack.
 
 To use the `butler`, you will need to initiate PFS pipeline environment before launching the Python:
 
@@ -82,7 +82,7 @@ plt.show()
 !!! note
     The `dataId` for retriving `pfsArm` is `dataId`=dict(`visit`, `arm`, `spectrograph`) 
 
-You will have the fingure showing spectra from the three arms (`b`, `r`, and `n`) without wavelength calibration in one figure:
+You will have the figure showing spectra from the three arms (`b`, `r`, and `n`) without wavelength calibration in one figure:
 
 ![Output of pfsArm](img/out_pfsArm.png)
 
@@ -135,3 +135,21 @@ plt.show()
 Finally, we analyze the fully calibrated `pfsSingle` spectrum. This dataset represents a single-visit spectrum with both wavelength and flux calibrations applied. The plotted figure will provide insights into the final processed spectrum, including signal quality, noise levels, sky subtraction, and flagged bad pixels.
 
 ![Output of pfsSingle](img/out_pfsSingle.png)
+
+## Check `pfsCalibrated` data
+
+In case of the direct output from the Gen3 2D DRP, there is no `pfsSingle`, and the fully reduced spectra of single exposures are stored in `pfsCalibrated`. Note that different from `pfsSingle`, `pfsCalibrated` is a collection of calibrated spectra for a single visit.
+
+Now, let's assume we want to retrieve spectra for specific objects, given their `objId` values in a list:
+
+```
+ObjId_list = [123, 456]     # List of target object IDs
+pfsCalibrated = butler.get('pfsCalibrated', dataId=dict(visit=visit, spectrograph=spectrograph))
+
+for _, target in enumerate(pfsCalibrated): 
+    if target.objId not in ObjId_list:         
+        continue     
+    pfsSingle = pfsCalibrated[target] 
+```
+
+Then, the `pfsSingle` can be manipulated as above.

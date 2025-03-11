@@ -1,4 +1,4 @@
-## Setup environment and run integration test
+# Setup Environment and Run Integration Test
 
 After the process is complete, run the following commands to set up the environment:
 

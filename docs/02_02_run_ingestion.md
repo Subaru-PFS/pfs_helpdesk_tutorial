@@ -66,5 +66,5 @@ raw = butler.get("raw", instrument="PFS", exposure=12, arm="r", spectrograph=1)
 rawImage = raw.getImage()
 ```
 
-Note that the raw data returned from the butler is now of type `PfsRaw`, which provides a common interface for both CCD and NIR detectors. 
+Note that the raw data returned from the `butler` is now of type `PfsRaw`, which provides a common interface for both CCD and NIR detectors. 
 You can use `butler.get("raw.exposure", ...)` to get the exposure from the raw data directly.

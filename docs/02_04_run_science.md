@@ -1,6 +1,6 @@
-# Processing Science Data
+# Process Science Data
 
-## Basic information
+## Basic Information
 
 ---
 
@@ -17,7 +17,7 @@ This can be used to process single sky exposures. This is not demonstrated below
 - `science`: adds the spectral coaddition, producing `pfsCoadd`. 
 This can be used to process multiple sky exposures together.
 
-## Defining Collections
+## Define Collections
 
 ---
 
@@ -37,11 +37,11 @@ Alternatively, a combination can be defined by simply listing the exposure ident
 $ defineCombination.py $DATASTORE PFS someExposures 123 124 125
 ```
 
-## Processing Science Data
+## Process Science Data
 
 ---
 
-Now we can run the pipeline either to process specific single exposures:
+Now we can run the pipeline process a specific single exposure:
 ```
 # Single Exposure
 pipetask run \
@@ -84,7 +84,7 @@ The `science` pipeline is similar, with the only important change that we’re s
 Note that we do not have to run the `reduceExposure` pipeline before we run the `science` pipeline (a single command is sufficient to run the entire pipeline): the `science` pipeline knows how to produce all the necessary intermediate datasets itself, and the above two commands are completely independent: they do not share any intermediate datasets. 
 However, we could have first run the `reduceExposure` pipeline and then fed its outputs into the `science` pipeline by including `$RERUN/reduceExposure` in the list of input collections for the `science` pipeline.
 
-## Retrieving Data Products
+## Retrieve Data Products
 
 ---
 
