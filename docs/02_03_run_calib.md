@@ -10,7 +10,7 @@ DATASTORE="$WORKDIR/pfs/data/datastore"
 DATADIR="$WORKDIR/pfs/data"
 CORES=16
 INSTRUMENT="lsst.obs.pfs.PrimeFocusSpectrograph"
-RERUN="u/(username)/"
+RERUN="u/(username)"
 ```
 
 In this case, you may want to set up the rerun directory specified by your username so that multiple users won't mix things up.

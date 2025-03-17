@@ -41,7 +41,7 @@ $ ./install_pfs.sh -t current $WORKDIR/(username)/pfs/stack_28
 
 ---
 
-**Step 1**: Initiate the pipe2d environment:
+**Step 1**: Set up the pipe2d environment:
 
 ```
 $ source $WORKDIR/(username)/packages/stack_28/loadLSST.bash

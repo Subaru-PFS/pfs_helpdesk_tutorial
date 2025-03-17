@@ -12,7 +12,7 @@ The `butler` interface, a key component of the LSST Science Pipelines, provides 
 !!! note
     As discussed in [PFS Datamodel Section](00_01_pfs_datamodel.md), each pipeline output file is defined in [`datamodel`](https://github.com/Subaru-PFS/datamodel/tree/master). If you have a desperate reason not to use the `butler`, then the Python module from the datamodel repository can be used. The module allows you to read/write the pipeline files and is written deliberately to be independent of the LSST stack.
 
-To use the `butler`, you will need to initiate PFS pipeline environment before launching the Python:
+To use the `butler`, you will need to set up PFS pipeline environment before launching the Python:
 
 ```
 $ source $WORKDIR/(username)/packages/stack_28/loadLSST.bash

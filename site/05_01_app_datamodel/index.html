@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/00_01_pfs_datamodel/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/05_01_app_datamodel/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>PFS Datamodel - PFS Pipe2D</title>
+    <title>Data Model - PFS Pipe2D</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,9 +13,9 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "PFS Datamodel";
-        var mkdocs_page_input_path = "00_01_pfs_datamodel.md";
-        var mkdocs_page_url = "/pfs_helpdesk_tutorial/00_01_pfs_datamodel/";
+        var mkdocs_page_name = "Data Model";
+        var mkdocs_page_input_path = "05_01_app_datamodel.md";
+        var mkdocs_page_url = "/pfs_helpdesk_tutorial/05_01_app_datamodel/";
       </script>
     
     <!--[if lt IE 9]>
@@ -42,10 +42,57 @@
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption"><span class="caption-text">Introduction</span></p>
-              <ul class="current">
+              <ul>
                   <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">PFS Datamodel</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_pipeline/">PFS 2D Pipeline</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Installation</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_01_install_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_02_install_pipe2d/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Run 2D DRP</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_01_run_prepare/">Preparation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">(Optional) Build Calibs</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Data Analysis</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_01_ana_file/">File Access</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_02_ana_visit/">Analyze Visit-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_03_ana_coadd/">Analyze Coadd-level Data</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../03_04_ana_1d/">Run 1D DRP</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Q&A</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_00_faq_general/">General</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_01_faq_install/">Install 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_02_faq_run/">Run 2D DRP</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Appendix</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Data Model</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#files-and-their-formats">Files and Their Formats</a>
     </li>
@@ -77,52 +124,6 @@
     </li>
     </ul>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../00_02_pfs_pipeline/">PFS 2D Pipeline</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Installation</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../01_01_install_prepare/">Preparation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../01_02_install_pipe2d/">Install 2D DRP</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Run 2D DRP</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_01_run_prepare/">Preparation</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">Build Calibs</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Data Analysis</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../03_01_ana_file/">File Access</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../03_02_ana_visit/">Analyze Visit-level Data</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../03_03_ana_coadd/">Analyze Coadd-level Data</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../03_04_ana_1d/">Run 1D DRP</a>
-                  </li>
-              </ul>
-              <p class="caption"><span class="caption-text">Q&A</span></p>
-              <ul>
-                  <li class="toctree-l1"><a class="reference internal" href="../04_00_faq_general/">General</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../04_01_faq_install/">Install 2D DRP</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../04_02_faq_run/">Run 2D DRP</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
-                  </li>
               </ul>
       </div>
     </div>
@@ -138,10 +139,10 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Introduction</li>
-      <li class="breadcrumb-item active">PFS Datamodel</li>
+          <li class="breadcrumb-item">Appendix</li>
+      <li class="breadcrumb-item active">Data Model</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/00_01_pfs_datamodel.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/05_01_app_datamodel.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -239,8 +240,8 @@ reading and writing FITS files that conform to this model.  To use them in the P
 <tr>
 <td></td>
 <td>pfsFiberNorms</td>
-<td><code>pfsFiberNorms-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td><code>pfsFiberNorms-%s-%06d-%s.fits</code></td>
+<td><code>calibDate</code>, <code>visit0</code>, <code>arm</code></td>
 <td>Normalization coefficients for individual fibers.</td>
 </tr>
 <tr>
@@ -248,125 +249,125 @@ reading and writing FITS files that conform to this model.  To use them in the P
 <td>Calibrated Images (postISRCCD)</td>
 <td><code>postISRCCD-%1s%1s%06d-%1s%1d.fits</code></td>
 <td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Persisted LSST Exposure (postISRCCD)</td>
+<td>persisted version of LSST's <code>lsst.afw.image.Exposure</code> class (postISRCCD)</td>
 </tr>
 <tr>
 <td></td>
 <td>Calibrated Images (calexp)</td>
 <td><code>calexp-%1s%1s%06d-%1s%1d.fits</code></td>
 <td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Persisted LSST Exposure (calexp).</td>
+<td>persisted version of LSST's <code>lsst.afw.image.Exposure</code> class (calexp).</td>
 </tr>
 <tr>
 <td><strong>Wavelength Calibration</strong></td>
 <td>(Gen 2) arcLines</td>
-<td><code>arcLines-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td><code>arcLines-%06d-%s%d.fits</code></td>
+<td><code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
 <td>Contains arc lamp line identifications for wavelength calibration.</td>
 </tr>
 <tr>
 <td></td>
 <td>(Gen 3) lineCentroids</td>
-<td><code>lineCentroids-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td><code>lineCentroids-%06d-%1s%1d.fits</code></td>
+<td><code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
 <td>Measurements of spectral line centroids.</td>
 </tr>
 <tr>
 <td></td>
 <td>(Gen 3) linePhotometry</td>
-<td><code>linePhotometry-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td><code>linePhotometry-%06d-%1s%1d.fits</code></td>
+<td><code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
 <td>Photometric measurements of spectral lines (e.g. flux, width).</td>
 </tr>
 <tr>
 <td></td>
 <td>apCorr</td>
-<td><code>apCorr-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Aperture correction data used in flux calibration.</td>
+<td><code>apCorr-%06d-%s%d.fits</code></td>
+<td><code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td></td>
 </tr>
 <tr>
 <td></td>
 <td>sky2d</td>
-<td><code>sky2d-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td><code>sky2d-%06d-%s%d.fits</code></td>
+<td><code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
 <td>Two-dimensional sky background model for sky subtraction.</td>
 </tr>
 <tr>
 <td></td>
 <td>sky1d</td>
-<td><code>sky1d-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td><code>sky1d-%06d-%s.fits</code></td>
+<td><code>visit</code>, <code>arm</code></td>
 <td>One-dimensional extracted sky spectrum.</td>
 </tr>
 <tr>
-<td><strong>Flux Calibration</strong></td>
+<td><strong>Supportive Products</strong></td>
 <td>fluxCal</td>
-<td><code>fluxCal-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Flux calibration factors/curves for converting counts to physical flux units.</td>
+<td><code>fluxCal-%06d.fits</code></td>
+<td><code>visit</code></td>
+<td>Flux calibration vector</td>
 </tr>
 <tr>
 <td></td>
 <td>pfsPSF</td>
-<td><code>pfsPSF-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Point Spread Function model used in spectral extraction.</td>
+<td><code>pfsPSF-%06d-%1s%1d.fits</code></td>
+<td><code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td>Point Spread Function model</td>
 </tr>
 <tr>
 <td></td>
 <td>pfsFluxReference</td>
-<td><code>pfsFluxReference-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Reference flux scale for calibration.</td>
+<td><code>pfsFluxReference-%06d.fits</code></td>
+<td><code>visit</code></td>
+<td>The best-fit model templates for flux calibration.</td>
 </tr>
 <tr>
 <td><strong>Products</strong></td>
 <td>pfsArm</td>
-<td><code>pfsArm-%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td><code>pfsArm-%06d-%1s%1d.fits</code></td>
+<td><code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
 <td>Arm-specific metadata/processing results.</td>
 </tr>
 <tr>
 <td></td>
 <td>pfsMerged</td>
-<td><code>pfsMerged-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Merged spectra from multiple visits/exposures.</td>
+<td><code>pfsMerged-%06d.fits</code></td>
+<td><code>visit</code></td>
+<td>Arm-merged spectra for each visit.</td>
 </tr>
 <tr>
 <td></td>
-<td>pfsSingle</td>
-<td><code>pfsSingle-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Single-visit spectra product.</td>
+<td>(Gen 2) pfsSingle</td>
+<td><code>pfsSingle-%05d-%05d-%s-%016x-%06d.fits</code></td>
+<td><code>catId</code>, <code>tract</code>, <code>patch</code>, <code>objId</code>, <code>visit</code></td>
+<td>Fully calibrated spectra for each visit.</td>
 </tr>
 <tr>
 <td></td>
 <td>(Gen 2) pfsObject</td>
-<td><code>pfsObject-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Catalog of extracted objects; includes a unique 64-bit object ID (formatted in hexadecimal).</td>
+<td><code>pfsObject-%05d-%05d-%s-%016x-%03d-0x%016x.fits</code></td>
+<td><code>catId</code>, <code>tract</code>, <code>patch</code>, <code>objId</code>, <code>nVisit</code> % 1000, <code>pfsVisitHash</code></td>
+<td>Coadded spectra produced by combining multiple visits.</td>
 </tr>
 <tr>
 <td></td>
 <td>(Gen 3) pfsCalibrated</td>
-<td><code>pfsCalibrated-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Fully calibrated spectra after applying wavelength and flux corrections.</td>
+<td><code>pfsCalibrated-PF%1s-%06d-%1s-%1s.fits</code></td>
+<td><code>site</code>, <code>visit</code>, <code>outdir</code>, <code>rerun</code></td>
+<td>Fully calibrated spectra for each visit.</td>
 </tr>
 <tr>
 <td></td>
 <td>(Gen 3) pfsCoadd</td>
-<td><code>pfsCoadd-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
-<td>Coadded spectra produced by combining multiple exposures/visits to improve signal-to-noise.</td>
+<td><code>pfsCoadd-PF%1s-%1s-%06d-%1s-%1s.fits</code></td>
+<td><code>site</code>, <code>collection</code>, <code>catId</code>, <code>outdir</code>, <code>rerun</code></td>
+<td>Coadded spectra produced by combining multiple visits.</td>
 </tr>
 <tr>
 <td></td>
 <td>(LAM 1D DRP) pfsZcandidates</td>
-<td><code>pfsZcandidates-%1s%1s%06d-%1s%1d.fits</code></td>
-<td><code>site</code>, <code>category</code>, <code>visit</code>, <code>arm</code>, <code>spectrograph</code></td>
+<td><code>pfsZcandidates-%05d-%05d-%s-%016x*fits</code></td>
+<td><code>catId</code>, <code>tract</code>, <code>patch</code>, <code>objId</code></td>
 <td>Contains redshift candidate measurements.</td>
 </tr>
 </tbody>
@@ -612,8 +613,7 @@ Written out using <code>%016x</code> format for compactness.</p>
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href=".." class="btn btn-neutral float-left" title="PFS Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
-        <a href="../00_02_pfs_pipeline/" class="btn btn-neutral float-right" title="PFS 2D Pipeline">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../04_03_faq_analysis/" class="btn btn-neutral float-left" title="Data Analysis"><span class="icon icon-circle-arrow-left"></span> Previous</a>
     </div>
 
   <hr/>
@@ -640,10 +640,8 @@ Written out using <code>%016x</code> format for compactness.</p>
         </span>
     
     
-      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../04_03_faq_analysis/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
-    
-      <span><a href="../00_02_pfs_pipeline/" style="color: #fcfcfc">Next &raquo;</a></span>
     
   </span>
 </div>
