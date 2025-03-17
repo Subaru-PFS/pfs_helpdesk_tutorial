@@ -1,21 +1,37 @@
 
 # PFS 2D Pipeline Overview
 
+The PFS pipeline organizes data using key terms: 
+
+- `visit` refers to a unique exposure identifier.
+
+- `spectrograph` defines the spectrpgraph with an integer ranging from `1`–`4`.
+
+- `arm` defines spectrograph's blue, red, near-IR, and medium-resolution red arms (`b`, `r`, `n`, `m`).
+
+- `catId` specifies the catalog source of an object.
+
+- `objId` is a unique 64-bit identifier for an astronomical source. 
+
+- `pfsDesignId` encodes the fiber configuration, and `pfsVisitHash` uniquely defines a set of combined visits. 
+
+More details can be found in [Appendix](05_01_app_datamodel.md).
+
 ## PFS 2D DRP Workflow
 
 ---
 
 > The data processing procedure of the PFS 2D data reduction pipeline (DRP) follows the following flowchart.
 
->> ![Focal plane map](img/pipe2d_flowchart.png)
+>> ![Focal plane map](img/pipe2d_flowchart_gen3.png)
 
 !!! Products
-    - `pfsArm`: These are reduced but not combined single spectra from a single exposure and a single arm.
-    - `pfsMerged`: These are combined spectra from a single exposure, wavelength calibrated but not flux calibrated.
-    - `pfsSingle`: These are flux-calibrated arm-merged spectra from a single exposure.
-    - `pfsObject`: These are combined spectra, and the final products for science. However, from Gen3 pipeline, the final products will be `pfsCoadd`.
+    - `pfsArm`: These are reduced but not combined single spectra from a single visit and a single arm.
+    - `pfsMerged`: These are arm-combined spectra from a single visit, wavelength calibrated but not flux calibrated.
+    - `pfsCalibrated`: These are flux-calibrated arm-merged spectra from a single visit.
+    - `pfsCoadd`: These are coadded spectra, and the final products for science.
 
-## Gen3 PFS 2D DRP
+<!-- ## Gen3 PFS 2D DRP
 
 ---
 

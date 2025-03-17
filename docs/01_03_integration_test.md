@@ -3,8 +3,8 @@
 After the process is complete, run the following commands to set up the environment:
 
 ```
-$ source $WORKDIR/(username)/packages/stack_26_0_2/loadLSST.bash
-$ setup pfs_pipe2d
+$ source $WORKDIR/(username)/packages/stack_28/loadLSST.bash
+$ setup pfs_pipe2d -t current
 $ setup -jr /$WORKDIR/(username)/packages/fluxmodeldata-ambre-20230608-full
 ```
 

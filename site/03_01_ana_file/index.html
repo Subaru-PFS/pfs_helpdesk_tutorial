@@ -59,7 +59,7 @@
                   <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
                   </li>
               </ul>
-              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <p class="caption"><span class="caption-text">Run 2D DRP</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="../02_01_run_prepare/">Preparation</a>
                   </li>
@@ -148,11 +148,11 @@ cosmicray2_config      fitPfsFluxReference_config  lines                        
 cosmicray2_log         fitPfsFluxReference_log     mergeArms_config              pfsCalibratedLsf    reduceExposure_config
 </code></pre>
 <p>You will see a bunch of directories. Refer to the release document as well as to the <a href="https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt">datamodel</a> for details.
-Here is a brief summary of some of the most important files: <code>pfsArm</code> contains 1D-extracted, wavelength-calibrated spectra for each arm (<code>b</code>, <code>r</code>, <code>n</code>, <code>m</code>) separately. Here, <code>b</code>=blue, <code>r</code>=red, <code>n</code>=nearIR, and <code>m</code>=medium resolution red-arm. The arms are combined in a <code>pfsMerged</code> file. Note that the sky subtraction has been performed in <code>pfsMerged</code>. Then the pipeline applies the flux calibration and <code>pfsSingle</code> is a fully calibrated 1d spectrum for a visit. Finally, <code>pfsCoadd</code> is a coadd spectrum from multiple visits.</p>
+Here is a brief summary of some of the most important files: <code>pfsArm</code> contains 1D-extracted, wavelength-calibrated spectra for each arm (<code>b</code>, <code>r</code>, <code>n</code>, <code>m</code>) separately. Here, <code>b</code>=blue, <code>r</code>=red, <code>n</code>=nearIR, and <code>m</code>=medium resolution red-arm. The arms are combined in a <code>pfsMerged</code> file. Note that the sky subtraction has been performed in <code>pfsMerged</code>. Then the pipeline applies the flux calibration and <code>pfsCalibrated</code> is a fully calibrated 1d spectrum for a visit. Finally, <code>pfsCoadd</code> is a coadd spectrum from multiple visits.</p>
 <h2 id="export-the-data-products">Export the Data Products</h2>
 <hr />
-<p>You may notice that <code>pfsObject</code>, which is specified in the data model, is missing from the current directory. 
-Since Gen3 PFS 2D DRP, the products have been stored in<code>pfsCoadd</code>. However, after running:</p>
+<p>You may notice that <code>pfsSingle</code> and <code>pfsObject</code>, which are specified in the <a href="https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt">datamodel</a>, are missing from the current directory. 
+Since Gen3 PFS 2D DRP, the products have been stored in <code>pfsCalibrated</code> and <code>pfsCoadd</code>, respectively. However, after running:</p>
 <pre><code>$ exportPfsProducts.py -b $DATASTORE -i PFS/raw/pfsConfig,&quot;$RERUN&quot;/science -o $EXPORT
 </code></pre>
 <p>You may still be able to retrieve the data structure as follows:</p>
@@ -183,7 +183,7 @@ Since Gen3 PFS 2D DRP, the products have been stored in<code>pfsCoadd</code>. Ho
 </code></pre>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This is not recommended since Gen3, and we suggest working directly with <code>pfsCoadd</code> instead.</p>
+<p>This is not recommended since Gen3, and we suggest working directly with <code>pfsCalibrated</code> and <code>pfsCoadd</code> instead.</p>
 </div>
               
             </div>

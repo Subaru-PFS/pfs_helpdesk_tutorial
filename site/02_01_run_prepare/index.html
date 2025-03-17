@@ -59,7 +59,7 @@
                   <li class="toctree-l1"><a class="reference internal" href="../01_03_integration_test/">Integration Test</a>
                   </li>
               </ul>
-              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <p class="caption"><span class="caption-text">Run 2D DRP</span></p>
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Preparation</a>
     <ul class="current">
@@ -116,7 +116,7 @@
         <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
-          <li class="breadcrumb-item">Run 2D PDR</li>
+          <li class="breadcrumb-item">Run 2D DRP</li>
       <li class="breadcrumb-item active">Preparation</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/02_01_run_prepare.md" class="icon icon-github"> Edit on GitHub</a>
@@ -174,7 +174,7 @@ For this tutorial, we will store the data repository in the <code>$DATASTORE</co
 <pre><code>$ butler create $DATASTORE --seed-config $OBS_PFS_DIR/gen3/butler.yaml --dimension-config $OBS_PFS_DIR/gen3/dimensions.yaml --override
 </code></pre>
 <p>This specifies two configuration files that are important for the Gen3 middleware. <code>butler.yaml</code> contains the configuration
-for the data butler, specifying the registry and how the pipeline will read and write the various data products.
+for the data <code>butler</code>, specifying the registry and how the pipeline will read and write the various data products.
 Most of this can be ignored by the pipeline user, except for the <code>registry</code> section, which specifies the location of the
 registry database. The default is to use a SQLite database in the repository directory (suitable for small-scale testing
 without extensive parallelization), but this can be changed to use a PostgreSQL database for better performance. For

@@ -7,8 +7,8 @@
 First, we need to set up the 2D DRP environment:
 
 ```
-$ source $WORKDIR/(username)/pfs/stack_26_0_2/loadLSST.bash
-$ setup pfs_pipe2d
+$ source $WORKDIR/(username)/pfs/stack_28/loadLSST.bash
+$ setup pfs_pipe2d -t current
 $ setup -jr $WORKDIR/(username)/packages/fluxmodeldata-ambre-20230608-full
 ```
 
@@ -67,7 +67,7 @@ $ butler create $DATASTORE --seed-config $OBS_PFS_DIR/gen3/butler.yaml --dimensi
 ```
 
 This specifies two configuration files that are important for the Gen3 middleware. `butler.yaml` contains the configuration
-for the data butler, specifying the registry and how the pipeline will read and write the various data products.
+for the data `butler`, specifying the registry and how the pipeline will read and write the various data products.
 Most of this can be ignored by the pipeline user, except for the `registry` section, which specifies the location of the
 registry database. The default is to use a SQLite database in the repository directory (suitable for small-scale testing
 without extensive parallelization), but this can be changed to use a PostgreSQL database for better performance. For

@@ -1,22 +1,77 @@
 # Data Ingestion
 
+
+## Data Archive
+
 ---
 
-We can ingest data into the butler repository. 
+When working with local data, you must first download them from the Subaru data archive for your open-use programs, specifically from the [STARS2](https://stars2.naoj.hawaii.edu) database. The archive provides access to science images, calibration data, and `pfsConfig` files.
+
+!!! note
+    Details on data retrieval will be provided by the STARS team on the day following your observation.
+
+In principle, you need to download a TAR file from the STARS2 website. After that, follow the steps below to extract and access the data on UNIX or macOS:
+
+``` Python
+# Step 1: Create a directory for downloads
+$ mkdir /download_dir 
+
+# Step 2: Copy the downloaded TAR file to the directory
+$ cp S2Query.tar /download_dir 
+
+# Step 3: Navigate to the directory
+$ cd /download_dir 
+
+# Step 4: Extract the TAR file
+$ tar -xvf S2Query.tar 
+
+# Step 5: Run the unpacking script
+$ ./zadmin/unpack.py
+```
+
+Platform-Specific Instructions:
+
+- UNIX: Use wget for downloading.
+
+- macOS: Use curl for downloading.
+
+- Windows: An FTP manager is required for data transfer.
+
+## Ingestion to `butler`
+
+---
+
+We can ingest data into the `butler` repository. 
 There are two kinds of data that we need to ingest: raw images and the `pfsConfig` files. 
 These are ingested using two separate commands:
 
-```
-$ butler ingest-raws $DATASTORE $drp_stella_data/raw/PFSA*.fits --ingest-task lsst.obs.pfs.gen3.PfsRawIngestTask --transfer link --fail-fast
-$ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $drp_stella_data/raw/pfsConfig*.fits --transfer link
+``` bash
+# Assume that we define a database to be ingested (DATASTORE) and the directory with the input data (DATADIR):
+DATASTORE="$WORKDIR/pfs/data/datastore"
+DATADIR="$WORKDIR/pfs/data"
+
+# Ingest the raw images taken on Oct. 2024
+$ butler ingest-raws $DATASTORE $DATADIR/raw/2024-10-*/*/PFS[A-B]*.fits --ingest-task lsst.obs.pfs.gen3.PfsRawIngestTask --transfer link --fail-fast
+# Ingest the pfsConfig files for the Oct. 2024 run
+$ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $DATADIR/raw/2024-10-*/pfsConfig/pfsConfig-*.fits --transfer link
 ```
 
-The parameters include:
+The details of ingested data can be refered to the [Appendix](05_01_app_datamodel.md) or the [datamodel](https://github.com/Subaru-PFS/datamodel/tree/master). 
 
-- `--transfer`: The method by which data is added to the repository, including `link`, `copy`, and `move`. 
+For example, the files have the meanings are:
+
+- `PFSA00066611.fits`: Raw science exposure, `visit=666`, taken on the `site=summit` with `spectrograph=1` using the blue `arm` (`armNum=1`) 
+
+- `PFSB00123423.fits`: Raw up-the-ramp exposure, `visit=1234`, taken at the `site=summit` with `spectrograph=2` using the IR `arm` (`armNum=3`)
+
+- `pfsConfig-0xad349fe21234abcd-001234.fits`: The realisation of a `PfsDesign` with `PfsDesignId=ad349fe21234abcd` for `visit=1234`.
+
+The parameters in the commands include:
+
+- `--transfer`: The method by which data is added to the repository, including `link`, `copy`, and `move`, which specify whether the data is symlinked, duplicated, or physically relocated, respectively. 
 - `--fail-fast`: The process will immediately stop the ingestion process if an error occurs. This is useful for debugging.
 
-The ingestion process places the files (referred to as “datasets” in the butler) in the repository and records them in the registry database. Each file is placed in a **collection**, which can be thought of as a *directory* (i.e., `$DATASTORE/PFS/` in the example) in the butler (and in the case of the datastore on a traditional filesystem, it is implemented as a directory). 
+The ingestion process places the files (referred to as “datasets” in the `butler`) in the repository and records them in the registry database. Each file is placed in a **collection**, which can be thought of as a *directory* (i.e., `$DATASTORE/PFS/` in the example) in the `butler` (and in the case of the datastore on a traditional filesystem, it is implemented as a directory). 
 The raw data is placed in the collection <instrument\>/raw/all, while we’ve specified above that the `pfsConfig` files are placed in the collection `PFS/raw/pfsConfig`.
 
 There are different kinds of [collections](https://pipelines.lsst.io/modules/lsst.daf.butler/organizing.html#collections):
@@ -29,14 +84,14 @@ Each dataset is specified by a “`dataId`”, which is a dictionary of key-valu
 
 For example, 
 
-- `raw` image may have a `dataId` like {'`instrument`': '`PFS`', '`exposure`': `123`, '`arm`': '`r`', '`spectrograph`': `3`}. 
+- `raw` image may have a `dataId` like {'`instrument`': '`PFS`', '`visit`': `123`, '`arm`': '`r`', '`spectrograph`': `3`}. 
 - `pfsConfig` file is valid for an entire exposure, so may have a `dataId` like {'`instrument`': '`PFS`', '`exposure`': `123`}.
 
 In general, users should treat the files in the datastore as a `butler` implementation detail, and use the `butler` commands and Python API to access the data products. 
 There are some kinds of datastores that do not use a traditional filesystem (e.g., the S3 datastore), and so the files may not be directly accessible.
 
 !!! warning
-    The registry database tracks all files in the datastore. Do not delete files from the datastore without using the appropriate butler commands.
+    The registry database tracks all files in the datastore. Do not delete files from the datastore without using the appropriate `butler` commands.
 
 You can see what raw datasets are in the datastore with the following command:
 
@@ -56,7 +111,7 @@ raw  PFS/raw/all 570092eb-f571-5631-8d20-11acbeabc640          PFS   r  0.0     
 raw  PFS/raw/all f8e3ae71-2cdf-5e55-bc42-4a4fb913770c          PFS   r  0.0             4            1        1        27
 ```
 
-Datasets can be accessed from Python using the `butler` API, which has some similarities to the Gen2 `butler`:
+Datasets can be accessed from Python using the `butler` API:
 
 ```
 from lsst.daf.butler import Butler

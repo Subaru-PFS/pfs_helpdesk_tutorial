@@ -1,8 +1,9 @@
-# Build Calibration Frames
+# (Optional) Build Calibration Frames
 
-After the preparation, we will need to build calibration data before running the processing of science data.
+!!! Note
+    Before running the science data processing, the pipeline requires calibration data. **The observatory provides calibration products from the PFS Science Platform (SP) for each run**, so users do not necessarily need to generate the calibration data themselves. The simplest approach is to use these pre-provided calibration products, in which case **this section can be skipped**.
 
-First, let's assume we have default variables as in the following example, where a user works in the public directory `$WORKDIR/pfs/` and using a publicly install pipeline: 
+First, let's assume the following default setup: the user is working in the public directory `$WORKDIR/pfs/` and using a publicly installed pipeline.
 
 ```
 DATASTORE="$WORKDIR/pfs/data/datastore"
@@ -20,18 +21,18 @@ In this case, you may want to set up the rerun directory specified by your usern
 
 Next, we’ll build the calibration products, starting from the bias frames:
 
-```
+``` bash
 pipetask run \
 --register-dataset-types \                                # register the dataset types from the pipeline
 -j $CORES \                                               # number of cores to use in parallel
--b $DATASTORE \                                           # datastre directory to use
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \        # the instrument PFS
+-b $DATASTORE \                                           # datastore directory to use
+--instrument $INSTRUMENT \                                # the instrument PFS
 -i PFS/raw/sps,PFS/calib \                                # input collection (comma-separated)
 -o "$RERUN"/bias \                                        # output CHAINED collection
 -p $DRP_STELLA_DIR/pipelines/bias.yaml \                  # pipeline configuration file to use
 -d "instrument='PFS' AND exposure.target_name = 'BIAS'" \ # or, for example: -d "visit IN (123456..123466)" \
 --fail-fast \                                             # immediately stop the ingestion process if error
--c isr:doCrosstalk=True                                   # (optional) turn on the crosstalk correction 
+-c isr:doCrosstalk=False                                   # (optional) turn on the crosstalk correction 
 ```
 
 The `pipetask run` command is used to run a pipeline. 
@@ -76,7 +77,7 @@ The `exposure` dimension can be used directly to mean the exposure identifier, b
 
 - `-c` option provides configuration overrides for the pipeline<sup>[1](#diff_gen2_c)</sup>. In this case, we are turning on the crosstalk correction.
 
-- `--register-dataset-types` option is used to register the dataset types from the pipeline in the butler registry. 
+- `--register-dataset-types` option is used to register the dataset types from the pipeline in the `butler` registry. 
 It is only necessary to run this once for each pipeline, and then it can be dropped for future runs of the same pipeline.
 
 Some additional helpful options when debugging are:
@@ -98,7 +99,7 @@ Once the pipeline has run and produced the bias frame, we need to certify the ca
 $ butler certify-calibrations $DATASTORE "$RERUN"/bias PFS/calib bias --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
 ```
 
-This command tells the butler to certify the bias datasets in the `$RERUN/bias` collection as calibration products in the `PFS/calib` calib collection. 
+This command tells the `butler` to certify the bias datasets in the `$RERUN/bias` collection as calibration products in the `PFS/calib` calib collection. 
 The `--begin-date` and `--end-date` options specify the validity range of the calibration products.
 
 To manage calibrations, it may be necessary to certify and decertify individual datasets.
@@ -137,13 +138,12 @@ First run the builder:
 ```
 pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/calib \
 -o "$RERUN"/dark \
 -p $DRP_STELLA_DIR/pipelines/dark.yaml \
 -d "instrument='PFS' AND exposure.target_name = 'DARK'" \
---fail-fast \
--c isr:doCrosstalk=True
+--fail-fast 
 ```
 
 Then, certify the products:
@@ -162,13 +162,12 @@ First run the builder:
 ```
 pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/calib \
 -o "$RERUN"/flat \
 -p $DRP_STELLA_DIR/pipelines/flat.yaml \
 -d "instrument='PFS' AND exposure.target_name = 'FLAT'" \
---fail-fast \
--c isr:doCrosstalk=True
+--fail-fast 
 ```
 
 Then, certify the products:
@@ -181,19 +180,24 @@ $ butlerCleanRun.py $DATASTORE $RERUN/flat/* flatProc
 
 ---
 
-The bias, dark, and flat frames characterize the detector, so now it’s time to determine the `detectorMap`. We first bootstrap a
-detectorMap from an arc and quartz:
+A detector map (`detectorMap`) is the mapping of fiber trace and wavelength to (x, y) position on the detector, which is generated by using quartz and arc lamp dataset. The bias, dark, and flat frames characterize the detector, so now it’s time to determine the detector map. 
+
+We first bootstrap a `detectorMap` from an arc and quartz:
 
 ```
 pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib 
 -o "$RERUN"/bootstrap \
 -p $DRP_STELLA_DIR/pipelines/bootstrap.yaml' \
 -d "instrument='PFS' AND exposure IN (11,22)" \
 --fail-fast \
--c isr:doCrosstalk=True
+-c isr:doCrosstalk=False \
+-c bootstrap:profiles.profileRadius=2 \
+-c bootstrap:profiles.profileSwath=2500 \
+-c bootstrap:profiles.profileOversample=3 \
+-c bootstrap:spectralOffset=-10
 ```
 
 Then, certify the products:
@@ -213,14 +217,15 @@ Now we have a rough detectorMap, we can refine it and create the proper detector
 ```
 pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/bootstrap,PFS/calib \
 -o "$RERUN"/detectorMap \
 -p '$DRP_STELLA_DIR/pipelines/detectorMap.yaml' \
 -d "instrument='PFS' AND exposure.target_name = 'ARC'" \
--c isr:doCrosstalk=True \
 -c measureCentroids:connections.calibDetectorMap=detectorMap_bootstrap \
--c fitDetectorMap:connections.slitOffsets=detectorMap_bootstrap.slitOffsets \
+-c fitDetectorMap:fitDetectorMap.doSlitOffsets=True \
+-c fitDetectorMap:fitDetectorMap.order=4 \
+-c fitDetectorMap:fitDetectorMap.soften=0.03 \
 --fail-fast
 ```
 
@@ -243,33 +248,43 @@ This script copies the `detectorMap_candidate` as a `detectorMap_calib` and cert
 
 ---
 
+The fiber profile (`fiberProfiles`) is the profile of fibers along the spatial direction. We illuminate every four fibers and hide the rest behind “dots”, and then measure the profiles of fibers using a dedicated quartz dataset.
 Fiber profiles can be built in two different ways. 
-The `fitFiberProfiles` pipeline is equivalent to the Gen2 `reduceProfiles` script: it fits a profile to multiple exposures simultaneously. 
-The `measureFiberProfiles` pipeline is equivalent to the Gen2 `constructFiberProfiles` script: it measures the profile from a single exposure. Here’s how you run them:
+The `fitFiberProfiles` pipeline fits a profile to multiple exposures simultaneously. 
+The `measureFiberProfiles` pipeline measures the profile from a single exposure. 
+
+Here’s how you run them:
 
 ```
+# Creates a profiles_run dimension value and associates those exposures with it.
+defineFiberProfilesInputs.py $DATASTORE PFS run18_brn \
+--bright 113855..113863 --dark 113845..113853 \
+--bright 113903..113911 --dark 113893..113901 \
+--bright 114190..114198 --dark 114180..114188 \
+--bright 114238..114246 --dark 114228..114236
+
 # fitFiberProfiles:
-defineFiberProfilesInputs.py $DATASTORE PFS integrationProfiles --bright 26 --bright 27
 pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/fiberProfilesInputs,PFS/raw/pfsConfig,PFS/calib \
 -o "$RERUN"/fitFiberProfiles \
 -p '$DRP_STELLA_DIR/pipelines/fitFiberProfiles.yaml \
--d "profiles_run = 'integrationProfiles'" \
--c fitProfiles:profiles.profileSwath=2000 \
+-d "profiles_run = 'run18_brn'" \
+-c fitProfiles:profiles.profileRadius=10 \
 -c fitProfiles:profiles.profileOversample=3 \
+-c fitProfiles:profiles.profileSwath=500 \
 --fail-fast
 
 # measureFiberProfiles:
 pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
 -o "$RERUN"/measureFiberProfiles \
 -p '$DRP_STELLA_DIR/pipelines/measureFiberProfiles.yaml' \
 -d "instrument='PFS' AND exposure.target_name IN ('FLAT_ODD', 'FLAT_EVEN')" \
--c isr:doCrosstalk=True \
+-c isr:doCrosstalk=False \
 --fail-fast
 
 # certify the fiberProfile product
@@ -280,18 +295,7 @@ butlerCleanRun.py $DATASTORE $RERUN/fitFiberProfiles/* postISRCCD
 Because it involves multiple groups of exposures, the `fitFiberProfiles` pipeline is a bit more complicated and requires defining the inputs to the pipeline ahead of time. 
 The `defineFiberProfilesInputs.py` script is used to define the inputs for the different groups of exposures. 
 When working on real data, we typically have four groups of several exposures each, and each group contains “bright” (select fibers deliberately exposed) and “dark” (all fibers hidden) exposures. 
-In the integration test, we only have two groups with a single bright exposure each, and no dark exposures. 
-For real data, the command might look like:
 
-```
-defineFiberProfilesInputs.py $DATASTORE PFS run18_brn \
---bright 113855..113863 --dark 113845..113853 \
---bright 113903..113911 --dark 113893..113901 \
---bright 114190..114198 --dark 114180..114188 \
---bright 114238..114246 --dark 114228..114236
-```
-
-This creates a profiles_run dimension value and associates those exposures with it. 
 A file describing the roles of the exposures is written in the` <instrument>/fiberProfilesInputs` collection, so this must be included in the inputs for the `fitFiberProfiles` pipeline. 
 We can use the profiles_run value in the data selection query, as that is linked to all the required exposures.
 
@@ -299,12 +303,13 @@ We can use the profiles_run value in the data selection query, as that is linked
 
 ---
 
+The Fiber Norm (`fiberNorms`) is the spectral normalization of each fiber. 
 Note that in the Gen3 pipeline, `fiberProfiles` do not include quartz spectrum normalization. The quartz spectrum used for normalization is supplied by the `fiberNorms`:
 
 ```
 pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
 -o "$RERUN"/fiberNorms \
 -p '$DRP_STELLA_DIR/pipelines/fiberNorms.yaml' \
@@ -314,14 +319,10 @@ pipetask run \
 -c reduceExposure:doBlackSpotCorrection=False \
 --fail-fast
 
+# certify the fiberNorm product
 butler certify-calibrations $DATASTORE "$RERUN"/fiberNorms PFS/calib fiberNorms_calib --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
 butlerCleanRun.py $DATASTORE $RERUN/fiberNorms/* postISRCCD
 ```
 
 The `fiberNorms` pipeline combines the extracted spectra from multiple quartz exposures, and writes the output as
-`fiberNorms_calib`
-
----
-
-<a name="diff_gen2_c">1</a> 
-Note the difference in syntax from Gen2: each configuration override requires a separate `-c` option, and the overrides include a colon (`:`) between the task name and the configuration parameter name. 
+`fiberNorms_calib`.

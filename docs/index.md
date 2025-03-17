@@ -24,8 +24,8 @@ The basic information about PFI is listed in the table:
 
 | Component                  | Description |
 |----------------------------|-------------|
-| **FOV**                    | a ~1.25 deg² hexagonal |
-| **Fibers Number**          | ~2400 fibers |
+| **FOV**                    | a ~1.25 deg² hexagon |
+| **Fiber Number**           | 2490 fibers |
 | **Types of Fibers**        | - **2394 science fibers**: Movable, attached to actuators (fiber positioners).<br>- **96 fiducial fibers**: Fixed, used as position references. |
 | **Microlens on Fibers**    | Slows F-ratio to F/2.8 to reduce image degradation after passing through the fiber cable. |
 | **Field Element**          | - ~54 mm-thick glass plate in front of fibers.<br>- Ensures same image quality as HSC.<br>- Has opaque dots to block light and improve spectral analysis. |
@@ -110,7 +110,7 @@ Examples of the FITS header for PFS data are accessible from the list below.
 
 ### PFS instrument FITS cards
 
-[Latest (ics_actorkeys 1.6.22 etc.)](https://www.naoj.org/Observing/Instruments/PFS/fits/PFSInstrumentCard/)
+[Latest (ics_actorkeys 1.6.22)](https://www.naoj.org/Observing/Instruments/PFS/fits/PFSInstrumentCard/),  etc.
 
 ## Publications
 

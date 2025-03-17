@@ -239,7 +239,7 @@ p {
     margin-left: 30px;
 }
 
-/* .admonition.note {
+.admonition.note {
     background-color: #dcecf7; /* Light blue background */
     border-left: 4px solid #007acc; /* Blue border */
 }
@@ -253,4 +253,4 @@ p {
     background-color: #fbc7c7; /* Light red background */
     border-left: 4px solid #d32f2f; /* Red border */
 } 
-*/
+

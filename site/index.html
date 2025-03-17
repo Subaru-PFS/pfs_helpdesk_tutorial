@@ -85,7 +85,7 @@
                   <li class="toctree-l1"><a class="reference internal" href="01_03_integration_test/">Integration Test</a>
                   </li>
               </ul>
-              <p class="caption"><span class="caption-text">Run 2D PDR</span></p>
+              <p class="caption"><span class="caption-text">Run 2D DRP</span></p>
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="02_01_run_prepare/">Preparation</a>
                   </li>
@@ -147,8 +147,8 @@
               
                 <h1 id="pfs-introduction">PFS Introduction</h1>
 <p>This webpage is mainly for introducing the information of Subaru Prime Focus Spectrograph (PFS) data reduction and data inspection.
-Regarding the Subaru PFS instrument, one can check more information from the <a href="https://www.naoj.org/Observing/Instruments/PFS/instrument/">PFS intrument page</a>. 
-Here, we selected the necessary information that you may need for understanding the PFS pipeline.</p>
+Regarding the Subaru PFS instrument, one can check more information on the <a href="https://www.naoj.org/Observing/Instruments/PFS/instrument/">PFS intrument page</a>. 
+Here, we selected the necessary information that you may need to understand the PFS pipeline.</p>
 <h2 id="overview">Overview</h2>
 <hr />
 <p><img alt="Graphic description of PFS" src="img/inst_dome.png" /></p>
@@ -157,9 +157,45 @@ Here, we selected the necessary information that you may need for understanding 
 <p>The WFC is an optical system consisting of 7 lenses designed to correct imaging aberrations for Hyper Suprime-Cam (HSC) and PFS. The largest lens has an effective area of 820 mm (32 inch) in diameter, and the total lens system is 1845 mm (73 inch) long.</p>
 <h3 id="prime-focus-instrument-pfi">Prime Focus Instrument (PFI)</h3>
 <p>Together with the WFC, the Prime Focus Instrument (PFI) is installed on the prime focus of the Subaru telescope.</p>
-<p>At the focal plane, approximately 2400 fibers are arranged across the ~1.25 deg² hexagonal-shaped field of view. There are two types of fibers: 2394 science fibers and 96 fiducial fibers. Each science fiber is attached to a small actuator, the fiber positioner (see below), and moved to the location of the targets on the focal plane. The fiducial fibers are fixed in their position and used as position references when the science fibers are moved. The fibers are equipped with a microlens on their surface to make the F-ratio slower (F/2.8) and reduce degradation of image quality after passing through the long fiber cable.</p>
-<p>A ~54 mm-thick glass plate, the so-called field element, is installed in front of the fibers to achieve the same image quality as HSC. The field element has opaque dots to hide the fibers behind them and block light from reaching the fibers. By doing so, more sparse spectra can be taken by the spectrograph, which enables better understanding of the spectra on the detectors.</p>
-<p>Surrounding the hexagonal-shaped field of view, six imaging cameras are accommodated for sky-field acquisition and auto-guiding. Six calibration lamps (one quartz lamp for continuum and five arc lamps: Kr, Ar, Ne, Xe, and HgCd) are installed on the top of PFI to uniformly illuminate the screen on the dome ceiling.</p>
+<p>The basic information about PFI is listed in the table:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>FOV</strong></td>
+<td>a ~1.25 deg² hexagonal</td>
+</tr>
+<tr>
+<td><strong>Fibers Number</strong></td>
+<td>~2400 fibers</td>
+</tr>
+<tr>
+<td><strong>Types of Fibers</strong></td>
+<td>- <strong>2394 science fibers</strong>: Movable, attached to actuators (fiber positioners).<br>- <strong>96 fiducial fibers</strong>: Fixed, used as position references.</td>
+</tr>
+<tr>
+<td><strong>Microlens on Fibers</strong></td>
+<td>Slows F-ratio to F/2.8 to reduce image degradation after passing through the fiber cable.</td>
+</tr>
+<tr>
+<td><strong>Field Element</strong></td>
+<td>- ~54 mm-thick glass plate in front of fibers.<br>- Ensures same image quality as HSC.<br>- Has opaque dots to block light and improve spectral analysis.</td>
+</tr>
+<tr>
+<td><strong>Imaging Cameras</strong></td>
+<td>Six cameras around the hexagonal field for sky-field acquisition and auto-guiding.</td>
+</tr>
+<tr>
+<td><strong>Calibration Lamps</strong></td>
+<td>Six lamps installed on top of PFI:<br>- 1 quartz lamp (continuum).<br>- 5 arc lamps (Kr, Ar, Ne, Xe, HgCd) for uniform illumination of the dome screen.</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Fiber Positioner ("Cobra")</strong></p>
 <p>Each science fiber tip is controllable in-plane by the fiber positioner, nicknamed "Cobra," which is a piezo actuator with two rotational axes. The fibers are arranged in a hexagonal pattern with 8 mm separation, with each fiber being able to cover a region of 9.5 mm in diameter. The overlap between adjacent regions enables 100% sky coverage within the hexagonal field.</p>
 <p><strong>Focal Plane Map</strong></p>
@@ -259,9 +295,57 @@ You can find the parameters listed below:</p>
 <p>The total throughputs of these channels:</p>
 <p><img alt="Sps Througput" src="img/pfs_thr_tot_commissioning.png" /></p>
 <h3 id="fiber-system">Fiber System</h3>
-<p>The fiber system consists of ~2400 optical fibers which relay light collected at the focal plane to the four spectrographs located in the clean room. A fiber cable consists of three parts, to develop and operate the instrument easily. The first part is accommodated within PFI as fiber modules with their "Cobra" positioners, one part is integrated to SpS as fiber slit assembly, and the third part is developed as a long fiber cable routed on the telescope and in the dome building. The total length of each fiber is 65 meters, assembled into four groups providing 600 inputs to each spectrograph. In addition to the ~2400 science fibers, the monitoring fibers are accommodated to check connection at installation.</p>
+<p>The basic information about the Fiber System: </p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Fiber System</strong></td>
+<td>~2400 optical fibers relay light from the focal plane to four spectrographs in the clean room.</td>
+</tr>
+<tr>
+<td><strong>Fiber Cable</strong></td>
+<td>Divided into three parts for ease of development and operation:<br>- <strong>PFI fiber modules</strong>: Includes "Cobra" positioners.<br>- <strong>SpS fiber slit assembly</strong>: Integrated into the spectrograph system.<br>- <strong>Long fiber cable</strong>: Routed on the telescope and in the dome building.</td>
+</tr>
+<tr>
+<td><strong>Fiber Length &amp; Grouping</strong></td>
+<td>Each fiber is <strong>65 meters long</strong>, assembled into <strong>four groups</strong>, with <strong>600 inputs per spectrograph</strong>.</td>
+</tr>
+<tr>
+<td><strong>Monitoring Fibers</strong></td>
+<td>Additional fibers included to check connections during installation.</td>
+</tr>
+</tbody>
+</table>
 <h3 id="metrology-camera-system-mcs">Metrology Camera System (MCS)</h3>
-<p>The MCS is attached to the Cassegrain Focus of the Subaru telescope and measures the positions of the fibers on the prime focus. MCS can take an image of all ~2400 fibers in a single exposure using a large format (8960 pixels x 5778 pixels) CMOS camera. The primary mirror of MCS is 380 mm in diameter to average out the local surface error of WFC.</p>
+<p>The basic information about the Metrology Camera System (MCS):</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>MCS</strong></td>
+<td>Attached to the Cassegrain Focus of the Subaru telescope to measure fiber positions at the prime focus.</td>
+</tr>
+<tr>
+<td><strong>Imaging Capability</strong></td>
+<td>Captures all ~2400 fibers in a single exposure using a large-format CMOS camera (8960 × 5778 pixels).</td>
+</tr>
+<tr>
+<td><strong>Primary Mirror</strong></td>
+<td>Diameter of 380 mm, designed to average out local surface errors of the WFC.</td>
+</tr>
+</tbody>
+</table>
 <h2 id="data-fits-header">Data FITS Header</h2>
 <hr />
 <h3 id="pfs-fits-header-keywords">PFS FITS Header Keywords</h3>
