@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/02_03_run_calib/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
-    <title>Build Calibs - PFS Pipe2D</title>
+    <title>(Optional) Build Calibs - PFS Pipe2D</title>
     <link rel="stylesheet" href="../css/theme.css" />
     <link rel="stylesheet" href="../css/theme_extra.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
@@ -13,7 +13,7 @@
     
       <script>
         // Current page data
-        var mkdocs_page_name = "Build Calibs";
+        var mkdocs_page_name = "(Optional) Build Calibs";
         var mkdocs_page_input_path = "02_03_run_calib.md";
         var mkdocs_page_url = "/pfs_helpdesk_tutorial/02_03_run_calib/";
       </script>
@@ -45,9 +45,7 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_datamodel/">PFS Datamodel</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../00_02_pfs_pipeline/">PFS 2D Pipeline</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_pipeline/">PFS 2D Pipeline</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Installation</span></p>
@@ -65,7 +63,7 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
                   </li>
-                  <li class="toctree-l1 current"><a class="reference internal current" href="#">Build Calibs</a>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="#">(Optional) Build Calibs</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#build-bias">Build Bias</a>
     </li>
@@ -82,8 +80,6 @@
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Data Analysis</span></p>
@@ -108,6 +104,11 @@
                   <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
                   </li>
               </ul>
+              <p class="caption"><span class="caption-text">Appendix</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../05_01_app_datamodel/">Data Model</a>
+                  </li>
+              </ul>
       </div>
     </div>
     </nav>
@@ -123,7 +124,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href=".." class="icon icon-home" aria-label="Docs"></a></li>
           <li class="breadcrumb-item">Run 2D DRP</li>
-      <li class="breadcrumb-item active">Build Calibs</li>
+      <li class="breadcrumb-item active">(Optional) Build Calibs</li>
     <li class="wy-breadcrumbs-aside">
           <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/02_03_run_calib.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
@@ -133,9 +134,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h1 id="build-calibration-frames">Build Calibration Frames</h1>
-<p>After the preparation, we will need to build calibration data before running the processing of science data.</p>
-<p>First, let's assume we have default variables as in the following example, where a user works in the public directory <code>$WORKDIR/pfs/</code> and using a publicly install pipeline: </p>
+                <h1 id="optional-build-calibration-frames">(Optional) Build Calibration Frames</h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Before running the science data processing, the pipeline requires calibration data. <strong>The observatory provides calibration products from the PFS Science Platform (SP) for each run</strong>, so users do not necessarily need to generate the calibration data themselves. The simplest approach is to use these pre-provided calibration products, in which case <strong>this section can be skipped</strong>.</p>
+</div>
+<p>First, let's assume the following default setup: the user is working in the public directory <code>$WORKDIR/pfs/</code> and using a publicly installed pipeline.</p>
 <pre><code>DATASTORE=&quot;$WORKDIR/pfs/data/datastore&quot;
 DATADIR=&quot;$WORKDIR/pfs/data&quot;
 CORES=16
@@ -146,17 +150,17 @@ RERUN=&quot;u/(username)/&quot;
 <h2 id="build-bias">Build Bias</h2>
 <hr />
 <p>Next, we’ll build the calibration products, starting from the bias frames:</p>
-<pre><code>pipetask run \
+<pre><code class="language-bash">pipetask run \
 --register-dataset-types \                                # register the dataset types from the pipeline
 -j $CORES \                                               # number of cores to use in parallel
--b $DATASTORE \                                           # datastre directory to use
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \        # the instrument PFS
+-b $DATASTORE \                                           # datastore directory to use
+--instrument $INSTRUMENT \                                # the instrument PFS
 -i PFS/raw/sps,PFS/calib \                                # input collection (comma-separated)
 -o &quot;$RERUN&quot;/bias \                                        # output CHAINED collection
 -p $DRP_STELLA_DIR/pipelines/bias.yaml \                  # pipeline configuration file to use
 -d &quot;instrument='PFS' AND exposure.target_name = 'BIAS'&quot; \ # or, for example: -d &quot;visit IN (123456..123466)&quot; \
 --fail-fast \                                             # immediately stop the ingestion process if error
--c isr:doCrosstalk=True                                   # (optional) turn on the crosstalk correction 
+-c isr:doCrosstalk=False                                   # (optional) turn on the crosstalk correction 
 </code></pre>
 <p>The <code>pipetask run</code> command is used to run a pipeline. 
 A task is an operation within the pipeline, characterized by a set of dimensions that define the level at which it parallelizes, and a set of inputs and outputs. An instance of a task running on a single set of data at its parallelization level is called a "quantum". 
@@ -257,13 +261,12 @@ $ butlerCertify.py /work/datastore price/pipe2d-1036/dark/run16 PFS/calib dark -
 <p>First run the builder:</p>
 <pre><code>pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/calib \
 -o &quot;$RERUN&quot;/dark \
 -p $DRP_STELLA_DIR/pipelines/dark.yaml \
 -d &quot;instrument='PFS' AND exposure.target_name = 'DARK'&quot; \
---fail-fast \
--c isr:doCrosstalk=True
+--fail-fast 
 </code></pre>
 <p>Then, certify the products:</p>
 <pre><code>$ butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/dark PFS/calib dark --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
@@ -275,13 +278,12 @@ $ butlerCleanRun.py $DATASTORE $RERUN/dark/* darkProc
 <p>First run the builder:</p>
 <pre><code>pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/calib \
 -o &quot;$RERUN&quot;/flat \
 -p $DRP_STELLA_DIR/pipelines/flat.yaml \
 -d &quot;instrument='PFS' AND exposure.target_name = 'FLAT'&quot; \
---fail-fast \
--c isr:doCrosstalk=True
+--fail-fast 
 </code></pre>
 <p>Then, certify the products:</p>
 <pre><code>$ butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/flat PFS/calib flat --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
@@ -289,17 +291,21 @@ $ butlerCleanRun.py $DATASTORE $RERUN/flat/* flatProc
 </code></pre>
 <h2 id="build-detector-map">Build Detector Map</h2>
 <hr />
-<p>The bias, dark, and flat frames characterize the detector, so now it’s time to determine the <code>detectorMap</code>. We first bootstrap a
-detectorMap from an arc and quartz:</p>
+<p>A detector map (<code>detectorMap</code>) is the mapping of fiber trace and wavelength to (x, y) position on the detector, which is generated by using quartz and arc lamp dataset. The bias, dark, and flat frames characterize the detector, so now it’s time to determine the detector map. </p>
+<p>We first bootstrap a <code>detectorMap</code> from an arc and quartz:</p>
 <pre><code>pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib 
 -o &quot;$RERUN&quot;/bootstrap \
 -p $DRP_STELLA_DIR/pipelines/bootstrap.yaml' \
 -d &quot;instrument='PFS' AND exposure IN (11,22)&quot; \
 --fail-fast \
--c isr:doCrosstalk=True
+-c isr:doCrosstalk=False \
+-c bootstrap:profiles.profileRadius=2 \
+-c bootstrap:profiles.profileSwath=2500 \
+-c bootstrap:profiles.profileOversample=3 \
+-c bootstrap:spectralOffset=-10
 </code></pre>
 <p>Then, certify the products:</p>
 <pre><code>$ butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/bootstrap PFS/bootstrap detectorMap_bootstrap --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
@@ -312,14 +318,15 @@ The bootstrap pipeline writes a <code>detectorMap_bootstrap</code> dataset for e
 <p>Now we have a rough detectorMap, we can refine it and create the proper detectorMap:</p>
 <pre><code>pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/bootstrap,PFS/calib \
 -o &quot;$RERUN&quot;/detectorMap \
 -p '$DRP_STELLA_DIR/pipelines/detectorMap.yaml' \
 -d &quot;instrument='PFS' AND exposure.target_name = 'ARC'&quot; \
--c isr:doCrosstalk=True \
 -c measureCentroids:connections.calibDetectorMap=detectorMap_bootstrap \
--c fitDetectorMap:connections.slitOffsets=detectorMap_bootstrap.slitOffsets \
+-c fitDetectorMap:fitDetectorMap.doSlitOffsets=True \
+-c fitDetectorMap:fitDetectorMap.order=4 \
+-c fitDetectorMap:fitDetectorMap.soften=0.03 \
 --fail-fast
 </code></pre>
 <p>Then, certify the products:</p>
@@ -335,31 +342,40 @@ The <code>certifyDetectorMaps.py</code> script is used to certify the detectorMa
 This script copies the <code>detectorMap_candidate</code> as a <code>detectorMap_calib</code> and certifies it.</p>
 <h2 id="build-fiber-profile">Build Fiber Profile</h2>
 <hr />
-<p>Fiber profiles can be built in two different ways. 
-The <code>fitFiberProfiles</code> pipeline is equivalent to the Gen2 <code>reduceProfiles</code> script: it fits a profile to multiple exposures simultaneously. 
-The <code>measureFiberProfiles</code> pipeline is equivalent to the Gen2 <code>constructFiberProfiles</code> script: it measures the profile from a single exposure. Here’s how you run them:</p>
-<pre><code># fitFiberProfiles:
-defineFiberProfilesInputs.py $DATASTORE PFS integrationProfiles --bright 26 --bright 27
+<p>The fiber profile (<code>fiberProfiles</code>) is the profile of fibers along the spatial direction. We illuminate every four fibers and hide the rest behind “dots”, and then measure the profiles of fibers using a dedicated quartz dataset.
+Fiber profiles can be built in two different ways. 
+The <code>fitFiberProfiles</code> pipeline fits a profile to multiple exposures simultaneously. 
+The <code>measureFiberProfiles</code> pipeline measures the profile from a single exposure. </p>
+<p>Here’s how you run them:</p>
+<pre><code># Creates a profiles_run dimension value and associates those exposures with it.
+defineFiberProfilesInputs.py $DATASTORE PFS run18_brn \
+--bright 113855..113863 --dark 113845..113853 \
+--bright 113903..113911 --dark 113893..113901 \
+--bright 114190..114198 --dark 114180..114188 \
+--bright 114238..114246 --dark 114228..114236
+
+# fitFiberProfiles:
 pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/fiberProfilesInputs,PFS/raw/pfsConfig,PFS/calib \
 -o &quot;$RERUN&quot;/fitFiberProfiles \
 -p '$DRP_STELLA_DIR/pipelines/fitFiberProfiles.yaml \
--d &quot;profiles_run = 'integrationProfiles'&quot; \
--c fitProfiles:profiles.profileSwath=2000 \
+-d &quot;profiles_run = 'run18_brn'&quot; \
+-c fitProfiles:profiles.profileRadius=10 \
 -c fitProfiles:profiles.profileOversample=3 \
+-c fitProfiles:profiles.profileSwath=500 \
 --fail-fast
 
 # measureFiberProfiles:
 pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
 -o &quot;$RERUN&quot;/measureFiberProfiles \
 -p '$DRP_STELLA_DIR/pipelines/measureFiberProfiles.yaml' \
 -d &quot;instrument='PFS' AND exposure.target_name IN ('FLAT_ODD', 'FLAT_EVEN')&quot; \
--c isr:doCrosstalk=True \
+-c isr:doCrosstalk=False \
 --fail-fast
 
 # certify the fiberProfile product
@@ -368,24 +384,16 @@ butlerCleanRun.py $DATASTORE $RERUN/fitFiberProfiles/* postISRCCD
 </code></pre>
 <p>Because it involves multiple groups of exposures, the <code>fitFiberProfiles</code> pipeline is a bit more complicated and requires defining the inputs to the pipeline ahead of time. 
 The <code>defineFiberProfilesInputs.py</code> script is used to define the inputs for the different groups of exposures. 
-When working on real data, we typically have four groups of several exposures each, and each group contains “bright” (select fibers deliberately exposed) and “dark” (all fibers hidden) exposures. 
-In the integration test, we only have two groups with a single bright exposure each, and no dark exposures. 
-For real data, the command might look like:</p>
-<pre><code>defineFiberProfilesInputs.py $DATASTORE PFS run18_brn \
---bright 113855..113863 --dark 113845..113853 \
---bright 113903..113911 --dark 113893..113901 \
---bright 114190..114198 --dark 114180..114188 \
---bright 114238..114246 --dark 114228..114236
-</code></pre>
-<p>This creates a profiles_run dimension value and associates those exposures with it. 
-A file describing the roles of the exposures is written in the<code>&lt;instrument&gt;/fiberProfilesInputs</code> collection, so this must be included in the inputs for the <code>fitFiberProfiles</code> pipeline. 
+When working on real data, we typically have four groups of several exposures each, and each group contains “bright” (select fibers deliberately exposed) and “dark” (all fibers hidden) exposures. </p>
+<p>A file describing the roles of the exposures is written in the<code>&lt;instrument&gt;/fiberProfilesInputs</code> collection, so this must be included in the inputs for the <code>fitFiberProfiles</code> pipeline. 
 We can use the profiles_run value in the data selection query, as that is linked to all the required exposures.</p>
 <h2 id="build-fiber-norm">Build Fiber Norm</h2>
 <hr />
-<p>Note that in the Gen3 pipeline, <code>fiberProfiles</code> do not include quartz spectrum normalization. The quartz spectrum used for normalization is supplied by the <code>fiberNorms</code>:</p>
+<p>The Fiber Norm (<code>fiberNorms</code>) is the spectral normalization of each fiber. 
+Note that in the Gen3 pipeline, <code>fiberProfiles</code> do not include quartz spectrum normalization. The quartz spectrum used for normalization is supplied by the <code>fiberNorms</code>:</p>
 <pre><code>pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
---instrument lsst.obs.pfs.PrimeFocusSpectrograph \
+--instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
 -o &quot;$RERUN&quot;/fiberNorms \
 -p '$DRP_STELLA_DIR/pipelines/fiberNorms.yaml' \
@@ -395,14 +403,12 @@ We can use the profiles_run value in the data selection query, as that is linked
 -c reduceExposure:doBlackSpotCorrection=False \
 --fail-fast
 
+# certify the fiberNorm product
 butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/fiberNorms PFS/calib fiberNorms_calib --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
 butlerCleanRun.py $DATASTORE $RERUN/fiberNorms/* postISRCCD
 </code></pre>
 <p>The <code>fiberNorms</code> pipeline combines the extracted spectra from multiple quartz exposures, and writes the output as
-<code>fiberNorms_calib</code></p>
-<hr />
-<p><a name="diff_gen2_c">1</a> 
-Note the difference in syntax from Gen2: each configuration override requires a separate <code>-c</code> option, and the overrides include a colon (<code>:</code>) between the task name and the configuration parameter name. </p>
+<code>fiberNorms_calib</code>.</p>
               
             </div>
           </div><footer>

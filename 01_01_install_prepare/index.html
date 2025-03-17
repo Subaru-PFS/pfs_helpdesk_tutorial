@@ -45,15 +45,15 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_datamodel/">PFS Datamodel</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../00_02_pfs_pipeline/">PFS 2D Pipeline</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_pipeline/">PFS 2D Pipeline</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Installation</span></p>
               <ul class="current">
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">Preparation</a>
     <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#supported-machines-and-environments">Supported Machines and Environments</a>
+    </li>
     <li class="toctree-l2"><a class="reference internal" href="#setup-directory">Setup Directory</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#install-dependencies">Install Dependencies</a>
@@ -71,11 +71,9 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">Build Calibs</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">(Optional) Build Calibs</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Data Analysis</span></p>
@@ -98,6 +96,11 @@
                   <li class="toctree-l1"><a class="reference internal" href="../04_02_faq_run/">Run 2D DRP</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
+                  </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Appendix</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../05_01_app_datamodel/">Data Model</a>
                   </li>
               </ul>
       </div>
@@ -126,6 +129,9 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="preparation">Preparation</h1>
+<h2 id="supported-machines-and-environments">Supported Machines and Environments</h2>
+<p>The current Gen3 2D DRP is supported only on <code>CentOS 7</code> with a <code>Bash</code> environment. A Python version of &ge; <code>3.9</code> is required (&ge; <code>3.11</code> is recommended). </p>
+<p>Support for additional systems may be added in the future.</p>
 <h2 id="setup-directory">Setup Directory</h2>
 <hr />
 <p>We assume that the working directory is <code>$WORKDIR/(username)/</code>.</p>
@@ -145,16 +151,23 @@ $ git clone https://gitlab.com/caroff/user-yum.sh.git
 </code></pre>
 <p>You will find it handy if you change <code>Makefile</code> line 40 from
 <code>INSTALL_FLAG_PREFIX := +</code> to <code>INSTALL_FLAG_PREFIX :=</code></p>
+<p>Then insert the following lines to <code>~/.bash_profile</code>:</p>
+<pre><code class="language-bash"># Setting environment for $WORKDIR/(username)/bin/user-yum.sh/root
+ROOT_D=&quot;$WORKDIR/(username)/bin/user-yum.sh/root&quot;
+export PATH=$ROOT_D/usr/sbin:$ROOT_D/usr/bin:$ROOT_D/bin:$PATH
+L=&quot;/lib:/lib64:/usr/lib:/usr/lib64&quot;
+export LD_LIBRARY_PATH=$L:$ROOT_D/usr/lib:$ROOT_D/usr/lib64:$LD_LIBRARY_PATH
+</code></pre>
 <div class="admonition note user-yum">
 <p class="admonition-title">Note</p>
 <p>If you are the administrator of your local machine, you may skip this step and directly install the below dependencies with <code>sudo yum install ***</code>.</p>
 </div>
-<p><strong>Step 2</strong>: Install dependencies using <code>user-yum.sh</code></p>
+<p><strong>(Skippable for the latest LSST v28) Step 2</strong>: Install dependencies using <code>user-yum.sh</code></p>
 <pre><code>$ cd user-yum.sh/
 $ make blas bzip2-devel cmake freetype-devel gcc-c++ gcc-gfortran glib2-devel libuuid-devel libXt-devel ncurses-devel openssl-devel readline-devel zlib-dev
 $ make install
 </code></pre>
-<p><strong>Step 3</strong>: Install OpenBLAS</p>
+<p><strong>(Skippable for the latest LSST v28) Step 3</strong>: Install OpenBLAS</p>
 <p>OpenBLAS is needed for pfs_pipe2d; however it cannot be found in the default repositories of CentOS7.
 (From <a href="https://gist.github.com/bmmalone/1b5f9ff72754c7d4b313c0b044c42684">this page</a>)</p>
 <pre><code>$ cd $WORKDIR/(username)/bin
@@ -163,7 +176,7 @@ $ cd OpenBLAS &amp;&amp; make FC=gfortran
 </code></pre>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If compilation fails due to missing dependencies, proceed with the LSST framework installation and retry this step afterward. You will probably manage to install the LSST platform and fail at the installation of PFS packages. Use command <code>source $WORKDIR/(username)/packages/stack_26_0_2/loadLSST.bash</code> and then come back to repeat the last line listed above. The last step is setting up environment variables in <code>~/.bash_profile</code></p>
+<p>If compilation fails due to missing dependencies, proceed with the LSST framework installation and retry this step afterward. You will probably manage to install the LSST platform and fail at the installation of PFS packages. Use command <code>source $WORKDIR/(username)/packages/stack_(LSST version)/loadLSST.bash</code> and then come back to repeat the last line listed above. The last step is setting up environment variables in <code>~/.bash_profile</code></p>
 </div>
 <p>Then, to set up the default environment variable, we can add the following lines to <code>~/.bash_profile</code></p>
 <pre><code># for the OpenBLAS library
@@ -173,17 +186,17 @@ export ATLAS=$WORKDIR/(username)/bin/libopenblas.a
 </code></pre>
 <p><strong>Step 4</strong>: Install git LFS</p>
 <p>Git LFS must be installed to download large files from Git.</p>
-<pre><code>$ cd /$WORKDIR/(username)/bin
+<pre><code>$ cd $WORKDIR/(username)/bin
 $ wget https://github.com/git-lfs/git-lfs/releases/download/v3.5.1/git-lfs-linux-amd64-v3.5.1.tar.gz
 $ tar xzf git-lfs-linux-amd64-v3.5.1.tar.gz
 $ cd git-lfs-3.5.1
-$ PREFIX=$(dirname $(command -v git)) ./install.sh
+$ PREFIX=$WORKDIR/(username) ./install.sh
 </code></pre>
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../00_02_pfs_pipeline/" class="btn btn-neutral float-left" title="PFS 2D Pipeline"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../00_01_pfs_pipeline/" class="btn btn-neutral float-left" title="PFS 2D Pipeline"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../01_02_install_pipe2d/" class="btn btn-neutral float-right" title="Install 2D DRP">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -211,7 +224,7 @@ $ PREFIX=$(dirname $(command -v git)) ./install.sh
         </span>
     
     
-      <span><a href="../00_02_pfs_pipeline/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href="../00_01_pfs_pipeline/" style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../01_02_install_pipe2d/" style="color: #fcfcfc">Next &raquo;</a></span>

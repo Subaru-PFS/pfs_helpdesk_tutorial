@@ -45,9 +45,7 @@
               <ul>
                   <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_datamodel/">PFS Datamodel</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../00_02_pfs_pipeline/">PFS 2D Pipeline</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_pipeline/">PFS 2D Pipeline</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Installation</span></p>
@@ -65,11 +63,9 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">Build Calibs</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">(Optional) Build Calibs</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Data Analysis</span></p>
@@ -106,6 +102,11 @@
                   <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
                   </li>
               </ul>
+              <p class="caption"><span class="caption-text">Appendix</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../05_01_app_datamodel/">Data Model</a>
+                  </li>
+              </ul>
       </div>
     </div>
     </nav>
@@ -139,10 +140,10 @@
 The <code>butler</code> interface, a key component of the LSST Science Pipelines, provides a structured and efficient way to access processed data. It manages datasets through a hierarchical system, allowing you to query and retrieve data in an organized manner. Unless you have specific needs that require direct file access, using <code>butler</code> is highly recommended for consistency and ease of use.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>As discussed in <a href="../00_01_pfs_datamodel/">PFS Datamodel Section</a>, each pipeline output file is defined in <a href="https://github.com/Subaru-PFS/datamodel/tree/master"><code>datamodel</code></a>. If you have a desperate reason not to use the <code>butler</code>, then the Python module from the datamodel repository can be used. The module allows you to read/write the pipeline files and is written deliberately to be independent of the LSST stack.</p>
+<p>As discussed in <a href="00_01_pfs_datamodel.md">PFS Datamodel Section</a>, each pipeline output file is defined in <a href="https://github.com/Subaru-PFS/datamodel/tree/master"><code>datamodel</code></a>. If you have a desperate reason not to use the <code>butler</code>, then the Python module from the datamodel repository can be used. The module allows you to read/write the pipeline files and is written deliberately to be independent of the LSST stack.</p>
 </div>
 <p>To use the <code>butler</code>, you will need to initiate PFS pipeline environment before launching the Python:</p>
-<pre><code>$ source $WORKDIR/(username)/packages/stack_26_0_2/loadLSST.bash
+<pre><code>$ source $WORKDIR/(username)/packages/stack_28/loadLSST.bash
 $ setup pfs_pipe2d
 </code></pre>
 <p>Then in your Python environment (e.g., a Jupyter notebook), you can import the necessary modules:</p>
@@ -152,7 +153,7 @@ import pfs.datamodel as datamodel
 <p>We will need to first initialize the <code>butler</code>:</p>
 <pre><code>$DATASTORE = &quot;$WORKDIR/pfs/data/datastore&quot;
 $COLLECTION = 'u/(username)/20250218'
-butler =Butler($DATASTORE, collection=[$COLLECTION])
+butler = Butler.from_config($DATASTORE, collection=[$COLLECTION])
 </code></pre>
 <p>Let's assume we want to inspect a <code>visit=98336</code>:</p>
 <pre><code>visit=98336

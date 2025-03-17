@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/00_02_pfs_pipeline/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://Subaru-PFS.github.io/pfs_helpdesk_tutorial/00_01_pfs_pipeline/" />
       <link rel="shortcut icon" href="../img/favicon.ico" />
     <title>PFS 2D Pipeline - PFS Pipe2D</title>
     <link rel="stylesheet" href="../css/theme.css" />
@@ -14,8 +14,8 @@
       <script>
         // Current page data
         var mkdocs_page_name = "PFS 2D Pipeline";
-        var mkdocs_page_input_path = "00_02_pfs_pipeline.md";
-        var mkdocs_page_url = "/pfs_helpdesk_tutorial/00_02_pfs_pipeline/";
+        var mkdocs_page_input_path = "00_01_pfs_pipeline.md";
+        var mkdocs_page_url = "/pfs_helpdesk_tutorial/00_01_pfs_pipeline/";
       </script>
     
     <!--[if lt IE 9]>
@@ -45,15 +45,9 @@
               <ul class="current">
                   <li class="toctree-l1"><a class="reference internal" href="..">PFS Introduction</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../00_01_pfs_datamodel/">PFS Datamodel</a>
-                  </li>
                   <li class="toctree-l1 current"><a class="reference internal current" href="#">PFS 2D Pipeline</a>
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#pfs-2d-drp-workflow">PFS 2D DRP Workflow</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#gen3-pfs-2d-drp">Gen3 PFS 2D DRP</a>
-    </li>
-    <li class="toctree-l2"><a class="reference internal" href="#acknowledgements">Acknowledgements</a>
     </li>
     </ul>
                   </li>
@@ -73,11 +67,9 @@
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../02_02_run_ingestion/">Data Ingestion</a>
                   </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">Build Calibs</a>
+                  <li class="toctree-l1"><a class="reference internal" href="../02_03_run_calib/">(Optional) Build Calibs</a>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../02_04_run_science/">Procees Science Data</a>
-                  </li>
-                  <li class="toctree-l1"><a class="reference internal" href="../02_05_run_qa/">Quality Assurance (QA)</a>
                   </li>
               </ul>
               <p class="caption"><span class="caption-text">Data Analysis</span></p>
@@ -102,6 +94,11 @@
                   <li class="toctree-l1"><a class="reference internal" href="../04_03_faq_analysis/">Data Analysis</a>
                   </li>
               </ul>
+              <p class="caption"><span class="caption-text">Appendix</span></p>
+              <ul>
+                  <li class="toctree-l1"><a class="reference internal" href="../05_01_app_datamodel/">Data Model</a>
+                  </li>
+              </ul>
       </div>
     </div>
     </nav>
@@ -119,7 +116,7 @@
           <li class="breadcrumb-item">Introduction</li>
       <li class="breadcrumb-item active">PFS 2D Pipeline</li>
     <li class="wy-breadcrumbs-aside">
-          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/00_02_pfs_pipeline.md" class="icon icon-github"> Edit on GitHub</a>
+          <a href="https://github.com/Subaru-PFS/pfs_helpdesk_tutorial/edit/master/docs/00_01_pfs_pipeline.md" class="icon icon-github"> Edit on GitHub</a>
     </li>
   </ul>
   <hr/>
@@ -128,58 +125,89 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="pfs-2d-pipeline-overview">PFS 2D Pipeline Overview</h1>
+<p>The PFS pipeline organizes data using key terms: </p>
+<ul>
+<li>
+<p><code>visit</code> refers to a unique exposure identifier.</p>
+</li>
+<li>
+<p><code>spectrograph</code> defines the spectrpgraph with an integer ranging from <code>1</code>–<code>4</code>.</p>
+</li>
+<li>
+<p><code>arm</code> defines spectrograph's blue, red, near-IR, and medium-resolution red arms (<code>b</code>, <code>r</code>, <code>n</code>, <code>m</code>).</p>
+</li>
+<li>
+<p><code>catId</code> specifies the catalog source of an object.</p>
+</li>
+<li>
+<p><code>objId</code> is a unique 64-bit identifier for an astronomical source. </p>
+</li>
+<li>
+<p><code>pfsDesignId</code> encodes the fiber configuration, and <code>pfsVisitHash</code> uniquely defines a set of combined visits. </p>
+</li>
+</ul>
+<p>More details can be found in <a href="../05_01_app_datamodel/">Appendix</a>.</p>
 <h2 id="pfs-2d-drp-workflow">PFS 2D DRP Workflow</h2>
 <hr />
 <blockquote>
 <p>The data processing procedure of the PFS 2D data reduction pipeline (DRP) follows the following flowchart.</p>
 <blockquote>
-<p><img alt="Focal plane map" src="../img/pipe2d_flowchart.png" /></p>
+<p><img alt="Focal plane map" src="../img/pipe2d_flowchart_gen3.png" /></p>
 </blockquote>
 </blockquote>
 <div class="admonition products">
 <p class="admonition-title">Products</p>
 <ul>
-<li><code>pfsArm</code>: These are reduced but not combined single spectra from a single exposure and a single arm.</li>
-<li><code>pfsMerged</code>: These are combined spectra from a single exposure, wavelength calibrated but not flux calibrated.</li>
-<li><code>pfsSingle</code>: These are flux-calibrated arm-merged spectra from a single exposure.</li>
-<li><code>pfsObject</code>: These are combined spectra, and the final products for science. However, from Gen3 pipeline, the final products will be <code>pfsCoadd</code>.</li>
+<li><code>pfsArm</code>: These are reduced but not combined single spectra from a single visit and a single arm.</li>
+<li><code>pfsMerged</code>: These are arm-combined spectra from a single visit, wavelength calibrated but not flux calibrated.</li>
+<li><code>pfsCalibrated</code>: These are flux-calibrated arm-merged spectra from a single visit.</li>
+<li><code>pfsCoadd</code>: These are coadded spectra, and the final products for science.</li>
 </ul>
 </div>
-<h2 id="gen3-pfs-2d-drp">Gen3 PFS 2D DRP</h2>
-<hr />
-<p>The latest PFS 2D data DRP is now in its third generation (Gen3). 
-The transition from the second generation (Gen2) to Gen3 is a project to migrate the 2D data reduction pipeline’s use of the LSST middleware from Gen2 to Gen3.</p>
-<p>The LSST middleware is the middle layer between the data and the algorithms responsible for processing the data. It
+<!-- ## Gen3 PFS 2D DRP
+
+---
+
+The latest PFS 2D data DRP is now in its third generation (Gen3). 
+The transition from the second generation (Gen2) to Gen3 is a project to migrate the 2D data reduction pipeline’s use of the LSST middleware from Gen2 to Gen3.
+
+The LSST middleware is the middle layer between the data and the algorithms responsible for processing the data. It
 provides a “data butler” that provides interfaces for reading and writing the data, a “registry” that keeps track of the
-data products, and a framework for running algorithms on the data.</p>
-<p>The second generation of the LSST middleware (“Gen2”) had two important shortcomings: it did not keep track of
+data products, and a framework for running algorithms on the data.
+
+The second generation of the LSST middleware (“Gen2”) had two important shortcomings: it did not keep track of
 what data products were available, and it did not provide a simple way to parallelize the processing of data. The third
-generation of the LSST middleware (“Gen3”) is a complete rewrite that addresses these shortcomings.</p>
-<p>The LSST software distributions no longer support the Gen2 middleware, and so access to bug fixes and new features
+generation of the LSST middleware (“Gen3”) is a complete rewrite that addresses these shortcomings.
+
+The LSST software distributions no longer support the Gen2 middleware, and so access to bug fixes and new features
 requires transitioning the PFS 2D DRP to Gen3. This guide attempts to explain the new features of Gen3 and how we
-will use them in the PFS 2D DRP, using the <a href="https://github.com/Subaru-PFS/pfs_pipe2d/blob/gen3/bin/pfs_integration_test.sh">integration test</a> as a tutorial.</p>
-<h2 id="acknowledgements">Acknowledgements</h2>
-<hr />
-<p>The PFS 2D DRP Gen3 transition has been a big project that has taken a lot of time and effort, which has been primarily made by Paul Price. 
+will use them in the PFS 2D DRP, using the [integration test](https://github.com/Subaru-PFS/pfs_pipe2d/blob/gen3/bin/pfs_integration_test.sh) as a tutorial.
+
+## Acknowledgements
+
+---
+
+The PFS 2D DRP Gen3 transition has been a big project that has taken a lot of time and effort, which has been primarily made by Paul Price. 
 We are grateful to the LSST pipeline development team for their help in understanding the Gen3 middleware, and how to overcome the peculiar challenges of applying it to the PFS 2D DRP. 
 The products should especially ackknowledge the efforts by Jim Bosch, Nate Lust, Tim Jenness and KT Lim, and to Lee Kelvin for
-his helpful writeup on using Gen3 for the <a href="https://hackmd.io/@lsk/merian">MERIAN project</a>.
-Significant contributions have also been made by Robert Lupton, Kiyoto Yabe, and Masayuki Tanaka. </p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This tutorial is based on the documents, <em>PFS 2D-DRP Gen3 Transition</em> (by Paul Price) delivered on September 20, 2024 and the <em>PFS EDR2 Document</em> delivered on March 4, 2023. The process introduced in this tutorial mostly follows an <a href="https://github.com/yirene/pipe2d_tutorial/blob/main/pipe2d_tutorial.md">earlier tutorial</a> for Gen2 pipeline, but some tweaks are included, especially considering that we have started the transition to Gen3 from October 2024. The installation, data reduction, and product retrieval implemented on Gen3 are demonstrated by Zhuoming Li and Yongming Liang. </p>
-</div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>The configurations implemented in this tutorial may still be revised in the future for better compatibility. </p>
-</div>
+his helpful writeup on using Gen3 for the [MERIAN project](https://hackmd.io/@lsk/merian).
+Significant contributions have also been made by Robert Lupton, Kiyoto Yabe, and Masayuki Tanaka. 
+
+
+!!! note
+    This tutorial is based on the documents, *PFS 2D-DRP Gen3 Transition* (by Paul Price) delivered on September 20, 2024 and the *PFS EDR2 Document* delivered on March 4, 2023. The process introduced in this tutorial mostly follows an [earlier tutorial](https://github.com/yirene/pipe2d_tutorial/blob/main/pipe2d_tutorial.md) for Gen2 pipeline, but some tweaks are included, especially considering that we have started the transition to Gen3 from October 2024. The installation, data reduction, and product retrieval implemented on Gen3 are demonstrated by Zhuoming Li and Yongming Liang. 
+
+!!! warning
+    The configurations implemented in this tutorial may still be revised in the future for better compatibility. 
+
+
 <!-- !!! note Large-Scale Cluster
     The latest pipeline is expected to be installed on Large-Scale Cluster (LSC) at NAOJ, and the users can directly utilize the ready environment, with only minor preparations to set up local `drp_pfs_data` (from cloning it from PFS GitHub). -->
               
             </div>
           </div><footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
-        <a href="../00_01_pfs_datamodel/" class="btn btn-neutral float-left" title="PFS Datamodel"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href=".." class="btn btn-neutral float-left" title="PFS Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
         <a href="../01_01_install_prepare/" class="btn btn-neutral float-right" title="Preparation">Next <span class="icon icon-circle-arrow-right"></span></a>
     </div>
 
@@ -207,7 +235,7 @@ Significant contributions have also been made by Robert Lupton, Kiyoto Yabe, and
         </span>
     
     
-      <span><a href="../00_01_pfs_datamodel/" style="color: #fcfcfc">&laquo; Previous</a></span>
+      <span><a href=".." style="color: #fcfcfc">&laquo; Previous</a></span>
     
     
       <span><a href="../01_01_install_prepare/" style="color: #fcfcfc">Next &raquo;</a></span>
