@@ -16,7 +16,15 @@ This can be used to process single sky exposures. This is not demonstrated below
 - `science`: adds the spectral coaddition, producing `pfsCoadd`. 
 This can be used to process multiple sky exposures together.
 
-## Define Collections
+## Define Collections for CR Removal
+
+<span style="color:red">**NOTE: This section is work in progress.**</span>
+
+---
+
+We need to define a collection used for cosmic ray (CR) removal.
+
+## Define Collections for Science Data
 
 ---
 
@@ -74,6 +82,14 @@ Notice that in the first case we’re running the `reduceExposure` pipeline, sel
 
 Note that we do not have to run the `reduceExposure` pipeline before we run the `science` pipeline (a single command is sufficient to run the entire pipeline): the `science` pipeline knows how to produce all the necessary intermediate datasets itself, and the above two commands are completely independent: they do not share any intermediate datasets. 
 However, we could have first run the `reduceExposure` pipeline and then fed its outputs into the `science` pipeline by including `$RERUN/reduceExposure` in the list of input collections for the `science` pipeline.
+
+## Introduction to Reduction Steps
+
+<span style="color:red">**NOTE: This section is work in progress.**</span>.
+
+---
+
+This section will include more detailed descriptions of each of the reduction steps in the `science` pipeline.
 
 ## Retrieve Data Products
 
