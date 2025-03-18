@@ -69,9 +69,13 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#basic-information">Basic Information</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#define-collections-for-cr-removal">Define Collections for CR Removal</a>
+    <li class="toctree-l2"><a class="reference internal" href="#define-collections">Define Collections</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#combination-for-science-data">Combination for Science Data</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#define-collections-for-science-data">Define Collections for Science Data</a>
+    <li class="toctree-l3"><a class="reference internal" href="#combination-for-cosmic-ray-removal">Combination for Cosmic Ray Removal</a>
+    </li>
+        </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#process-science-data_1">Process Science Data</a>
     </li>
@@ -153,20 +157,30 @@ This can be used to process single sky exposures. This is not demonstrated below
 This can be used to process multiple sky exposures together.</p>
 </li>
 </ul>
-<h2 id="define-collections-for-cr-removal">Define Collections for CR Removal</h2>
-<p><span style="color:red"><strong>NOTE: This section is work in progress.</strong></span></p>
-<hr />
-<p>We need to define a collection used for cosmic ray (CR) removal.</p>
-<h2 id="define-collections-for-science-data">Define Collections for Science Data</h2>
+<h2 id="define-collections">Define Collections</h2>
 <hr />
 <p>Because we need to be able to distinguish coadds formed from different combinations of exposures, it’s necessary to define the inputs to the coaddition before running the <code>science</code> pipeline. 
-This is not required for the <code>reduceExposure</code> or <code>calibrateExposure</code> pipelines, but defining the inputs can provide a convenient way to reference them.. 
-The integration test defines two combinations:</p>
-<pre><code>$ defineCombination.py $DATASTORE PFS object --where &quot;exposure.target_name = 'OBJECT'&quot;
+This is not required for the <code>reduceExposure</code> or <code>calibrateExposure</code> pipelines, but defining the inputs can provide a convenient way to reference them.. </p>
+<h3 id="combination-for-science-data">Combination for Science Data</h3>
+<p>For the science data (e.g., <code>OBJECT</code> data), the combination can be defined as</p>
+<pre><code class="language-bash"># Define by data type:
+$ defineCombination.py $DATASTORE PFS object --where &quot;exposure.target_name = 'OBJECT'&quot;
+
+# Define by specifying the observation dates:
+$ defineCombination.py $DATASTORE PFS run20241025 --where &quot;visit.day_obs = 20241025&quot;
 </code></pre>
 <p>A combination can be defined with a <code>--where</code> option, which takes a query string like for the <code>-d</code> option of <code>pipetask run</code>. 
-Alternatively, a combination can be defined by simply listing the exposure identifiers:</p>
-<pre><code>$ defineCombination.py $DATASTORE PFS someExposures 123 124 125
+Alternatively, a combination can be defined by simply listing the exposure identifiers or specifying the observing dates:</p>
+<pre><code class="language-bash"># Define by listing exposure identifiers
+$ defineCombination.py $DATASTORE PFS someExposures 123 124 125
+</code></pre>
+<h3 id="combination-for-cosmic-ray-removal">Combination for Cosmic Ray Removal</h3>
+<p>We will also need to define a combination as a visit gourp for cosmic ray (CR) removal:</p>
+<pre><code class="language-bash"># Define by data type:
+$ defineVisitGroup.py $DATASTORE PFS --where &quot;exposure.target_name = 'OBJECT'&quot;
+
+# Define by specifying the observation dates:
+$ defineVisitGroup.py $DATASTORE PFS --where &quot;visit.day_obs = 20241025&quot;
 </code></pre>
 <h2 id="process-science-data_1">Process Science Data</h2>
 <hr />

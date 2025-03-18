@@ -229,7 +229,7 @@ raw  PFS/raw/all f8e3ae71-2cdf-5e55-bc42-4a4fb913770c          PFS   r  0.0     
 <p>Datasets can be accessed from Python using the <code>butler</code> API:</p>
 <pre><code>from lsst.daf.butler import Butler
 
-butler = Butler(&quot;/path/to/datastore&quot;, collections=&quot;PFS/raw/all&quot;)
+butler = Butler.from_config($DATASTORE, collections=&quot;PFS/raw/all&quot;)
 raw = butler.get(&quot;raw&quot;, instrument=&quot;PFS&quot;, exposure=12, arm=&quot;r&quot;, spectrograph=1)
 rawImage = raw.getImage()
 </code></pre>
