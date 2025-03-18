@@ -16,31 +16,43 @@ This can be used to process single sky exposures. This is not demonstrated below
 - `science`: adds the spectral coaddition, producing `pfsCoadd`. 
 This can be used to process multiple sky exposures together.
 
-## Define Collections for CR Removal
-
-<span style="color:red">**NOTE: This section is work in progress.**</span>
-
----
-
-We need to define a collection used for cosmic ray (CR) removal.
-
-## Define Collections for Science Data
+## Define Collections
 
 ---
 
 Because we need to be able to distinguish coadds formed from different combinations of exposures, it’s necessary to define the inputs to the coaddition before running the `science` pipeline. 
 This is not required for the `reduceExposure` or `calibrateExposure` pipelines, but defining the inputs can provide a convenient way to reference them.. 
-The integration test defines two combinations:
 
-```
+### Combination for Science Data
+
+For the science data (e.g., `OBJECT` data), the combination can be defined as
+
+``` bash
+# Define by data type:
 $ defineCombination.py $DATASTORE PFS object --where "exposure.target_name = 'OBJECT'"
+
+# Define by specifying the observation dates:
+$ defineCombination.py $DATASTORE PFS run20241025 --where "visit.day_obs = 20241025"
 ```
 
 A combination can be defined with a `--where` option, which takes a query string like for the `-d` option of `pipetask run`. 
-Alternatively, a combination can be defined by simply listing the exposure identifiers:
+Alternatively, a combination can be defined by simply listing the exposure identifiers or specifying the observing dates:
 
-```
+``` bash
+# Define by listing exposure identifiers
 $ defineCombination.py $DATASTORE PFS someExposures 123 124 125
+```
+
+### Combination for Cosmic Ray Removal
+
+We will also need to define a combination as a visit gourp for cosmic ray (CR) removal:
+
+``` bash
+# Define by data type:
+$ defineVisitGroup.py $DATASTORE PFS --where "exposure.target_name = 'OBJECT'"
+
+# Define by specifying the observation dates:
+$ defineVisitGroup.py $DATASTORE PFS --where "visit.day_obs = 20241025"
 ```
 
 ## Process Science Data

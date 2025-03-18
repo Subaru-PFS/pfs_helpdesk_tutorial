@@ -2,7 +2,7 @@
 
 ## Supported Machines and Environments
 
-The current Gen3 2D DRP is supported only on `CentOS 7` with a `Bash` environment. A Python version of &ge; ` 3.9` is required (&ge; ` 3.11` is recommended). 
+The current Gen3 2D DRP is supported on `CentOS 7` and `AlmaLinux 9` (recommended) with a `Bash` environment. A Python version of &ge; ` 3.9` is required (&ge; ` 3.11` is recommended). 
 
 Support for additional systems may be added in the future.
 
@@ -28,7 +28,7 @@ $ export PATH=$WORKDIR/(username)/bin:$PATH
 **Step 1**: Fetch a tool of `yum`
 
 There is a useful tool for installing dependencies in local environments: [user-yum](https://gitlab.com/caroff/user-yum.sh).
-It installs applications conveniently without the root privilege in CentOS7.
+It installs applications conveniently without the root privilege in `CentOS 7`.
 ```
 $ cd $WORKDIR/(username)/bin
 $ git clone https://gitlab.com/caroff/user-yum.sh.git
@@ -59,7 +59,7 @@ $ make install
 
 **(Skippable for the latest LSST v28) Step 3**: Install OpenBLAS
 
-OpenBLAS is needed for pfs_pipe2d; however it cannot be found in the default repositories of CentOS7.
+OpenBLAS is needed for pfs_pipe2d; however it cannot be found in the default repositories of `CentOS 7`.
 (From [this page](https://gist.github.com/bmmalone/1b5f9ff72754c7d4b313c0b044c42684))
 ```
 $ cd $WORKDIR/(username)/bin

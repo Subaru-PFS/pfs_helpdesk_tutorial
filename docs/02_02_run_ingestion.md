@@ -116,7 +116,7 @@ Datasets can be accessed from Python using the `butler` API:
 ```
 from lsst.daf.butler import Butler
 
-butler = Butler("/path/to/datastore", collections="PFS/raw/all")
+butler = Butler.from_config($DATASTORE, collections="PFS/raw/all")
 raw = butler.get("raw", instrument="PFS", exposure=12, arm="r", spectrograph=1)
 rawImage = raw.getImage()
 ```

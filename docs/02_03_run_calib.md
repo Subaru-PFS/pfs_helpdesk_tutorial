@@ -212,7 +212,8 @@ Here, we have added the `PFS/raw/pfsConfig` collection to the input since we nee
 The Gen3 middleware does not support multiple `-d` options to specify them independently, but the task can determine which is which from the `lamps` field in the exposure. 
 The bootstrap pipeline writes a `detectorMap_bootstrap` dataset for each camera, and we’re certifying that in the `PFS/bootstrap` collection (so it’s independent of the best-quality detectorMaps we’ll certify in `PFS/calibs`).
 
-When working with real data, it will probably be necessary to run the bootstrap pipeline on each camera separately, so that different `-c bootstrap:spectralOffset=<WHATEVER>` values can be used for each camera.
+When working with the data, it will probably be necessary to run the bootstrap pipeline on each camera separately, so that different `-c bootstrap:spectralOffset=<WHATEVER>` values can be used for each camera.
+The suitable offsets should be determined by looking at the images.
 
 Now we have a rough detectorMap, we can refine it and create the proper detectorMap:
 
