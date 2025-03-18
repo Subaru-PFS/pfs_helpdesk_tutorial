@@ -69,9 +69,13 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#basic-information">Basic Information</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#define-collections">Define Collections</a>
+    <li class="toctree-l2"><a class="reference internal" href="#define-collections-for-cr-removal">Define Collections for CR Removal</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#define-collections-for-science-data">Define Collections for Science Data</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#process-science-data_1">Process Science Data</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#introduction-to-reduction-steps">Introduction to Reduction Steps</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#retrieve-data-products">Retrieve Data Products</a>
     </li>
@@ -149,7 +153,11 @@ This can be used to process single sky exposures. This is not demonstrated below
 This can be used to process multiple sky exposures together.</p>
 </li>
 </ul>
-<h2 id="define-collections">Define Collections</h2>
+<h2 id="define-collections-for-cr-removal">Define Collections for CR Removal</h2>
+<p><span style="color:red"><strong>NOTE: This section is work in progress.</strong></span></p>
+<hr />
+<p>We need to define a collection used for cosmic ray (CR) removal.</p>
+<h2 id="define-collections-for-science-data">Define Collections for Science Data</h2>
 <hr />
 <p>Because we need to be able to distinguish coadds formed from different combinations of exposures, it’s necessary to define the inputs to the coaddition before running the <code>science</code> pipeline. 
 This is not required for the <code>reduceExposure</code> or <code>calibrateExposure</code> pipelines, but defining the inputs can provide a convenient way to reference them.. 
@@ -191,6 +199,10 @@ pipetask run \
 <p>Notice that in the first case we’re running the <code>reduceExposure</code> pipeline, selecting the <code>object</code> combinations that we defined earlier. The <code>science</code> pipeline is similar.</p>
 <p>Note that we do not have to run the <code>reduceExposure</code> pipeline before we run the <code>science</code> pipeline (a single command is sufficient to run the entire pipeline): the <code>science</code> pipeline knows how to produce all the necessary intermediate datasets itself, and the above two commands are completely independent: they do not share any intermediate datasets. 
 However, we could have first run the <code>reduceExposure</code> pipeline and then fed its outputs into the <code>science</code> pipeline by including <code>$RERUN/reduceExposure</code> in the list of input collections for the <code>science</code> pipeline.</p>
+<h2 id="introduction-to-reduction-steps">Introduction to Reduction Steps</h2>
+<p><span style="color:red"><strong>NOTE: This section is work in progress.</strong></span>.</p>
+<hr />
+<p>This section will include more detailed descriptions of each of the reduction steps in the <code>science</code> pipeline.</p>
 <h2 id="retrieve-data-products">Retrieve Data Products</h2>
 <hr />
 <p>There are some important differences in the data products produced by the Gen3 pipeline compared to the Gen2 pipeline. For the sake of efficiency (both in terms of processing time and reduced file numbers), the single-spectrum Gen2 products (<code>pfsSingle</code> and <code>pfsObject</code>) are written as multiple-spectrum Gen3 products per <code>cat_id</code> (<code>pfsCalibrated</code> and <code>pfsCoadd</code>). The equivalent of a <code>pfsObject</code> can be retrieved directly from the <code>pfsCoadd</code> dataset:</p>
