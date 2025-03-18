@@ -6,21 +6,25 @@
 
 With the calibration products built, we can now process the science data. There are a few pipelines available:
 
-- `reduceExposure`: process an exposure through merging arms, producing `postISRCCD`, `pfsArm`, `lines`, `detectorMap`, `pfsMerged`, `sky1d`, and `fiberNorms`. 
-This can be used to process quartz exposures (or sky exposures when flux calibration is not wanted). 
+- `observing`: process a visit through merging arms, producing `postISRCCD`, `pfsArm`, `lines`, `detectorMap`, `pfsMerged`, `sky1d`, and `fiberNorms`.
+This uses a basic, single-exposure cosmic-ray identification algorithm, which is not as reliable as the one used by `reduceExposure`. It is intended for use while observing, when visit groupings aren't known.
 The `fiberNorms` dataset is only produced for quartz exposures; Unlike the `fiberNorms_calib` product, this is a residual normalization equal to the ratio of the observed quartz spectrum to the `fiberNorms_calib` spectrum (after applying screen responses and other corrections).
-  
+
+- `reduceExposure`: process a visit through merging arms, producing `postISRCCD`, `pfsArm`, `lines`, `detectorMap`, `pfsMerged`, and `sky1d`.
+This can be used to process quartz exposures (or science exposures when flux calibration is not wanted).
+
 - `calibrateExposure`: adds the flux calibration to `reduceExposure`, producing `pfsFluxReference`, `fluxCal` and `pfsCalibrated`. 
-This can be used to process single sky exposures. This is not demonstrated below, but its use is similar to that for `reduceExposure`.
+This can be used to process single science exposures. This is not demonstrated below, but its use is similar to that for `reduceExposure`.
 
 - `science`: adds the spectral coaddition, producing `pfsCoadd`. 
-This can be used to process multiple sky exposures together.
+This can be used to process multiple science exposures together.
+
 
 ## Define Collections
 
 ---
 
-Because we need to be able to distinguish coadds formed from different combinations of exposures, it’s necessary to define the inputs to the coaddition before running the `science` pipeline. 
+Because we need to be able to distinguish coadds formed from different combinations of visits, it’s necessary to define the inputs to the coaddition before running the `science` pipeline. 
 This is not required for the `reduceExposure` or `calibrateExposure` pipelines, but defining the inputs can provide a convenient way to reference them.. 
 
 ### Combination for Science Data
@@ -29,7 +33,7 @@ For the science data (e.g., `OBJECT` data), the combination can be defined as
 
 ``` bash
 # Define by data type:
-$ defineCombination.py $DATASTORE PFS object --where "exposure.target_name = 'OBJECT'"
+$ defineCombination.py $DATASTORE PFS object --where "visit.target_name = 'OBJECT'"
 
 # Define by specifying the observation dates:
 $ defineCombination.py $DATASTORE PFS run20241025 --where "visit.day_obs = 20241025"
@@ -39,21 +43,28 @@ A combination can be defined with a `--where` option, which takes a query string
 Alternatively, a combination can be defined by simply listing the exposure identifiers or specifying the observing dates:
 
 ``` bash
-# Define by listing exposure identifiers
-$ defineCombination.py $DATASTORE PFS someExposures 123 124 125
+# Define by listing visit identifiers
+$ defineCombination.py $DATASTORE PFS someVisits 123 124 125
 ```
 
-### Combination for Cosmic Ray Removal
+Although we have provided here some silly examples, it is recommended that descriptive names be used for the combination (e.g., `ssp-cosmos-deep-march2025` or `ssp-ga-2025-2028`). Note that these combination names are shared, so if the name is not of general interest to all users of your data repository, then it might be good to prefix it with your username (e.g., `foobar/playingAround-20250318`).
 
-We will also need to define a combination as a visit gourp for cosmic ray (CR) removal:
+
+### Define Visit Groups
+
+Optimal cosmic-ray identification used by the `reduceExposure` pipeline (and those that extend it) requires identifying groups of visits of the same targets in similar conditions.
+There is an algorithm to automatically group all visits selected:
 
 ``` bash
-# Define by data type:
-$ defineVisitGroup.py $DATASTORE PFS --where "exposure.target_name = 'OBJECT'"
+# Select by data type:
+$ defineVisitGroup.py $DATASTORE PFS --where "visit.target_name = 'OBJECT'"
 
-# Define by specifying the observation dates:
+# Select by specifying the observation dates:
 $ defineVisitGroup.py $DATASTORE PFS --where "visit.day_obs = 20241025"
 ```
+
+If the algorithm produces undesirable results, the command has options that will allow you to specify a group explicitly.
+
 
 ## Process Science Data
 
@@ -68,9 +79,7 @@ pipetask run \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
 -o "$RERUN"/reduceExposure \
 -p '$DRP_STELLA_DIR/pipelines/reduceExposure.yaml' \
--d "combination = 'object'" \
---fail-fast \
--c 'reduceExposure:targetType=[SCIENCE, SKY, FLUXSTD]'
+-d "combination = 'object'"
 ```
 
 Alternatively, you can run the science pipeline for an entire data collection:
@@ -83,11 +92,7 @@ pipetask run \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
 -o "$RERUN"/science \
 -p '$DRP_STELLA_DIR/pipelines/science.yaml' \
--d "combination = 'object'" \
---fail-fast \
--c isr:doCrosstalk=True \
--c fitFluxCal:fitFocalPlane.polyOrder=4 \
--c 'reduceExposure:targetType=[SCIENCE, SKY, FLUXSTD]'
+-d "combination = 'object'"
 ```
 
 Notice that in the first case we’re running the `reduceExposure` pipeline, selecting the `object` combinations that we defined earlier. The `science` pipeline is similar.
@@ -114,6 +119,8 @@ from lsst.daf.butler import Butler
 butler = Butler.from_config($DATASTORE, collection=["$RERUN/object"])
 pfsObject = butler.get("pfsCoadd.single", cat_id=1, combination="object", parameters=dict(objId=55))
 ```
+
+**NOTE**: NEVER EVER retrieve `pfsCoadd.single` in a loop, as it is EXTREMELY inefficient.
 
 Note that the `objId` needs to be specified in the `parameters` dictionary, rather than as a separate argument to the `get` method because it’s a parameter for the formatter that reads the dataset and not a dimension of the dataset itself.
 

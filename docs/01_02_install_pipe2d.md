@@ -7,7 +7,7 @@
 The basic information of the PFS 2D DRP for this section includes:
 
 1. LSST version: v28 (as of 2025/03/17)
-2. pfs_pipe2d branch: gen3
+2. pfs_pipe2d branch: master
 
 **Step 1**: We should fetch pfs_pipe2d Gen3:
 
@@ -16,12 +16,9 @@ $ cd $WORKDIR/(username)/
 $ git clone http://github.com/Subaru-PFS/pfs_pipe2d
 ```
 
-<!-- !!! Skippable
-    1. Comment out `install_pfs.sh` line 87 `setup pipe_drivers ${setup_args}`. This package seems discontinued and will not be installed by the script.
-    2. Change `install_lsst.sh` line 58 from `LSST_VERSION=v26_0_0` to `LSST_VERSION=v26_0_2`
-    3. Add `numpy scipy=1.10.1` to the end of `install_lsst.sh` line 43 (not necessary for now but for newer versions of LSST) -->
-
 **Step 2**: We should check out to the lastest version:
+
+**NOTE**: The "latest version" is the `HEAD` of the `master` branch. We automatically tag this every week, so simply checking out the most recent tag, as is done below, is not helpful. The `HEAD` of the `master` branch should work, and if it doesn't then there's a bug that needs to be fixed.
 
 ```
 $ cd pfs_pipe2d
@@ -35,17 +32,17 @@ $ cd $WORKDIR/(username)/pfs_pipe2d/bin
 $ ./install_pfs.sh -t current $WORKDIR/(username)/pfs/stack_28
 ```
 
-<!-- $ ./install_pfs.sh -t current -b gen3 $WORKDIR/(username)/pfs/stack_26_0_2 -->
-
 ## Install Flux Model Data
 
 ---
 
 **Step 1**: Set up the pipe2d environment:
 
+Source the appropriate `loadLSST.*` script for your shell.
+
 ```
 $ source $WORKDIR/(username)/packages/stack_28/loadLSST.bash
-$ setup pfs_pipe2d -t current
+$ setup pfs_pipe2d
 ```
 
 **Step 2**: We should fetch the flux model data:
@@ -59,6 +56,8 @@ $ tar xzf fluxmodeldata-ambre-20230608.tar.gz -C .
 
 **Step 3**: We should modify the file `$WORKDIR/(username)/pfs_pipe2d/fluxmodeldata-ambre-20230608/scripts/makespectra.py`, and add the following line to the `import` section.
 
+**NOTE**: If this is a bug, it needs to get fixed in the source; we should not rely on users hacking the source. Please file a ticket.
+
 ```
 from numpy.lib import recfunctions
 ```
@@ -70,7 +69,15 @@ $ cd $WORKDIR/(username)/source/fluxmodeldata-ambre-20230608
 $ ./install.py --prefix=$WORKDIR/(username)/packages/
 ```
 
+**NOTE**: Check whether the `install.py` script declares the `fluxmodeldata` package to `eups`. If not, add:
+
+```
+$ eups declare fluxmodeldata 20230608 -r /path/to/fluxmodeldata
+```
+
 ## (Optional) Individual Users: Install `drp_pfs_data` Package
+
+**NOTE**: I'm hopeful that this requirement will be removed soon. It's only necessary if you will set up your own repo (specifically, for installing the "curated calibs").
 
 ---
 

@@ -2,7 +2,10 @@
 
 ## Supported Machines and Environments
 
-The current Gen3 2D DRP is supported on `CentOS 7` and `AlmaLinux 9` (recommended) with a `Bash` environment. A Python version of &ge; ` 3.9` is required (&ge; ` 3.11` is recommended). 
+The current Gen3 2D DRP is supported on `CentOS 7` and `AlmaLinux 9` (recommended).
+The PFS 2D DRP pipeline is built upon the LSST pipeline, and requires that be installed. These pipelines use Python 3.11 features; lower python versions (python &ge; `3.9`) may be acceptable for using the `datamodel` package without the pipeline.
+
+The examples below assume use of `bash`, although the pipeline supports other shells as well.
 
 Support for additional systems may be added in the future.
 
@@ -51,6 +54,8 @@ export LD_LIBRARY_PATH=$L:$ROOT_D/usr/lib:$ROOT_D/usr/lib64:$LD_LIBRARY_PATH
 
 **(Skippable for the latest LSST v28) Step 2**: Install dependencies using `user-yum.sh`
 
+**NOTE**: IMO, it's not worth including anything that's exclusively relevant to LSST versions earlier than 28.
+
 ```
 $ cd user-yum.sh/
 $ make blas bzip2-devel cmake freetype-devel gcc-c++ gcc-gfortran glib2-devel libuuid-devel libXt-devel ncurses-devel openssl-devel readline-devel zlib-dev
@@ -81,6 +86,7 @@ export ATLAS=$WORKDIR/(username)/bin/libopenblas.a
 **Step 4**: Install git LFS
 
 Git LFS must be installed to download large files from Git.
+**QUESTION**: Isn't this installed in the conda environment installed with the LSST stack?
 
 ```
 $ cd $WORKDIR/(username)/bin
