@@ -130,7 +130,9 @@
               
                 <h1 id="preparation">Preparation</h1>
 <h2 id="supported-machines-and-environments">Supported Machines and Environments</h2>
-<p>The current Gen3 2D DRP is supported on <code>CentOS 7</code> and <code>AlmaLinux 9</code> (recommended) with a <code>Bash</code> environment. A Python version of &ge; <code>3.9</code> is required (&ge; <code>3.11</code> is recommended). </p>
+<p>The current Gen3 2D DRP is supported on <code>CentOS 7</code> and <code>AlmaLinux 9</code> (recommended).
+The PFS 2D DRP pipeline is built upon the LSST pipeline, and requires that be installed. These pipelines use Python 3.11 features; lower python versions (python &ge; <code>3.9</code>) may be acceptable for using the <code>datamodel</code> package without the pipeline.</p>
+<p>The examples below assume use of <code>bash</code>, although the pipeline supports other shells as well.</p>
 <p>Support for additional systems may be added in the future.</p>
 <h2 id="setup-directory">Setup Directory</h2>
 <hr />
@@ -162,29 +164,7 @@ export LD_LIBRARY_PATH=$L:$ROOT_D/usr/lib:$ROOT_D/usr/lib64:$LD_LIBRARY_PATH
 <p class="admonition-title">Note</p>
 <p>If you are the administrator of your local machine, you may skip this step and directly install the below dependencies with <code>sudo yum install ***</code>.</p>
 </div>
-<p><strong>(Skippable for the latest LSST v28) Step 2</strong>: Install dependencies using <code>user-yum.sh</code></p>
-<pre><code>$ cd user-yum.sh/
-$ make blas bzip2-devel cmake freetype-devel gcc-c++ gcc-gfortran glib2-devel libuuid-devel libXt-devel ncurses-devel openssl-devel readline-devel zlib-dev
-$ make install
-</code></pre>
-<p><strong>(Skippable for the latest LSST v28) Step 3</strong>: Install OpenBLAS</p>
-<p>OpenBLAS is needed for pfs_pipe2d; however it cannot be found in the default repositories of <code>CentOS 7</code>.
-(From <a href="https://gist.github.com/bmmalone/1b5f9ff72754c7d4b313c0b044c42684">this page</a>)</p>
-<pre><code>$ cd $WORKDIR/(username)/bin
-$ git clone https://github.com/OpenMathLib/OpenBLAS.git --single-branch --branch=v0.3.28
-$ cd OpenBLAS &amp;&amp; make FC=gfortran
-</code></pre>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>If compilation fails due to missing dependencies, proceed with the LSST framework installation and retry this step afterward. You will probably manage to install the LSST platform and fail at the installation of PFS packages. Use command <code>source $WORKDIR/(username)/packages/stack_(LSST version)/loadLSST.bash</code> and then come back to repeat the last line listed above. The last step is setting up environment variables in <code>~/.bash_profile</code></p>
-</div>
-<p>Then, to set up the default environment variable, we can add the following lines to <code>~/.bash_profile</code></p>
-<pre><code># for the OpenBLAS library
-export LD_LIBRARY_PATH=$WORKDIR/(username)/bin/OpenBLAS:$LD_LIBRARY_PATH
-export BLAS=$WORKDIR/(username)/bin/libopenblas.a
-export ATLAS=$WORKDIR/(username)/bin/libopenblas.a
-</code></pre>
-<p><strong>Step 4</strong>: Install git LFS</p>
+<p><strong>Step 2</strong>: Install git LFS</p>
 <p>Git LFS must be installed to download large files from Git.</p>
 <pre><code>$ cd $WORKDIR/(username)/bin
 $ wget https://github.com/git-lfs/git-lfs/releases/download/v3.5.1/git-lfs-linux-amd64-v3.5.1.tar.gz

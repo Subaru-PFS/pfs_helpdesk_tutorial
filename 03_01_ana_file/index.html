@@ -74,8 +74,6 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#the-location-of-data-products">The Location of Data Products</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#export-the-data-products">Export the Data Products</a>
-    </li>
     </ul>
                   </li>
                   <li class="toctree-l1"><a class="reference internal" href="../03_02_ana_visit/">Analyze Visit-level Data</a>
@@ -130,6 +128,10 @@
 <p>After running the PFS 2D DRP, data reduction are performed and the spectrum products are constructed.</p>
 <h2 id="the-location-of-data-products">The Location of Data Products</h2>
 <hr />
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>While you can access files written to a datastore configured on a regular filesystem, it is recommended to use the data <code>butler</code>. The contents of the <code>datastore</code>, including filenames and locations, are an implementation detail of the data <code>butler</code>, and subject to change without notice.</p>
+</div>
 <p>First, where can we find the product files? 
 In this assumed working directory and user rerun, the output files are located under <code>$WORKDIR/pfs/data/datastore/u/(username)/object/</code>. </p>
 <p>You can check by:</p>
@@ -150,42 +152,6 @@ cosmicray2_log         fitPfsFluxReference_log     mergeArms_config             
 </code></pre>
 <p>You will see a bunch of directories. Refer to the release document as well as to the <a href="https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt">datamodel</a> for details.
 Here is a brief summary of some of the most important files: <code>pfsArm</code> contains 1D-extracted, wavelength-calibrated spectra for each arm (<code>b</code>, <code>r</code>, <code>n</code>, <code>m</code>) separately. Here, <code>b</code>=blue, <code>r</code>=red, <code>n</code>=nearIR, and <code>m</code>=medium resolution red-arm. The arms are combined in a <code>pfsMerged</code> file. Note that the sky subtraction has been performed in <code>pfsMerged</code>. Then the pipeline applies the flux calibration and <code>pfsCalibrated</code> is a fully calibrated 1d spectrum for a visit. Finally, <code>pfsCoadd</code> is a coadd spectrum from multiple visits.</p>
-<h2 id="export-the-data-products">Export the Data Products</h2>
-<hr />
-<p>You may notice that <code>pfsSingle</code> and <code>pfsObject</code>, which are specified in the <a href="https://github.com/Subaru-PFS/datamodel/blob/master/datamodel.txt">datamodel</a>, are missing from the current directory. 
-Since Gen3 PFS 2D DRP, the products have been stored in <code>pfsCalibrated</code> and <code>pfsCoadd</code>, respectively. However, after running:</p>
-<pre><code>$ exportPfsProducts.py -b $DATASTORE -i PFS/raw/pfsConfig,&quot;$RERUN&quot;/science -o $EXPORT
-</code></pre>
-<p>You may still be able to retrieve the data structure as follows:</p>
-<pre><code>$EXPORT/
- ├── detectorMap : directory for detectorMap of different arm &amp; spectrograph
- ├── images : directory for raw 2D images of each visit
- ├── pfsConfig : directory for pfsConfig files
- ├── pfsArm : directory for pfsArm products
- ├── pfsMerged : directory for pfsMerged products
- │     ├── 20241024 : exposures on date 2024/10/24
- │     ├── 20241025 : exposures on date 2024/10/25
- │     └── 20241026 : exposures on date 2024/10/26
- │           ├── pfsMerged-116413.fits : psfMerged spectra of visit=116413
- │           ├── pfsMergedLsf-116413.pickle : psfMerged LSF of visit=116413
- │           ├── ...
- ├── pfsSingle : directory for pfsSingle products
- │     ├── -0001 : targets with catId=-1
- │     ├── 01002 : targets with catId=1002, i.e., PS1
- │     ├── 03006 : targets with catId=3006
- │     └── 10086 : targets with catId=10086
- │           └── 00001 : tract number, meaningless at the moment
- │                 └── 1,1 : patch number, meaningless at the moment
- │                      ├── pfsSingle-[catId]-[tract]-[patch]-[objId]-[visit].fits : psfSingle spectra of catId=10086
- │                      ├── pfsSingleLsf-[catId]-[tract]-[patch]-[objId]-[visit].fits : psfSingle LSF of catId=10086
- │                      ├── ... 
- └── pfsObject
-       ├── -0001: (same as above)
-</code></pre>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is not recommended since Gen3, and we suggest working directly with <code>pfsCalibrated</code> and <code>pfsCoadd</code> instead.</p>
-</div>
               
             </div>
           </div><footer>

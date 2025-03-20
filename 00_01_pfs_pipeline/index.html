@@ -131,7 +131,7 @@
 <p><code>visit</code> refers to a unique exposure identifier.</p>
 </li>
 <li>
-<p><code>spectrograph</code> defines the spectrpgraph with an integer ranging from <code>1</code>–<code>4</code>.</p>
+<p><code>spectrograph</code> defines the spectrograph module with an integer ranging from <code>1</code>–<code>4</code>.</p>
 </li>
 <li>
 <p><code>arm</code> defines spectrograph's blue, red, near-IR, and medium-resolution red arms (<code>b</code>, <code>r</code>, <code>n</code>, <code>m</code>).</p>
@@ -140,17 +140,20 @@
 <p><code>catId</code> specifies the catalog source of an object.</p>
 </li>
 <li>
-<p><code>objId</code> is a unique 64-bit identifier for an astronomical source. </p>
+<p><code>objId</code> is a unique (within a catalog) 64-bit identifier for an astronomical source. </p>
 </li>
 <li>
-<p><code>pfsDesignId</code> encodes the fiber configuration, and <code>pfsVisitHash</code> uniquely defines a set of combined visits. </p>
+<p><code>pfsDesignId</code> encodes the fiber configuration.</p>
+</li>
+<li>
+<p><code>pfsVisitHash</code> uniquely defines a set of combined visits.</p>
 </li>
 </ul>
 <p>More details can be found in <a href="../05_01_app_datamodel/">Appendix</a>.</p>
 <h2 id="pfs-2d-drp-workflow">PFS 2D DRP Workflow</h2>
 <hr />
 <blockquote>
-<p>The data processing procedure of the PFS 2D data reduction pipeline (DRP) follows the following flowchart.</p>
+<p>The data processing procedure of the PFS 2D data reduction pipeline (DRP) generally follows the following flowchart.</p>
 <blockquote>
 <p><img alt="Focal plane map" src="../img/pipe2d_flowchart_gen3.png" /></p>
 </blockquote>
@@ -158,7 +161,7 @@
 <div class="admonition products">
 <p class="admonition-title">Products</p>
 <ul>
-<li><code>pfsArm</code>: These are reduced but not combined single spectra from a single visit and a single arm.</li>
+<li><code>pfsArm</code>: These are wavelength-calibrated but not combined or flux-calibrated single spectra from a single visit and a single arm.</li>
 <li><code>pfsMerged</code>: These are arm-combined spectra from a single visit, wavelength calibrated but not flux calibrated.</li>
 <li><code>pfsCalibrated</code>: These are flux-calibrated arm-merged spectra from a single visit.</li>
 <li><code>pfsCoadd</code>: These are coadded spectra, and the final products for science.</li>
@@ -168,7 +171,7 @@
 
 ---
 
-The latest PFS 2D data DRP is now in its third generation (Gen3). 
+The latest PFS 2D data DRP is now based on the third generation (Gen3) LSST middleware.
 The transition from the second generation (Gen2) to Gen3 is a project to migrate the 2D data reduction pipeline’s use of the LSST middleware from Gen2 to Gen3.
 
 The LSST middleware is the middle layer between the data and the algorithms responsible for processing the data. It

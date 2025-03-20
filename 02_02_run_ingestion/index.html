@@ -186,15 +186,15 @@ $ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $DATADIR/raw/2024-10-*/pfs
 <p><code>PFSB00123423.fits</code>: Raw up-the-ramp exposure, <code>visit=1234</code>, taken at the <code>site=summit</code> with <code>spectrograph=2</code> using the IR <code>arm</code> (<code>armNum=3</code>)</p>
 </li>
 <li>
-<p><code>pfsConfig-0xad349fe21234abcd-001234.fits</code>: The realisation of a <code>PfsDesign</code> with <code>PfsDesignId=ad349fe21234abcd</code> for <code>visit=1234</code>.</p>
+<p><code>pfsConfig-0xad349fe21234abcd-001234.fits</code>: The realisation of a <code>PfsDesign</code> with <code>pfsDesignId=ad349fe21234abcd</code> for <code>visit=1234</code>.</p>
 </li>
 </ul>
 <p>The parameters in the commands include:</p>
 <ul>
 <li><code>--transfer</code>: The method by which data is added to the repository, including <code>link</code>, <code>copy</code>, and <code>move</code>, which specify whether the data is symlinked, duplicated, or physically relocated, respectively. </li>
-<li><code>--fail-fast</code>: The process will immediately stop the ingestion process if an error occurs. This is useful for debugging.</li>
+<li><code>--fail-fast</code>: The process will immediately stop the ingestion process if an error occurs. This is useful for debugging. If this is not considered a useful feature, exclude this option.</li>
 </ul>
-<p>The ingestion process places the files (referred to as “datasets” in the <code>butler</code>) in the repository and records them in the registry database. Each file is placed in a <strong>collection</strong>, which can be thought of as a <em>directory</em> (i.e., <code>$DATASTORE/PFS/</code> in the example) in the <code>butler</code> (and in the case of the datastore on a traditional filesystem, it is implemented as a directory). 
+<p>The ingestion process places the files (referred to as “datasets” in the <code>butler</code>) in the repository and records them in the registry database. Each file is placed in a <strong>collection</strong>, which can be thought of as a <em>directory</em> in the <code>butler</code> (and in the case of the datastore on a traditional filesystem, it is implemented as a directory).
 The raw data is placed in the collection &lt;instrument&gt;/raw/all, while we’ve specified above that the <code>pfsConfig</code> files are placed in the collection <code>PFS/raw/pfsConfig</code>.</p>
 <p>There are different kinds of <a href="https://pipelines.lsst.io/modules/lsst.daf.butler/organizing.html#collections">collections</a>:</p>
 <ul>
@@ -208,7 +208,7 @@ The raw data is placed in the collection &lt;instrument&gt;/raw/all, while we’
 <li><code>raw</code> image may have a <code>dataId</code> like {'<code>instrument</code>': '<code>PFS</code>', '<code>visit</code>': <code>123</code>, '<code>arm</code>': '<code>r</code>', '<code>spectrograph</code>': <code>3</code>}. </li>
 <li><code>pfsConfig</code> file is valid for an entire exposure, so may have a <code>dataId</code> like {'<code>instrument</code>': '<code>PFS</code>', '<code>exposure</code>': <code>123</code>}.</li>
 </ul>
-<p>In general, users should treat the files in the datastore as a <code>butler</code> implementation detail, and use the <code>butler</code> commands and Python API to access the data products. 
+<p><strong>IMPORTANT</strong>: In general, users should treat the files in the datastore as a <code>butler</code> implementation detail, and use the <code>butler</code> commands and Python API to access the data products. 
 There are some kinds of datastores that do not use a traditional filesystem (e.g., the S3 datastore), and so the files may not be directly accessible.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
@@ -233,7 +233,7 @@ butler = Butler.from_config($DATASTORE, collections=&quot;PFS/raw/all&quot;)
 raw = butler.get(&quot;raw&quot;, instrument=&quot;PFS&quot;, exposure=12, arm=&quot;r&quot;, spectrograph=1)
 rawImage = raw.getImage()
 </code></pre>
-<p>Note that the raw data returned from the <code>butler</code> is now of type <code>PfsRaw</code>, which provides a common interface for both CCD and NIR detectors. 
+<p>The raw data returned from the <code>butler</code> is of type <code>PfsRaw</code>, which provides a common interface for both CCD and NIR detectors.
 You can use <code>butler.get("raw.exposure", ...)</code> to get the exposure from the raw data directly.</p>
               
             </div>
