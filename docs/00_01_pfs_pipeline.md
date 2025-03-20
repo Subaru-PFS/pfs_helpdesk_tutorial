@@ -23,9 +23,7 @@ More details can be found in [Appendix](05_01_app_datamodel.md).
 
 ---
 
-> The data processing procedure of the PFS 2D data reduction pipeline (DRP) generally ollows the following flowchart.
-
-> **NOTE**: This is an old diagram, but the pipeline still roughly follows it.
+> The data processing procedure of the PFS 2D data reduction pipeline (DRP) generally follows the following flowchart.
 
 >> ![Focal plane map](img/pipe2d_flowchart_gen3.png)
 
@@ -39,7 +37,7 @@ More details can be found in [Appendix](05_01_app_datamodel.md).
 
 ---
 
-The latest PFS 2D data DRP is now in its third generation (Gen3). **INACCURATE**: the term "Gen3" refers to the LSST middleware, not the PFS DRP.
+The latest PFS 2D data DRP is now based on the third generation (Gen3) LSST middleware.
 The transition from the second generation (Gen2) to Gen3 is a project to migrate the 2D data reduction pipeline’s use of the LSST middleware from Gen2 to Gen3.
 
 The LSST middleware is the middle layer between the data and the algorithms responsible for processing the data. It

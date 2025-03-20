@@ -6,7 +6,8 @@ After running the PFS 2D DRP, data reduction are performed and the spectrum prod
 
 ---
 
-**NOTE**: While you can access files written to a datastore configured on a regular filesystem, it is recommended to use the data butler. The contents of the datastore, including filenames and locations, are an implementation detail of the data butler, and subject to change without notice.
+!!! note
+    While you can access files written to a datastore configured on a regular filesystem, it is recommended to use the data `butler`. The contents of the `datastore`, including filenames and locations, are an implementation detail of the data `butler`, and subject to change without notice.
 
 
 First, where can we find the product files? 

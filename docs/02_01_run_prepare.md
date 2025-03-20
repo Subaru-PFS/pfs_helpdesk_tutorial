@@ -11,8 +11,7 @@ $ source $WORKDIR/(username)/pfs/stack_28/loadLSST.bash
 $ setup pfs_pipe2d
 ```
 
-If you are using a shared install on a server, you will need to set up a local `drp_pfs_data` as follows
-(this is only necessary if you are going to install curated calibs):
+(Optional) Only when you are going to install curated calibs, and you are using a shared installation on a server, you will need to set up a local `drp_pfs_data` as follows:
 ```
 $ setup -jr $WORKDIR/(username)/packages/drp_pfs_data
 ```
@@ -50,9 +49,9 @@ This specifies two configuration files that are important for the Gen3 middlewar
 for the data `butler`, specifying the registry and how the pipeline will read and write the various data products.
 Most of this can be ignored by the pipeline user, except for the `registry` section, which specifies the location of the
 registry database. The default is to use a SQLite database in the repository directory (suitable for small-scale testing
-without extensive parallelization), but it is recommended to use a Postgresql database for shared data repositories or if you will be doing intensive processing with many cores.
+without extensive parallelization), but it is recommended to use a `PostgreSQL` database for shared data repositories or if you will be doing intensive processing with many cores.
 
-To use a Postgresql database, change the `registry` section, like the following:
+To use a `PostgreSQL` database, change the `registry` section, like the following:
 
 ```
 registry:

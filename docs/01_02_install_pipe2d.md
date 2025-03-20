@@ -18,8 +18,6 @@ $ git clone http://github.com/Subaru-PFS/pfs_pipe2d
 
 **Step 2**: We should check out to the lastest version:
 
-**NOTE**: The "latest version" is the `HEAD` of the `master` branch. We automatically tag this every week, so simply checking out the most recent tag, as is done below, is not helpful. The `HEAD` of the `master` branch should work, and if it doesn't then there's a bug that needs to be fixed.
-
 ```
 $ cd pfs_pipe2d
 $ git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
@@ -54,22 +52,14 @@ $ wget https://hscdata.mtk.nao.ac.jp/hsc_bin_dist/pfs/fluxmodeldata-ambre-202306
 $ tar xzf fluxmodeldata-ambre-20230608.tar.gz -C .
 ```
 
-**Step 3**: We should modify the file `$WORKDIR/(username)/pfs_pipe2d/fluxmodeldata-ambre-20230608/scripts/makespectra.py`, and add the following line to the `import` section.
-
-**NOTE**: If this is a bug, it needs to get fixed in the source; we should not rely on users hacking the source. Please file a ticket.
-
-```
-from numpy.lib import recfunctions
-```
-
-**Step 4**: We can start the installation process
+**Step 3**: We can start the installation process
 
 ```
 $ cd $WORKDIR/(username)/source/fluxmodeldata-ambre-20230608
 $ ./install.py --prefix=$WORKDIR/(username)/packages/
 ```
 
-**NOTE**: Check whether the `install.py` script declares the `fluxmodeldata` package to `eups`. If not, add:
+Then we should declare the `fluxmodeldata` package to `eups` by the following command:
 
 ```
 $ eups declare fluxmodeldata 20230608 -r /path/to/fluxmodeldata
@@ -77,9 +67,10 @@ $ eups declare fluxmodeldata 20230608 -r /path/to/fluxmodeldata
 
 ## (Optional) Individual Users: Install `drp_pfs_data` Package
 
-**NOTE**: I'm hopeful that this requirement will be removed soon. It's only necessary if you will set up your own repo (specifically, for installing the "curated calibs").
-
 ---
+
+!!! note
+    We expect that this requirement will be removed soon. It's only necessary if you will set up your own repository, specifically, for installing the "curated calibs".
 
 If the PFS pipeline was installed for all users on a server in a public directory, e.g., `$WORKDIR/pfs/`, then for individual users, a local version of `drp_pfs_data` package -- other than the one included in the `pfs_pipe2d` installation above -- is needed.
 

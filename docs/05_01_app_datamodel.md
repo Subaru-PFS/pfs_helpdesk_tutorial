@@ -7,9 +7,10 @@ In this section, we only summarize the essential information of the datamodel th
 
 ## Files and Their Formats
 
-**NOTE**: **Filenames are implementation-dependent and should never be relied upon.** In particular, the filename templates specified below are no longer accurate, since the LSST Data Butler chooses its own filenames.
-
 ---
+
+!!! note
+    **Filenames are implementation-dependent and should never be relied upon.** In particular, the filename templates specified below are no longer accurate, since the LSST Data Butler chooses its own filenames.
 
 | Category                | File Type                      | File Name Format                                             | Variables                                          | Note                                                                                           |
 |-------------------------|--------------------------------|--------------------------------------------------------------|----------------------------------------------------|------------------------------------------------------------------------------------------------|

@@ -7,8 +7,7 @@ $ source $WORKDIR/(username)/packages/stack_28/loadLSST.bash
 $ setup pfs_pipe2d
 ```
 
-(Optional) For individual users, replace the default `drp_pfs_data` package with a local version:
-(This is only necessary if you will install curated calibs; otherwise the shared install is fine.)
+(Optional) In most cases, users can directly use the shared installation of `drp_pfs_data`. Only in case that one wants to install curated calibs, then for individual users, he should replace the default `drp_pfs_data` package with a local version:
 
 ```
 $ setup -jr $WORKDIR/(username)/packages/drp_pfs_data

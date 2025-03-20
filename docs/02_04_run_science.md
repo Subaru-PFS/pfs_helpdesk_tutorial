@@ -120,7 +120,8 @@ butler = Butler.from_config($DATASTORE, collection=["$RERUN/object"])
 pfsObject = butler.get("pfsCoadd.single", cat_id=1, combination="object", parameters=dict(objId=55))
 ```
 
-**NOTE**: NEVER EVER retrieve `pfsCoadd.single` in a loop, as it is EXTREMELY inefficient.
+!!! warning 
+        Be refrain from retrieving `pfsCoadd.single` in a loop, as it is EXTREMELY inefficient.
 
 Note that the `objId` needs to be specified in the `parameters` dictionary, rather than as a separate argument to the `get` method because it’s a parameter for the formatter that reads the dataset and not a dimension of the dataset itself.
 
