@@ -2,7 +2,10 @@
 
 ## Supported Machines and Environments
 
-The current Gen3 2D DRP is supported on `CentOS 7` and `AlmaLinux 9` (recommended) with a `Bash` environment. A Python version of &ge; ` 3.9` is required (&ge; ` 3.11` is recommended). 
+The current Gen3 2D DRP is supported on `CentOS 7` and `AlmaLinux 9` (recommended).
+The PFS 2D DRP pipeline is built upon the LSST pipeline, and requires that be installed. These pipelines use Python 3.11 features; lower python versions (python &ge; `3.9`) may be acceptable for using the `datamodel` package without the pipeline.
+
+The examples below assume use of `bash`, although the pipeline supports other shells as well.
 
 Support for additional systems may be added in the future.
 
@@ -49,34 +52,6 @@ export LD_LIBRARY_PATH=$L:$ROOT_D/usr/lib:$ROOT_D/usr/lib64:$LD_LIBRARY_PATH
 !!! note user-yum
     If you are the administrator of your local machine, you may skip this step and directly install the below dependencies with `sudo yum install ***`.
 
-**(Skippable for the latest LSST v28) Step 2**: Install dependencies using `user-yum.sh`
-
-```
-$ cd user-yum.sh/
-$ make blas bzip2-devel cmake freetype-devel gcc-c++ gcc-gfortran glib2-devel libuuid-devel libXt-devel ncurses-devel openssl-devel readline-devel zlib-dev
-$ make install
-```
-
-**(Skippable for the latest LSST v28) Step 3**: Install OpenBLAS
-
-OpenBLAS is needed for pfs_pipe2d; however it cannot be found in the default repositories of `CentOS 7`.
-(From [this page](https://gist.github.com/bmmalone/1b5f9ff72754c7d4b313c0b044c42684))
-```
-$ cd $WORKDIR/(username)/bin
-$ git clone https://github.com/OpenMathLib/OpenBLAS.git --single-branch --branch=v0.3.28
-$ cd OpenBLAS && make FC=gfortran
-```
-
-!!! note
-    If compilation fails due to missing dependencies, proceed with the LSST framework installation and retry this step afterward. You will probably manage to install the LSST platform and fail at the installation of PFS packages. Use command `source $WORKDIR/(username)/packages/stack_(LSST version)/loadLSST.bash` and then come back to repeat the last line listed above. The last step is setting up environment variables in `~/.bash_profile`
-
-Then, to set up the default environment variable, we can add the following lines to `~/.bash_profile`
-```
-# for the OpenBLAS library
-export LD_LIBRARY_PATH=$WORKDIR/(username)/bin/OpenBLAS:$LD_LIBRARY_PATH
-export BLAS=$WORKDIR/(username)/bin/libopenblas.a
-export ATLAS=$WORKDIR/(username)/bin/libopenblas.a
-```
 
 **Step 4**: Install git LFS
 

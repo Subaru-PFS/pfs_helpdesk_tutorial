@@ -23,7 +23,7 @@ Then in your Python environment (e.g., a Jupyter notebook), you can import the n
 
 ```
 from lsst.daf.butler import Butler
-import pfs.datamodel as datamodel
+from pfs.datamodel import TargetType
 ```
 
 We will need to first initialize the `butler`:
@@ -39,10 +39,10 @@ Let's assume we want to inspect a `visit=98336`:
 ```
 visit=98336
 pfsConfig = butler.get('pfsConfig', visit=visit)
-for i in range (1,4):
-    index = np.where(pfsConfig.targetType == i)
-    plt.plot(pfsConfig.ra[index], pfsConfig.dec[index], 
-             '.', label=datamodel.TargetType(i))
+for tt in (TargetType.SCIENCE, TargetType.SKY, TargetType.FLUXSTD):
+    select = (pfsConfig.targetType == tt)
+    plt.plot(pfsConfig.ra[select], pfsConfig.dec[select], 
+             '.', label=tt.name)
 plt.legend()
 plt.xlabel('R.A. [deg]')
 plt.ylabel('Dec. [deg]')
@@ -58,23 +58,23 @@ Running the code above will generate a figure that visualizes the sky distributi
 
 Now that we've visualized the fiber distribution, let's take a closer look at the spectrum of a specific target. The `pfsArm` files contain the extracted 1D spectra for each spectrograph arm (`b`, `r`, `n`, `m`).
 
-For example, if you want to inspect `pfsArm` with a list of `fiberId`:
+For example, if you want to inspect `pfsArm` with a particular `fiberId`:
 
 ```
 # fiberID
-fiberId = np.array([1163, ])
-# Index of the fiber in the pfsConfig
-index = np.where(pfsConfig.fiberId == fiberId)[0][0]
-
-# Spectrograph; here, it is 2.
-from pfs.utils.fibers import spectrographFromFiberId
-spectrograph = spectrographFromFiberId(fiberId).item()
+fiberId = 1163
 
 # for pfsArm, we need to know which spectrograph the object is observed with. We get the spectrograph ID with a utility function.
+from pfs.utils.fibers import spectrographFromFiberId
+# Spectrograph; here, it is 2.
+spectrograph = spectrographFromFiberId(fiberId)
+
+dataId = dict(visit=visit, spectrograph=spectrograph)
 for arm in ('b','r','n'):
-    pfsArm = butler.get('pfsArm', dataId=dict(visit=visit, arm=arm, spectrograph=spectrograph))
-    idx_arm = np.where(pfsArm.fiberId == pfsConfig.fiberId[index])[0][0] 
-    plt.plot(pfsArm.wavelength[idx_arm], pfsArm.flux[idx_arm], '-', label=arm, linewidth=0.1)
+    pfsArm = butler.get('pfsArm', dataId, arm=arm)
+    pfsArm = pfsArm.select(fiberId=fiberId)
+    assert len(pfsArm) == 1
+    plt.plot(pfsArm.wavelength[0], pfsArm.flux[0], '-', label=arm, linewidth=0.1)
 # Skipped unrelated parts #
 plt.show()
 ```
@@ -93,14 +93,14 @@ You will have the figure showing spectra from the three arms (`b`, `r`, and `n`)
 If you want to inspect `pfsMerged`:
 
 ```
-pfsMerged = butler.get('pfsMerged', dataId=dict(visit=visit, spectrograph=spectrograph))
+pfsMerged = butler.get('pfsMerged', visit=visit).select(fiberId=fiberId)
 
-bad = pfsMerged.mask[index] & pfsMerged.flags.get('BAD', 'CR', 'SAT') != 0
+bad = (pfsMerged.mask[0] & pfsMerged.flags.get('BAD', 'CR', 'SAT')) != 0
 good = ~bad
 
-plt.plot(pfsMerged.wavelength[index][good], pfsMerged.flux[index][good], '-', linewidth=0.2, label='flux')
-plt.plot(pfsMerged.wavelength[index][good], np.sqrt(pfsMerged.variance[index][good]), '-', linewidth=0.2, label='noise')
-plt.plot(pfsMerged.wavelength[index][bad], pfsMerged.flux[index][bad], '.', color='red', label='bad pixels')
+plt.plot(pfsMerged.wavelength[0][good], pfsMerged.flux[0][good], '-', linewidth=0.2, label='flux')
+plt.plot(pfsMerged.wavelength[0][good], np.sqrt(pfsMerged.variance[0][good]), '-', linewidth=0.2, label='noise')
+plt.plot(pfsMerged.wavelength[0][bad], pfsMerged.flux[0][bad], '.', color='red', label='bad pixels')
 # Skipped unrelated parts #
 plt.show()
 ```
@@ -112,44 +112,23 @@ The resulting figure will display the spectrum after merging data from the three
 
 ![Output of pfsMerged](img/out_pfsMerged.png)
 
-## Check `pfsSingle` data
-
----
-
-If you want to inspect `pfsSingle`:
-
-```
-pfsSingle = butler.get('pfsSingle', dataId=dict(visit=visit, objId=pfsConfig.objId[index], tract=1, patch='1,1', catId=4))
-
-bad = pfsSingle.mask & pfsSingle.flags.get('BAD', 'CR', 'SAT') != 0
-good = ~bad
-
-plt.plot(pfsSingle.wavelength[good], pfsSingle.flux[good], '-', linewidth=0.2, label='flux')
-plt.plot(pfsSingle.wavelength[good], np.sqrt(pfsSingle.variance[good]), '-', linewidth=0.2, label='noise')
-plt.plot(pfsSingle.wavelength, pfsSingle.sky, '-', linewidth=0.2, label='sky')
-plt.plot(pfsSingle.wavelength[bad], pfsSingle.flux[bad], '.', color='red', label='bad pixels')
-# Skipped unrelated parts #
-plt.show()
-``` 
-
-Finally, we analyze the fully calibrated `pfsSingle` spectrum. This dataset represents a single-visit spectrum with both wavelength and flux calibrations applied. The plotted figure will provide insights into the final processed spectrum, including signal quality, noise levels, sky subtraction, and flagged bad pixels.
-
-![Output of pfsSingle](img/out_pfsSingle.png)
 
 ## Check `pfsCalibrated` data
-
-In case of the direct output from the Gen3 2D DRP, there is no `pfsSingle`, and the fully reduced spectra of single exposures are stored in `pfsCalibrated`. Note that different from `pfsSingle`, `pfsCalibrated` is a collection of calibrated spectra for a single visit.
 
 Now, let's assume we want to retrieve spectra for specific objects, given their `objId` values in a list:
 
 ```
-ObjId_list = [123, 456]     # List of target object IDs
-pfsCalibrated = butler.get('pfsCalibrated', dataId=dict(visit=visit, spectrograph=spectrograph))
+catId = 12345  # Catalogue ID
+objId_list = [123, 456]     # List of target object IDs
+pfsCalibrated = butler.get('pfsCalibrated', visit=visit)
 
-for _, target in enumerate(pfsCalibrated): 
-    if target.objId not in ObjId_list:         
-        continue     
-    pfsSingle = pfsCalibrated[target] 
+for objId in objId_list:
+    spectrum = pfsCalibrated[catId, objId]
+    bad = (spectrum.mask & pfsSingle.flags.get('BAD', 'CR', 'SAT')) != 0
+    good = ~bad
+    plt.plot(spectrum.wavelength[good], spectrum.flux[good], '-', linewidth=0.2, label='flux')
+    plt.plot(spectrum.wavelength[good], np.sqrt(spectrum.variance[good]), '-', linewidth=0.2, label='noise')
+    plt.plot(spectrum.wavelength, spectrum.sky, '-', linewidth=0.2, label='sky')
+    plt.plot(spectrum.wavelength[bad], spectrum.flux[bad], '.', color='red', label='bad pixels')
+plt.show()
 ```
-
-Then, the `pfsSingle` can be manipulated as above.

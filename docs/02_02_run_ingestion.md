@@ -64,14 +64,14 @@ For example, the files have the meanings are:
 
 - `PFSB00123423.fits`: Raw up-the-ramp exposure, `visit=1234`, taken at the `site=summit` with `spectrograph=2` using the IR `arm` (`armNum=3`)
 
-- `pfsConfig-0xad349fe21234abcd-001234.fits`: The realisation of a `PfsDesign` with `PfsDesignId=ad349fe21234abcd` for `visit=1234`.
+- `pfsConfig-0xad349fe21234abcd-001234.fits`: The realisation of a `PfsDesign` with `pfsDesignId=ad349fe21234abcd` for `visit=1234`.
 
 The parameters in the commands include:
 
 - `--transfer`: The method by which data is added to the repository, including `link`, `copy`, and `move`, which specify whether the data is symlinked, duplicated, or physically relocated, respectively. 
-- `--fail-fast`: The process will immediately stop the ingestion process if an error occurs. This is useful for debugging.
+- `--fail-fast`: The process will immediately stop the ingestion process if an error occurs. This is useful for debugging. If this is not considered a useful feature, exclude this option.
 
-The ingestion process places the files (referred to as “datasets” in the `butler`) in the repository and records them in the registry database. Each file is placed in a **collection**, which can be thought of as a *directory* (i.e., `$DATASTORE/PFS/` in the example) in the `butler` (and in the case of the datastore on a traditional filesystem, it is implemented as a directory). 
+The ingestion process places the files (referred to as “datasets” in the `butler`) in the repository and records them in the registry database. Each file is placed in a **collection**, which can be thought of as a *directory* in the `butler` (and in the case of the datastore on a traditional filesystem, it is implemented as a directory).
 The raw data is placed in the collection <instrument\>/raw/all, while we’ve specified above that the `pfsConfig` files are placed in the collection `PFS/raw/pfsConfig`.
 
 There are different kinds of [collections](https://pipelines.lsst.io/modules/lsst.daf.butler/organizing.html#collections):
@@ -87,7 +87,7 @@ For example,
 - `raw` image may have a `dataId` like {'`instrument`': '`PFS`', '`visit`': `123`, '`arm`': '`r`', '`spectrograph`': `3`}. 
 - `pfsConfig` file is valid for an entire exposure, so may have a `dataId` like {'`instrument`': '`PFS`', '`exposure`': `123`}.
 
-In general, users should treat the files in the datastore as a `butler` implementation detail, and use the `butler` commands and Python API to access the data products. 
+**IMPORTANT**: In general, users should treat the files in the datastore as a `butler` implementation detail, and use the `butler` commands and Python API to access the data products. 
 There are some kinds of datastores that do not use a traditional filesystem (e.g., the S3 datastore), and so the files may not be directly accessible.
 
 !!! warning
@@ -121,5 +121,5 @@ raw = butler.get("raw", instrument="PFS", exposure=12, arm="r", spectrograph=1)
 rawImage = raw.getImage()
 ```
 
-Note that the raw data returned from the `butler` is now of type `PfsRaw`, which provides a common interface for both CCD and NIR detectors. 
+The raw data returned from the `butler` is of type `PfsRaw`, which provides a common interface for both CCD and NIR detectors.
 You can use `butler.get("raw.exposure", ...)` to get the exposure from the raw data directly.

@@ -9,6 +9,9 @@ In this section, we only summarize the essential information of the datamodel th
 
 ---
 
+!!! note
+    **Filenames are implementation-dependent and should never be relied upon.** In particular, the filename templates specified below are no longer accurate, since the LSST Data Butler chooses its own filenames.
+
 | Category                | File Type                      | File Name Format                                             | Variables                                          | Note                                                                                           |
 |-------------------------|--------------------------------|--------------------------------------------------------------|----------------------------------------------------|------------------------------------------------------------------------------------------------|
 | **Configuration**       | pfsDesign                      | `pfsDesign-%016x.fits`                                        | `pfsDesignId`                                      | PFS design configuration (SHA-1 truncated to 64 bits, rendered in 16 hexadecimal digits).       |
