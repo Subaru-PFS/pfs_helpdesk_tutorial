@@ -132,3 +132,6 @@ for objId in objId_list:
     plt.plot(spectrum.wavelength[bad], spectrum.flux[bad], '.', color='red', label='bad pixels')
 plt.show()
 ```
+Finally, we analyze the fully calibrated `pfsCalibrated` spectrum for a single visit. This dataset represents a single-visit spectrum with both wavelength and flux calibrations applied. The plotted figure will provide insights into the final processed spectrum, including signal quality, noise levels, sky subtraction, and flagged bad pixels.
+
+![Output of pfsCalibrated](img/out_pfsSingle.png)

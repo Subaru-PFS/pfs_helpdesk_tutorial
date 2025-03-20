@@ -113,7 +113,8 @@ $ butlerCertify.py /work/datastore price/pipe2d-1036/dark/run16 PFS/calib dark -
 
 ---
 
-> **Warning**: Certifying a dataset as a calibration product tags it in the database as a calibration product and associates it with a validity timespan. It does not copy the dataset: the dataset is still a part of the `$RERUN/bias/<timestamp> RUN` collection, and removing that collection will remove the calibration dataset from the datastore.
+!!! warning 
+    Certifying a dataset as a calibration product tags it in the database as a calibration product and associates it with a validity timespan. It does not copy the dataset: the dataset is still a part of the `$RERUN/bias/<timestamp> RUN` collection, and removing that collection will remove the calibration dataset from the datastore.
 
 ---
 

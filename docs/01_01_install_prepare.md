@@ -53,7 +53,7 @@ export LD_LIBRARY_PATH=$L:$ROOT_D/usr/lib:$ROOT_D/usr/lib64:$LD_LIBRARY_PATH
     If you are the administrator of your local machine, you may skip this step and directly install the below dependencies with `sudo yum install ***`.
 
 
-**Step 4**: Install git LFS
+**Step 2**: Install git LFS
 
 Git LFS must be installed to download large files from Git.
 

@@ -80,8 +80,6 @@
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#check-pfsmerged-data">Check pfsMerged data</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#check-pfssingle-data">Check pfsSingle data</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#check-pfscalibrated-data">Check pfsCalibrated data</a>
     </li>
     </ul>
@@ -148,7 +146,7 @@ $ setup pfs_pipe2d
 </code></pre>
 <p>Then in your Python environment (e.g., a Jupyter notebook), you can import the necessary modules:</p>
 <pre><code>from lsst.daf.butler import Butler
-import pfs.datamodel as datamodel
+from pfs.datamodel import TargetType
 </code></pre>
 <p>We will need to first initialize the <code>butler</code>:</p>
 <pre><code>$DATASTORE = &quot;$WORKDIR/pfs/data/datastore&quot;
@@ -158,10 +156,10 @@ butler = Butler.from_config($DATASTORE, collection=[$COLLECTION])
 <p>Let's assume we want to inspect a <code>visit=98336</code>:</p>
 <pre><code>visit=98336
 pfsConfig = butler.get('pfsConfig', visit=visit)
-for i in range (1,4):
-    index = np.where(pfsConfig.targetType == i)
-    plt.plot(pfsConfig.ra[index], pfsConfig.dec[index], 
-             '.', label=datamodel.TargetType(i))
+for tt in (TargetType.SCIENCE, TargetType.SKY, TargetType.FLUXSTD):
+    select = (pfsConfig.targetType == tt)
+    plt.plot(pfsConfig.ra[select], pfsConfig.dec[select], 
+             '.', label=tt.name)
 plt.legend()
 plt.xlabel('R.A. [deg]')
 plt.ylabel('Dec. [deg]')
@@ -171,21 +169,21 @@ plt.ylabel('Dec. [deg]')
 <h2 id="check-pfsarm-data">Check <code>pfsArm</code> data</h2>
 <hr />
 <p>Now that we've visualized the fiber distribution, let's take a closer look at the spectrum of a specific target. The <code>pfsArm</code> files contain the extracted 1D spectra for each spectrograph arm (<code>b</code>, <code>r</code>, <code>n</code>, <code>m</code>).</p>
-<p>For example, if you want to inspect <code>pfsArm</code> with a list of <code>fiberId</code>:</p>
+<p>For example, if you want to inspect <code>pfsArm</code> with a particular <code>fiberId</code>:</p>
 <pre><code># fiberID
-fiberId = np.array([1163, ])
-# Index of the fiber in the pfsConfig
-index = np.where(pfsConfig.fiberId == fiberId)[0][0]
-
-# Spectrograph; here, it is 2.
-from pfs.utils.fibers import spectrographFromFiberId
-spectrograph = spectrographFromFiberId(fiberId).item()
+fiberId = 1163
 
 # for pfsArm, we need to know which spectrograph the object is observed with. We get the spectrograph ID with a utility function.
+from pfs.utils.fibers import spectrographFromFiberId
+# Spectrograph; here, it is 2.
+spectrograph = spectrographFromFiberId(fiberId)
+
+dataId = dict(visit=visit, spectrograph=spectrograph)
 for arm in ('b','r','n'):
-    pfsArm = butler.get('pfsArm', dataId=dict(visit=visit, arm=arm, spectrograph=spectrograph))
-    idx_arm = np.where(pfsArm.fiberId == pfsConfig.fiberId[index])[0][0] 
-    plt.plot(pfsArm.wavelength[idx_arm], pfsArm.flux[idx_arm], '-', label=arm, linewidth=0.1)
+    pfsArm = butler.get('pfsArm', dataId, arm=arm)
+    pfsArm = pfsArm.select(fiberId=fiberId)
+    assert len(pfsArm) == 1
+    plt.plot(pfsArm.wavelength[0], pfsArm.flux[0], '-', label=arm, linewidth=0.1)
 # Skipped unrelated parts #
 plt.show()
 </code></pre>
@@ -198,14 +196,14 @@ plt.show()
 <h2 id="check-pfsmerged-data">Check <code>pfsMerged</code> data</h2>
 <hr />
 <p>If you want to inspect <code>pfsMerged</code>:</p>
-<pre><code>pfsMerged = butler.get('pfsMerged', dataId=dict(visit=visit, spectrograph=spectrograph))
+<pre><code>pfsMerged = butler.get('pfsMerged', visit=visit).select(fiberId=fiberId)
 
-bad = pfsMerged.mask[index] &amp; pfsMerged.flags.get('BAD', 'CR', 'SAT') != 0
+bad = (pfsMerged.mask[0] &amp; pfsMerged.flags.get('BAD', 'CR', 'SAT')) != 0
 good = ~bad
 
-plt.plot(pfsMerged.wavelength[index][good], pfsMerged.flux[index][good], '-', linewidth=0.2, label='flux')
-plt.plot(pfsMerged.wavelength[index][good], np.sqrt(pfsMerged.variance[index][good]), '-', linewidth=0.2, label='noise')
-plt.plot(pfsMerged.wavelength[index][bad], pfsMerged.flux[index][bad], '.', color='red', label='bad pixels')
+plt.plot(pfsMerged.wavelength[0][good], pfsMerged.flux[0][good], '-', linewidth=0.2, label='flux')
+plt.plot(pfsMerged.wavelength[0][good], np.sqrt(pfsMerged.variance[0][good]), '-', linewidth=0.2, label='noise')
+plt.plot(pfsMerged.wavelength[0][bad], pfsMerged.flux[0][bad], '.', color='red', label='bad pixels')
 # Skipped unrelated parts #
 plt.show()
 </code></pre>
@@ -215,35 +213,24 @@ plt.show()
 </div>
 <p>The resulting figure will display the spectrum after merging data from the three arms (<code>b</code>, <code>r</code>, and <code>n</code>). At this stage, wavelength calibration has been applied, but flux calibration has not yet been performed. This step provides a crucial intermediate product, allowing you to check for artifacts, discontinuities between arms, and the overall quality of spectral extraction before applying flux corrections.</p>
 <p><img alt="Output of pfsMerged" src="../img/out_pfsMerged.png" /></p>
-<h2 id="check-pfssingle-data">Check <code>pfsSingle</code> data</h2>
-<hr />
-<p>If you want to inspect <code>pfsSingle</code>:</p>
-<pre><code>pfsSingle = butler.get('pfsSingle', dataId=dict(visit=visit, objId=pfsConfig.objId[index], tract=1, patch='1,1', catId=4))
+<h2 id="check-pfscalibrated-data">Check <code>pfsCalibrated</code> data</h2>
+<p>Now, let's assume we want to retrieve spectra for specific objects, given their <code>objId</code> values in a list:</p>
+<pre><code>catId = 12345  # Catalogue ID
+objId_list = [123, 456]     # List of target object IDs
+pfsCalibrated = butler.get('pfsCalibrated', visit=visit)
 
-bad = pfsSingle.mask &amp; pfsSingle.flags.get('BAD', 'CR', 'SAT') != 0
-good = ~bad
-
-plt.plot(pfsSingle.wavelength[good], pfsSingle.flux[good], '-', linewidth=0.2, label='flux')
-plt.plot(pfsSingle.wavelength[good], np.sqrt(pfsSingle.variance[good]), '-', linewidth=0.2, label='noise')
-plt.plot(pfsSingle.wavelength, pfsSingle.sky, '-', linewidth=0.2, label='sky')
-plt.plot(pfsSingle.wavelength[bad], pfsSingle.flux[bad], '.', color='red', label='bad pixels')
-# Skipped unrelated parts #
+for objId in objId_list:
+    spectrum = pfsCalibrated[catId, objId]
+    bad = (spectrum.mask &amp; pfsSingle.flags.get('BAD', 'CR', 'SAT')) != 0
+    good = ~bad
+    plt.plot(spectrum.wavelength[good], spectrum.flux[good], '-', linewidth=0.2, label='flux')
+    plt.plot(spectrum.wavelength[good], np.sqrt(spectrum.variance[good]), '-', linewidth=0.2, label='noise')
+    plt.plot(spectrum.wavelength, spectrum.sky, '-', linewidth=0.2, label='sky')
+    plt.plot(spectrum.wavelength[bad], spectrum.flux[bad], '.', color='red', label='bad pixels')
 plt.show()
 </code></pre>
-<p>Finally, we analyze the fully calibrated <code>pfsSingle</code> spectrum. This dataset represents a single-visit spectrum with both wavelength and flux calibrations applied. The plotted figure will provide insights into the final processed spectrum, including signal quality, noise levels, sky subtraction, and flagged bad pixels.</p>
-<p><img alt="Output of pfsSingle" src="../img/out_pfsSingle.png" /></p>
-<h2 id="check-pfscalibrated-data">Check <code>pfsCalibrated</code> data</h2>
-<p>In case of the direct output from the Gen3 2D DRP, there is no <code>pfsSingle</code>, and the fully reduced spectra of single exposures are stored in <code>pfsCalibrated</code>. Note that different from <code>pfsSingle</code>, <code>pfsCalibrated</code> is a collection of calibrated spectra for a single visit.</p>
-<p>Now, let's assume we want to retrieve spectra for specific objects, given their <code>objId</code> values in a list:</p>
-<pre><code>ObjId_list = [123, 456]     # List of target object IDs
-pfsCalibrated = butler.get('pfsCalibrated', dataId=dict(visit=visit, spectrograph=spectrograph))
-
-for _, target in enumerate(pfsCalibrated): 
-    if target.objId not in ObjId_list:         
-        continue     
-    pfsSingle = pfsCalibrated[target] 
-</code></pre>
-<p>Then, the <code>pfsSingle</code> can be manipulated as above.</p>
+<p>Finally, we analyze the fully calibrated <code>pfsCalibrated</code> spectrum for a single visit. This dataset represents a single-visit spectrum with both wavelength and flux calibrations applied. The plotted figure will provide insights into the final processed spectrum, including signal quality, noise levels, sky subtraction, and flagged bad pixels.</p>
+<p><img alt="Output of pfsCalibrated" src="../img/out_pfsSingle.png" /></p>
               
             </div>
           </div><footer>

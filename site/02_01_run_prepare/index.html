@@ -63,8 +63,6 @@
     <ul class="current">
     <li class="toctree-l2"><a class="reference internal" href="#software-setup">Software Setup</a>
     </li>
-    <li class="toctree-l2"><a class="reference internal" href="#data-setup">Data Setup</a>
-    </li>
     <li class="toctree-l2"><a class="reference internal" href="#repository-setup">Repository Setup</a>
     </li>
     </ul>
@@ -133,30 +131,15 @@
 <hr />
 <p>First, we need to set up the 2D DRP environment:</p>
 <pre><code>$ source $WORKDIR/(username)/pfs/stack_28/loadLSST.bash
-$ setup pfs_pipe2d -t current
-$ setup -jr $WORKDIR/(username)/packages/fluxmodeldata-ambre-20230608-full
+$ setup pfs_pipe2d
 </code></pre>
-<p>If you are using a public pipeline on a server, you will need to set up a local <code>drp_pfs_data</code> as follows:</p>
+<p>(Optional) Only when you are going to install curated calibs, and you are using a shared installation on a server, you will need to set up a local <code>drp_pfs_data</code> as follows:</p>
 <pre><code>$ setup -jr $WORKDIR/(username)/packages/drp_pfs_data
 </code></pre>
-<h2 id="data-setup">Data Setup</h2>
-<hr />
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This step is not necessary for processing <strong>Science Data</strong>. </p>
-<p>Skip over this unless you’re running the <strong>Integration Test</strong> for yourself.</p>
-</div>
-<p>The integration test uses simulated data from the <a href="https://github.com/Subaru-PFS/drp_stella_data">drp_stella_data package</a>, which must be available locally.
-Some of the headers in the simulated data are inaccurate (and have not been fixed upstream), so we need to check and fix them before running the integration test:</p>
-<pre><code>$ checkPfsRawHeaders.py --fix drp_stella_data/raw/PFSA*.fits
-$ checkPfsConfigHeaders.py --fix drp_stella_data/raw/pfsConfig-*.fits
-</code></pre>
-<p>These scripts check the headers of raw data files (<code>checkPfsRawHeaders.py</code>) and pfsConfig files
-(<code>checkPfsConfigHeaders.py</code>). They can be run without the <code>--fix</code> option to test for errors without fixing them.</p>
 <h2 id="repository-setup">Repository Setup</h2>
 <hr />
 <p>The data repository is a directory containing data products and configuration files for the Gen3 middleware.
-For this tutorial, we will store the data repository in the <code>$DATASTORE</code> directory on a local disk. However, the Gen3 middleware supports storing data products on remote storage and various cloud services.</p>
+For this tutorial, we will store the data repository in the <code>$DATASTORE</code> directory on a local disk. However, the LSST Gen3 middleware supports storing data products on remote storage and various cloud services.</p>
 <p>The first step is to copy the default <code>butler.yaml</code>:</p>
 <pre><code>$ cp $OBS_PFS_DIR/gen3/butler.yaml $WORKDIR/(username)/data/butler.yaml
 </code></pre>
@@ -178,13 +161,13 @@ For this tutorial, we will store the data repository in the <code>$DATASTORE</co
 for the data <code>butler</code>, specifying the registry and how the pipeline will read and write the various data products.
 Most of this can be ignored by the pipeline user, except for the <code>registry</code> section, which specifies the location of the
 registry database. The default is to use a SQLite database in the repository directory (suitable for small-scale testing
-without extensive parallelization), but this can be changed to use a PostgreSQL database for better performance. For
-example, the following snippet configures the use of the <code>drp</code> database:</p>
+without extensive parallelization), but it is recommended to use a <code>PostgreSQL</code> database for shared data repositories or if you will be doing intensive processing with many cores.</p>
+<p>To use a <code>PostgreSQL</code> database, change the <code>registry</code> section, like the following:</p>
 <pre><code>registry:
-  db: postgresql+psycopg2://pfsa-db:5435/drp
+  db: postgresql+psycopg2://dbserver:5432/dbname
 </code></pre>
 <p><code>dimensions.yaml</code> contains the configuration for the dimensions of the data products. Dimensions are a very important
-concept in the Gen3 middleware, as they are used to specify data products and control the parallelization levels of
+concept in the LSST Gen3 middleware, as they are used to specify data products and control the parallelization levels of
 different operations. Some important dimensions are:</p>
 <ul>
 <li><code>instrument</code>: the instrument that produced the data. The datastore can contain data from multiple instruments,

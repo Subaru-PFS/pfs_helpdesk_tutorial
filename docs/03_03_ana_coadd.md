@@ -18,5 +18,9 @@ objId_list = [123, 456]     # List of target object IDs
 pfsCoadd = butler.get('pfsCoadd', cat_id=catId, combination=rerun)
 for objId in objId_list:
     spectrum = pfsCoadd[objId]
-    # Manipulate single object spectrum, as we did for pfsCalibrated, above
+    # Manipulate single object spectrum, as we did for pfsCalibrated in the last section
 ```
+
+![Output of pfsCoadd](img/out_pfsCoadd.png)
+
+Since `pfsCoadd` contains coadded spectra for a single object, this provides a higher S/N spectrum of the target compared to single-visit spectra, reducing noise and improving spectral features.

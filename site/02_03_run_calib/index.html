@@ -155,12 +155,11 @@ RERUN=&quot;u/(username)&quot;
 -j $CORES \                                               # number of cores to use in parallel
 -b $DATASTORE \                                           # datastore directory to use
 --instrument $INSTRUMENT \                                # the instrument PFS
--i PFS/raw/sps,PFS/calib \                                # input collection (comma-separated)
+-i PFS/raw/sps,PFS/calib \                                # input collections (comma-separated)
 -o &quot;$RERUN&quot;/bias \                                        # output CHAINED collection
 -p $DRP_STELLA_DIR/pipelines/bias.yaml \                  # pipeline configuration file to use
--d &quot;instrument='PFS' AND exposure.target_name = 'BIAS'&quot; \ # or, for example: -d &quot;visit IN (123456..123466)&quot; \
---fail-fast \                                             # immediately stop the ingestion process if error
--c isr:doCrosstalk=False                                   # (optional) turn on the crosstalk correction 
+-d &quot;instrument='PFS' AND visit.target_name = 'BIAS'&quot; \ # or, for example: -d &quot;visit IN (123456..123466)&quot; \
+--fail-fast                                               # immediately stop the ingestion process if error
 </code></pre>
 <p>The <code>pipetask run</code> command is used to run a pipeline. 
 A task is an operation within the pipeline, characterized by a set of dimensions that define the level at which it parallelizes, and a set of inputs and outputs. An instance of a task running on a single set of data at its parallelization level is called a "quantum". 
@@ -183,7 +182,7 @@ The summary for a more complicated pipeline (running the full science pipeline o
 <p><code>-b</code> option specifies the datastore to use.</p>
 </li>
 <li>
-<p><code>--instrument</code> option specifies the instrument. The proper PFS is <code>lsst.obs.pfs.PrimeFocusSpectrograph</code></p>
+<p><code>--instrument</code> option specifies the instrument. The proper specification for PFS is <code>lsst.obs.pfs.PrimeFocusSpectrograph</code></p>
 </li>
 <li>
 <p><code>-i</code> option specifies the input collections (comma-separated). In this case, we are using the raw data and the calibration data (for the defects). Later we’ll add other collections as we need them.</p>
@@ -195,23 +194,23 @@ The summary for a more complicated pipeline (running the full science pipeline o
 <p><code>-p</code> option specifies the pipeline configuration file to use. This is a <code>YAML</code> file in <code>drp_stella/pipelines</code> that describes the pipeline to run. A pipeline is composed of multiple tasks, each operating on a (potentially different) set of dimensions. The pipeline configuration can also specify configuration overrides for each task, including different dataset names to use as connections between the tasks (useful for providing slightly different versions of the same dataset; there’ll be an example of this later).</p>
 </li>
 <li>
-<p><code>-d</code> option specifies the data selection query. The query syntax is similar to the <code>WHERE</code> clause in SQL, with some extensions. In this case, we are selecting all the exposures that have a target name of BIAS and are from the PFS instrument. Strings must be quoted with single quotes (<code>'</code>). Ranges can be specified, like exposure <code>IN (12..34:5)</code>, which means all exposures from 12 to 34 (inclusive) in steps of 5.
-The <code>exposure</code> dimension can be used directly to mean the exposure identifier, but also has a variety of additional fields that can be used, including:</p>
+<p><code>-d</code> option specifies the data selection query. The query syntax is similar to the <code>WHERE</code> clause in SQL, with some extensions. In this case, we are selecting all the visits that have a target name of BIAS and are from the PFS instrument; this is not generally recommended in the usual case, since it would encompass visits taken on multiple nights and different conditions, rather than selecting visits from, say, the beginning of a single night. Strings must be quoted with single quotes (<code>'</code>). Ranges can be specified, like <code>visit IN (12..34:5)</code>, which means all visits from 12 to 34 (inclusive) in steps of 5.
+The <code>visit</code> dimension can be used directly to mean the visit number, but also has a variety of additional fields that can be used, including:</p>
 <blockquote>
 <ul>
-<li><code>exposure.exposure_time</code>: exposure time in seconds</li>
-<li><code>exposure.observation_type</code>: type of observation (e.g., <code>BIAS</code>, <code>DARK</code>, <code>FLAT</code>, <code>ARC</code>)</li>
-<li><code>exposure.target_name</code>: target name</li>
-<li><code>exposure.science_program</code>: science program name</li>
-<li><code>exposure.tracking_ra</code>, <code>tracking_dec</code>: boresight position (ICRS)</li>
-<li><code>exposure.zenith_angle</code>: zenith angle in degrees</li>
-<li><code>exposure.lamps</code>: comma-separated list of lamps that were on</li>
-<li>Other dimensions can also be used, for example: <code>exposure IN (12..34:5) AND arm = 'r' AND spectrograph = 3</code>.</li>
+<li><code>visit.exposure_time</code>: exposure time in seconds</li>
+<li><code>visit.observation_type</code>: type of observation (e.g., <code>BIAS</code>, <code>DARK</code>, <code>FLAT</code>, <code>ARC</code>)</li>
+<li><code>visit.target_name</code>: target name</li>
+<li><code>visit.science_program</code>: science program name</li>
+<li><code>visit.tracking_ra</code>, <code>tracking_dec</code>: boresight position (ICRS)</li>
+<li><code>visit.zenith_angle</code>: zenith angle in degrees</li>
+<li><code>visit.lamps</code>: comma-separated list of lamps that were on</li>
+<li>Other dimensions can also be used, for example: <code>visit IN (12..34:5) AND arm = 'r' AND spectrograph = 3</code>.</li>
 </ul>
 </blockquote>
 </li>
 <li>
-<p><code>-c</code> option provides configuration overrides for the pipeline<sup><a href="#diff_gen2_c">1</a></sup>. In this case, we are turning on the crosstalk correction.</p>
+<p>Configuration overrides can be specified with the <code>-c</code> option<sup><a href="#diff_gen2_c">1</a></sup>. For example, <code>-c isr:doCrosstalk=False</code> turns off the crosstalk correction.</p>
 </li>
 <li>
 <p><code>--register-dataset-types</code> option is used to register the dataset types from the pipeline in the <code>butler</code> registry. 
@@ -238,17 +237,19 @@ This won’t work with parallel processing, so check that you’re not also usin
 <pre><code>$ butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/bias PFS/calib bias --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
 </code></pre>
 <p>This command tells the <code>butler</code> to certify the bias datasets in the <code>$RERUN/bias</code> collection as calibration products in the <code>PFS/calib</code> calib collection. 
-The <code>--begin-date</code> and <code>--end-date</code> options specify the validity range of the calibration products.</p>
+The <code>--begin-date</code> and <code>--end-date</code> options specify the validity range of the calibration products.
+In the above example, we're specifying a very broad range as an example, but the dates and times should be chosen carefully according to the calibration needs of the instrument.</p>
 <p>To manage calibrations, it may be necessary to certify and decertify individual datasets.
-This capability is not available with LSST’s command-line tools, but we have some scripts that can do this. Here are some examples from working on real Subaru data:</p>
+This capability is not available with LSST’s command-line tools, but we have some scripts that can do this. Here are some examples from working on Subaru data:</p>
 <pre><code>$ butlerDecertify.py /work/datastore PFS/calib dark --begin-date 2024-08-24T00:00:00 --id instrument=PFS arm=r spectrograph=2
 $ butlerDecertify.py /work/datastore PFS/calib dark --begin-date 2024-05-01T00:00:00 --end-date 2024-08-23T23:59:59 --id instrument=PFS arm=r spectrograph=2
 $ butlerCertify.py /work/datastore price/pipe2d-1036/dark/run16 PFS/calib dark --begin-date 2024-05-01T00:00:00 --id instrument=PFS arm=r spectrograph=2
 </code></pre>
 <hr />
-<blockquote>
-<p><strong>Warning</strong>: Certifying a dataset as a calibration product tags it in the database as a calibration product and associates it with a validity timespan. It does not copy the dataset: the dataset is still a part of the <code>$RERUN/bias/&lt;timestamp&gt; RUN</code> collection, and removing that collection will remove the calibration dataset from the datastore.</p>
-</blockquote>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Certifying a dataset as a calibration product tags it in the database as a calibration product and associates it with a validity timespan. It does not copy the dataset: the dataset is still a part of the <code>$RERUN/bias/&lt;timestamp&gt; RUN</code> collection, and removing that collection will remove the calibration dataset from the datastore.</p>
+</div>
 <hr />
 <p>However, that RUN collection also contains a bunch of intermediate datasets which are unnecessarily consuming space, in particular the <code>biasProc</code> datasets (which are the outputs of running the isr task in the bias pipeline). We can remove these with the following command:</p>
 <pre><code>$ butlerCleanRun.py $DATASTORE $RERUN/bias/* biasProc
@@ -265,7 +266,7 @@ $ butlerCertify.py /work/datastore price/pipe2d-1036/dark/run16 PFS/calib dark -
 -i PFS/raw/all,PFS/calib \
 -o &quot;$RERUN&quot;/dark \
 -p $DRP_STELLA_DIR/pipelines/dark.yaml \
--d &quot;instrument='PFS' AND exposure.target_name = 'DARK'&quot; \
+-d &quot;instrument='PFS' AND visit.target_name = 'DARK'&quot; \
 --fail-fast 
 </code></pre>
 <p>Then, certify the products:</p>
@@ -282,7 +283,7 @@ $ butlerCleanRun.py $DATASTORE $RERUN/dark/* darkProc
 -i PFS/raw/all,PFS/calib \
 -o &quot;$RERUN&quot;/flat \
 -p $DRP_STELLA_DIR/pipelines/flat.yaml \
--d &quot;instrument='PFS' AND exposure.target_name = 'FLAT'&quot; \
+-d &quot;instrument='PFS' AND visit.target_name = 'FLAT'&quot; \
 --fail-fast 
 </code></pre>
 <p>Then, certify the products:</p>
@@ -293,7 +294,8 @@ $ butlerCleanRun.py $DATASTORE $RERUN/flat/* flatProc
 <p><span style="color:red"><strong>NOTE: This section is work in progress.</strong></span></p>
 <hr />
 <p>A detector map (<code>detectorMap</code>) is the mapping of fiber trace and wavelength to (x, y) position on the detector, which is generated by using quartz and arc lamp dataset. The bias, dark, and flat frames characterize the detector, so now it’s time to determine the detector map. </p>
-<p>We first bootstrap a <code>detectorMap</code> from an arc and quartz:</p>
+<p>We first bootstrap a <code>detectorMap</code> from an arc and quartz.
+This is somewhat of a black-belt operation, because it requires looking at images to determine approximate offsets between the base optical model and reality. In general, it should not be necessary for general users to have to do this, as the Subaru Observatory and the SSP team will provide suitable detectorMaps.</p>
 <pre><code>pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
 --instrument $INSTRUMENT \
@@ -315,7 +317,8 @@ $ butlerCleanRun.py $DATASTORE $RERUN/bootstrap/* postISRCCD
 <p>Here, we have added the <code>PFS/raw/pfsConfig</code> collection to the input since we need the <code>pfsConfig</code> files to determine which fibers are illuminated. Note that the arc and quartz are both specified as inputs in the same <code>-d</code> option. 
 The Gen3 middleware does not support multiple <code>-d</code> options to specify them independently, but the task can determine which is which from the <code>lamps</code> field in the exposure. 
 The bootstrap pipeline writes a <code>detectorMap_bootstrap</code> dataset for each camera, and we’re certifying that in the <code>PFS/bootstrap</code> collection (so it’s independent of the best-quality detectorMaps we’ll certify in <code>PFS/calibs</code>).</p>
-<p>When working with real data, it will probably be necessary to run the bootstrap pipeline on each camera separately, so that different <code>-c bootstrap:spectralOffset=&lt;WHATEVER&gt;</code> values can be used for each camera.</p>
+<p>When working with the data, it will probably be necessary to run the bootstrap pipeline on each camera separately, so that different <code>-c bootstrap:spectralOffset=&lt;WHATEVER&gt;</code> values can be used for each camera.
+The suitable offsets should be determined by looking at the images.</p>
 <p>Now we have a rough detectorMap, we can refine it and create the proper detectorMap:</p>
 <pre><code>pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
@@ -323,13 +326,14 @@ The bootstrap pipeline writes a <code>detectorMap_bootstrap</code> dataset for e
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/bootstrap,PFS/calib \
 -o &quot;$RERUN&quot;/detectorMap \
 -p '$DRP_STELLA_DIR/pipelines/detectorMap.yaml' \
--d &quot;instrument='PFS' AND exposure.target_name = 'ARC'&quot; \
+-d &quot;instrument='PFS' AND visit.target_name IN ('ARC', 'FLAT')&quot; \
 -c measureCentroids:connections.calibDetectorMap=detectorMap_bootstrap \
 -c fitDetectorMap:fitDetectorMap.doSlitOffsets=True \
 -c fitDetectorMap:fitDetectorMap.order=4 \
 -c fitDetectorMap:fitDetectorMap.soften=0.03 \
 --fail-fast
 </code></pre>
+<p>Note that quartz (<code>FLAT</code>) exposures provide useful information for constraining the detectorMap, in addition to the arc lamp (<code>ARC</code>) exposures.</p>
 <p>Then, certify the products:</p>
 <pre><code>$ certifyDetectorMaps.py INTEGRATION $RERUN/detectorMap PFS/calib --instrument PFS --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
 $ butlerCleanRun.py $DATASTORE $RERUN/detectorMap/* postISRCCD
@@ -344,9 +348,7 @@ This script copies the <code>detectorMap_candidate</code> as a <code>detectorMap
 <h2 id="build-fiber-profile">Build Fiber Profile</h2>
 <hr />
 <p>The fiber profile (<code>fiberProfiles</code>) is the profile of fibers along the spatial direction. We illuminate every four fibers and hide the rest behind “dots”, and then measure the profiles of fibers using a dedicated quartz dataset.
-Fiber profiles can be built in two different ways. 
-The <code>fitFiberProfiles</code> pipeline fits a profile to multiple exposures simultaneously. 
-The <code>measureFiberProfiles</code> pipeline measures the profile from a single exposure. </p>
+The <code>fitFiberProfiles</code> pipeline fits a profile to multiple exposures simultaneously, and is the preferred pipeline to use for building fiber profiles because it allows measuring the profile out to large distance from the fiber center.</p>
 <p>Here’s how you run them:</p>
 <pre><code># Creates a profiles_run dimension value and associates those exposures with it.
 defineFiberProfilesInputs.py $DATASTORE PFS run18_brn \
@@ -368,40 +370,25 @@ pipetask run \
 -c fitProfiles:profiles.profileSwath=500 \
 --fail-fast
 
-# measureFiberProfiles:
-pipetask run \
---register-dataset-types -j $CORES -b $DATASTORE \
---instrument $INSTRUMENT \
--i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
--o &quot;$RERUN&quot;/measureFiberProfiles \
--p '$DRP_STELLA_DIR/pipelines/measureFiberProfiles.yaml' \
--d &quot;instrument='PFS' AND exposure.target_name IN ('FLAT_ODD', 'FLAT_EVEN')&quot; \
--c isr:doCrosstalk=False \
---fail-fast
-
 # certify the fiberProfile product
 butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/fitFiberProfiles PFS/calibfiberProfiles --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
 butlerCleanRun.py $DATASTORE $RERUN/fitFiberProfiles/* postISRCCD
 </code></pre>
-<p>Because it involves multiple groups of exposures, the <code>fitFiberProfiles</code> pipeline is a bit more complicated and requires defining the inputs to the pipeline ahead of time. 
+<p>Because it involves multiple groups of exposures, the <code>fitFiberProfiles</code> pipeline requires defining the inputs to the pipeline ahead of time.
 The <code>defineFiberProfilesInputs.py</code> script is used to define the inputs for the different groups of exposures. 
 When working on real data, we typically have four groups of several exposures each, and each group contains “bright” (select fibers deliberately exposed) and “dark” (all fibers hidden) exposures. </p>
 <p>A file describing the roles of the exposures is written in the<code>&lt;instrument&gt;/fiberProfilesInputs</code> collection, so this must be included in the inputs for the <code>fitFiberProfiles</code> pipeline. 
-We can use the profiles_run value in the data selection query, as that is linked to all the required exposures.</p>
+We can use the <code>profiles_run</code> value in the data selection query, as that is linked to all the required exposures.</p>
 <h2 id="build-fiber-norm">Build Fiber Norm</h2>
 <hr />
-<p>The Fiber Norm (<code>fiberNorms</code>) is the spectral normalization of each fiber. 
-Note that in the Gen3 pipeline, <code>fiberProfiles</code> do not include quartz spectrum normalization. The quartz spectrum used for normalization is supplied by the <code>fiberNorms</code>:</p>
+<p>The Fiber Norm (<code>fiberNorms</code>) is the spectral normalization of each fiber, measured from a quartz:</p>
 <pre><code>pipetask run \
 --register-dataset-types -j $CORES -b $DATASTORE \
 --instrument $INSTRUMENT \
 -i PFS/raw/all,PFS/raw/pfsConfig,PFS/calib \
 -o &quot;$RERUN&quot;/fiberNorms \
 -p '$DRP_STELLA_DIR/pipelines/fiberNorms.yaml' \
--d &quot;instrument='PFS' AND exposure.target_name = 'FLAT' AND dither = 0.0&quot; \
--c isr:doCrosstalk=True \
--c reduceExposure:doApplyScreenResponse=False \
--c reduceExposure:doBlackSpotCorrection=False \
+-d &quot;instrument='PFS' AND visit.target_name = 'FLAT' AND dither = 0.0&quot; \
 --fail-fast
 
 # certify the fiberNorm product

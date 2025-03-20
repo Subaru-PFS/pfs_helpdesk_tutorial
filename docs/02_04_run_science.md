@@ -102,7 +102,7 @@ However, we could have first run the `reduceExposure` pipeline and then fed its 
 
 ## Introduction to Reduction Steps
 
-<span style="color:red">**NOTE: This section is work in progress.**</span>.
+<span style="color:red">**NOTE: This section is work in progress.**</span>
 
 ---
 
@@ -119,11 +119,10 @@ from lsst.daf.butler import Butler
 butler = Butler.from_config($DATASTORE, collection=["$RERUN/object"])
 pfsObject = butler.get("pfsCoadd.single", cat_id=1, combination="object", parameters=dict(objId=55))
 ```
+Note that the `objId` needs to be specified in the `parameters` dictionary, rather than as a separate argument to the `get` method because it’s a parameter for the formatter that reads the dataset and not a dimension of the dataset itself.
 
 !!! warning 
-        Be refrain from retrieving `pfsCoadd.single` in a loop, as it is EXTREMELY inefficient.
-
-Note that the `objId` needs to be specified in the `parameters` dictionary, rather than as a separate argument to the `get` method because it’s a parameter for the formatter that reads the dataset and not a dimension of the dataset itself.
+        Be refrain from retrieving `pfsCoadd.single` in a loop, as it is **EXTREMELY inefficient**.
 
 !!! note
         In LSST version 26.0.2, the `butler` command was `butler = Butler($DATASTORE, collection=["$RERUN/object"])`, but in the latest LSST version 28, this is recommended to be `butler = Butler.from_config($DATASTORE, collection=["$RERUN/object"])`. Although the former expression may still work, `mypy` will deny this construction with reporting "class Butler is an abstract class. Abstract classes must not be instantiated". <br> **In the next section for data analysis, we will only use the latest construction.**
