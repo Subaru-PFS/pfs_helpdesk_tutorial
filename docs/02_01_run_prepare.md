@@ -65,10 +65,7 @@ different operations. Some important dimensions are:
 - `instrument`: the instrument that produced the data. The datastore can contain data from multiple instruments,
 but we probably only care about the PFS instrument. Usually this will be PFS for data from Subaru, but in the
 case of the simulated data in the integration test it is `PFS-F` (the `F` stands for fake).
-- `exposure`: the exposure number. This is the unique identifier for an exposure, what we would call a `visit` in
-the Gen2 pipeline. In the Gen3 pipeline, visit is a separate dimension that groups multiple exposures together.
-We may make use of this in the future, but for now you should use `exposure` (almost) everywhere you used to
-use `visit`.
+- `visit`: the visit number. This is the unique identifier for an exposure.
 - `arm`: the spectrograph arm: `b`, `r`, `n`, or `m`.
 - `spectrograph`: the spectrograph module: 1, 2, 3, or 4.
 - `detector`: the detector number in the camera configuration. You shouldn’t need to worry about this dimension,

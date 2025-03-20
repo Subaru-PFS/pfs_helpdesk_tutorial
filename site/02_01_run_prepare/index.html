@@ -173,10 +173,7 @@ different operations. Some important dimensions are:</p>
 <li><code>instrument</code>: the instrument that produced the data. The datastore can contain data from multiple instruments,
 but we probably only care about the PFS instrument. Usually this will be PFS for data from Subaru, but in the
 case of the simulated data in the integration test it is <code>PFS-F</code> (the <code>F</code> stands for fake).</li>
-<li><code>exposure</code>: the exposure number. This is the unique identifier for an exposure, what we would call a <code>visit</code> in
-the Gen2 pipeline. In the Gen3 pipeline, visit is a separate dimension that groups multiple exposures together.
-We may make use of this in the future, but for now you should use <code>exposure</code> (almost) everywhere you used to
-use <code>visit</code>.</li>
+<li><code>visit</code>: the visit number. This is the unique identifier for an exposure.</li>
 <li><code>arm</code>: the spectrograph arm: <code>b</code>, <code>r</code>, <code>n</code>, or <code>m</code>.</li>
 <li><code>spectrograph</code>: the spectrograph module: 1, 2, 3, or 4.</li>
 <li><code>detector</code>: the detector number in the camera configuration. You shouldn’t need to worry about this dimension,
