@@ -1,7 +1,7 @@
 
 # PFS 2D Pipeline Overview
 
-The PFS pipeline organizes data using key terms: 
+The latest PFS 2D data reduction pipeline (DRP) is now based on the third generation (Gen3) LSST middleware. The PFS pipeline organizes data using key terms: 
 
 - `visit` refers to a unique exposure identifier.
 
@@ -23,7 +23,7 @@ More details can be found in [Appendix](05_01_app_datamodel.md).
 
 ---
 
-> The data processing procedure of the PFS 2D data reduction pipeline (DRP) generally follows the following flowchart.
+The PFS 2D DRP generally follows the following flowchart.
 
 >> ![Focal plane map](img/pipe2d_flowchart_gen3.png)
 
