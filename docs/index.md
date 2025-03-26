@@ -4,6 +4,8 @@ This webpage is mainly for introducing the information of Subaru Prime Focus Spe
 Regarding the Subaru PFS instrument, one can check more information on the [PFS intrument page](https://www.naoj.org/Observing/Instruments/PFS/instrument/). 
 Here, we selected the necessary information that you may need to understand the PFS pipeline.
 
+**If you have any questions regarding this tutorial, contact us at: [pfs_helpdesk@ml.nao.ac.jp](pfs_helpdesk@ml.nao.ac.jp)**
+
 ## Overview
 
 ---

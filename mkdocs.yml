@@ -23,15 +23,18 @@ nav:
     - Run 1D DRP: 03_04_ana_1d.md
   - Q&A:
     - General: 04_00_faq_general.md
-    - Install 2D DRP: 04_01_faq_install.md
-    - Run 2D DRP: 04_02_faq_run.md
-    - Data Analysis: 04_03_faq_analysis.md
+    # - Install 2D DRP: 04_01_faq_install.md
+    # - Run 2D DRP: 04_02_faq_run.md
+    # - Data Analysis: 04_03_faq_analysis.md
   - Appendix: 
     - Data Model: 05_01_app_datamodel.md
  
 theme: 
   name: readthedocs
   logo: img/logo.png
+  custom_dir: overrides
+extra:
+  helpdesk_email: "pfs_helpdesk@ml.nao.ac.jp"
 extra_css:
   - css/pfs.css
 markdown_extensions:
@@ -39,3 +42,4 @@ markdown_extensions:
 extra_javascript:
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - https://kit.fontawesome.com/a076d05399.js

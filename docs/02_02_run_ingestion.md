@@ -15,16 +15,12 @@ In principle, you need to download a TAR file from the STARS2 website. After tha
 ``` Python
 # Step 1: Create a directory for downloads
 $ mkdir /download_dir 
-
 # Step 2: Copy the downloaded TAR file to the directory
 $ cp S2Query.tar /download_dir 
-
 # Step 3: Navigate to the directory
 $ cd /download_dir 
-
 # Step 4: Extract the TAR file
 $ tar -xvf S2Query.tar 
-
 # Step 5: Run the unpacking script
 $ ./zadmin/unpack.py
 ```
@@ -85,7 +81,7 @@ Each dataset is specified by a “`dataId`”, which is a dictionary of key-valu
 For example, 
 
 - `raw` image may have a `dataId` like {'`instrument`': '`PFS`', '`visit`': `123`, '`arm`': '`r`', '`spectrograph`': `3`}. 
-- `pfsConfig` file is valid for an entire exposure, so may have a `dataId` like {'`instrument`': '`PFS`', '`exposure`': `123`}.
+- `pfsConfig` file is valid for an entire exposure, so may have a `dataId` like {'`instrument`': '`PFS`', '`visit`': `123`}.
 
 **IMPORTANT**: In general, users should treat the files in the datastore as a `butler` implementation detail, and use the `butler` commands and Python API to access the data products. 
 There are some kinds of datastores that do not use a traditional filesystem (e.g., the S3 datastore), and so the files may not be directly accessible.
@@ -102,7 +98,7 @@ $ butler query-datasets $DATASTORE --collections PFS/raw/all
 The result looks something like this:
 
 ```
-type     run                         id                 instrument arm dither pfs_design_id spectrograph detector exposure
+type     run                         id                 instrument arm dither pfs_design_id spectrograph detector   visit
 ---- ------------- ------------------------------------ ---------- --- ------ ------------- ------------ -------- --------
 raw  PFS/raw/all 27217522-a357-5071-a32b-af97b5b8bee6          PFS   b  0.0             1            1        0        0
 raw  PFS/raw/all 0ce0cbea-fe7c-589e-8259-30060bf20500          PFS   b  0.0             1            1        0        1
@@ -117,7 +113,7 @@ Datasets can be accessed from Python using the `butler` API:
 from lsst.daf.butler import Butler
 
 butler = Butler.from_config($DATASTORE, collections="PFS/raw/all")
-raw = butler.get("raw", instrument="PFS", exposure=12, arm="r", spectrograph=1)
+raw = butler.get("raw", instrument="PFS", visit=12, arm="r", spectrograph=1)
 rawImage = raw.getImage()
 ```
 
