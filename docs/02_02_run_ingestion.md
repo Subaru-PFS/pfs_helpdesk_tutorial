@@ -52,6 +52,11 @@ $ butler ingest-raws $DATASTORE $DATADIR/raw/2024-10-*/*/PFS[A-B]*.fits --ingest
 $ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $DATADIR/raw/2024-10-*/pfsConfig/pfsConfig-*.fits --transfer link
 ```
 
+In case of `PFSF` files used by the observatroy, they are the same to `pfsConfig` files, and the similar command works:
+``` bash
+$ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $DATADIR/raw/2024-10-*/pfsConfig/PFSF*.fits --transfer link
+```
+
 The details of ingested data can be refered to the [Appendix](05_01_app_datamodel.md) or the [datamodel](https://github.com/Subaru-PFS/datamodel/tree/master). 
 
 For example, the files have the meanings are:
@@ -62,6 +67,8 @@ For example, the files have the meanings are:
 
 - `pfsConfig-0xad349fe21234abcd-001234.fits`: The realisation of a `PfsDesign` with `pfsDesignId=ad349fe21234abcd` for `visit=1234`.
 
+- `PFSF00123400.fits`: The realisation of a `PfsDesign` used in the observatory for proposal ID `00` in `visit=1234`, and the ingestion process is similar to `pfsConfig`.
+  
 The parameters in the commands include:
 
 - `--transfer`: The method by which data is added to the repository, including `link`, `copy`, and `move`, which specify whether the data is symlinked, duplicated, or physically relocated, respectively. 
