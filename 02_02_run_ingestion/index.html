@@ -173,6 +173,9 @@ $ butler ingest-raws $DATASTORE $DATADIR/raw/2024-10-*/*/PFS[A-B]*.fits --ingest
 # Ingest the pfsConfig files for the Oct. 2024 run
 $ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $DATADIR/raw/2024-10-*/pfsConfig/pfsConfig-*.fits --transfer link
 </code></pre>
+<p>In case of <code>PFSF</code> files used by the observatroy, they are the same to <code>pfsConfig</code> files, and the similar command works:</p>
+<pre><code class="language-bash">$ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $DATADIR/raw/2024-10-*/pfsConfig/PFSF*.fits --transfer link
+</code></pre>
 <p>The details of ingested data can be refered to the <a href="../05_01_app_datamodel/">Appendix</a> or the <a href="https://github.com/Subaru-PFS/datamodel/tree/master">datamodel</a>. </p>
 <p>For example, the files have the meanings are:</p>
 <ul>
@@ -184,6 +187,9 @@ $ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $DATADIR/raw/2024-10-*/pfs
 </li>
 <li>
 <p><code>pfsConfig-0xad349fe21234abcd-001234.fits</code>: The realisation of a <code>PfsDesign</code> with <code>pfsDesignId=ad349fe21234abcd</code> for <code>visit=1234</code>.</p>
+</li>
+<li>
+<p><code>PFSF00123400.fits</code>: The realisation of a <code>PfsDesign</code> used in the observatory for proposal ID <code>00</code> in <code>visit=1234</code>, and the ingestion process is similar to <code>pfsConfig</code>.</p>
 </li>
 </ul>
 <p>The parameters in the commands include:</p>
