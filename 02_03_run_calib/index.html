@@ -314,7 +314,7 @@ This is somewhat of a black-belt operation, because it requires looking at image
 <pre><code>$ butler certify-calibrations $DATASTORE &quot;$RERUN&quot;/bootstrap PFS/bootstrap detectorMap_bootstrap --begin-date 2000-01-01T00:00:00 --end-date 2050-12-31T23:59:59
 $ butlerCleanRun.py $DATASTORE $RERUN/bootstrap/* postISRCCD
 </code></pre>
-<p>Here, we have added the <code>PFS/raw/pfsConfig</code> collection to the input since we need the <code>pfsConfig</code> files to determine which fibers are illuminated. Note that the arc and quartz are both specified as inputs in the same <code>-d</code> option. 
+<p>Here, we have added the <code>PFS/raw/pfsConfig</code> collection to the input since we need the <code>PfsConfig</code> files to determine which fibers are illuminated. Note that the arc and quartz are both specified as inputs in the same <code>-d</code> option. 
 The Gen3 middleware does not support multiple <code>-d</code> options to specify them independently, but the task can determine which is which from the <code>lamps</code> field in the exposure. 
 The bootstrap pipeline writes a <code>detectorMap_bootstrap</code> dataset for each camera, and we’re certifying that in the <code>PFS/bootstrap</code> collection (so it’s independent of the best-quality detectorMaps we’ll certify in <code>PFS/calibs</code>).</p>
 <p>When working with the data, it will probably be necessary to run the bootstrap pipeline on each camera separately, so that different <code>-c bootstrap:spectralOffset=&lt;WHATEVER&gt;</code> values can be used for each camera.
