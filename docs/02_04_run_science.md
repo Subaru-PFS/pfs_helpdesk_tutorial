@@ -6,17 +6,21 @@
 
 With the calibration products built, we can now process the science data. There are a few pipelines available:
 
-- `observing`: process a visit through merging arms, producing `postISRCCD`, `pfsArm`, `lines`, `detectorMap`, `pfsMerged`, `sky1d`, and `fiberNorms`.
+- **observing**: 
+  > It processes a visit through merging arms, producing `postISRCCD`, `pfsArm`, `lines`, `detectorMap`, `pfsMerged`, `sky1d`, and `fiberNorms`.
 This uses a basic, single-exposure cosmic-ray identification algorithm, which is not as reliable as the one used by `reduceExposure`. It is intended for use while observing, when visit groupings aren't known.
 The `fiberNorms` dataset is only produced for quartz exposures; Unlike the `fiberNorms_calib` product, this is a residual normalization equal to the ratio of the observed quartz spectrum to the `fiberNorms_calib` spectrum (after applying screen responses and other corrections).
 
-- `reduceExposure`: process a visit through merging arms, producing `postISRCCD`, `pfsArm`, `lines`, `detectorMap`, `pfsMerged`, and `sky1d`.
+- **reduceExposure**: 
+  > It processes a visit through merging arms, producing `postISRCCD`, `pfsArm`, `lines`, `detectorMap`, `pfsMerged`, and `sky1d`.
 This can be used to process quartz exposures (or science exposures when flux calibration is not wanted).
 
-- `calibrateExposure`: adds the flux calibration to `reduceExposure`, producing `pfsFluxReference`, `fluxCal` and `pfsCalibrated`. 
+- **calibrateExposure**:
+  > It adds the flux calibration to `reduceExposure`, producing `pfsFluxReference`, `fluxCal` and `pfsCalibrated`. 
 This can be used to process single science exposures. This is not demonstrated below, but its use is similar to that for `reduceExposure`.
 
-- `science`: adds the spectral coaddition, producing `pfsCoadd`. 
+- **science**: 
+  > It adds the spectral coaddition, producing `pfsCoadd`. 
 This can be used to process multiple science exposures together.
 
 

@@ -145,21 +145,33 @@
 <p>With the calibration products built, we can now process the science data. There are a few pipelines available:</p>
 <ul>
 <li>
-<p><code>observing</code>: process a visit through merging arms, producing <code>postISRCCD</code>, <code>pfsArm</code>, <code>lines</code>, <code>detectorMap</code>, <code>pfsMerged</code>, <code>sky1d</code>, and <code>fiberNorms</code>.
+<p><strong>observing</strong>: </p>
+<blockquote>
+<p>It processes a visit through merging arms, producing <code>postISRCCD</code>, <code>pfsArm</code>, <code>lines</code>, <code>detectorMap</code>, <code>pfsMerged</code>, <code>sky1d</code>, and <code>fiberNorms</code>.
 This uses a basic, single-exposure cosmic-ray identification algorithm, which is not as reliable as the one used by <code>reduceExposure</code>. It is intended for use while observing, when visit groupings aren't known.
 The <code>fiberNorms</code> dataset is only produced for quartz exposures; Unlike the <code>fiberNorms_calib</code> product, this is a residual normalization equal to the ratio of the observed quartz spectrum to the <code>fiberNorms_calib</code> spectrum (after applying screen responses and other corrections).</p>
+</blockquote>
 </li>
 <li>
-<p><code>reduceExposure</code>: process a visit through merging arms, producing <code>postISRCCD</code>, <code>pfsArm</code>, <code>lines</code>, <code>detectorMap</code>, <code>pfsMerged</code>, and <code>sky1d</code>.
+<p><strong>reduceExposure</strong>: </p>
+<blockquote>
+<p>It processes a visit through merging arms, producing <code>postISRCCD</code>, <code>pfsArm</code>, <code>lines</code>, <code>detectorMap</code>, <code>pfsMerged</code>, and <code>sky1d</code>.
 This can be used to process quartz exposures (or science exposures when flux calibration is not wanted).</p>
+</blockquote>
 </li>
 <li>
-<p><code>calibrateExposure</code>: adds the flux calibration to <code>reduceExposure</code>, producing <code>pfsFluxReference</code>, <code>fluxCal</code> and <code>pfsCalibrated</code>. 
+<p><strong>calibrateExposure</strong>:</p>
+<blockquote>
+<p>It adds the flux calibration to <code>reduceExposure</code>, producing <code>pfsFluxReference</code>, <code>fluxCal</code> and <code>pfsCalibrated</code>. 
 This can be used to process single science exposures. This is not demonstrated below, but its use is similar to that for <code>reduceExposure</code>.</p>
+</blockquote>
 </li>
 <li>
-<p><code>science</code>: adds the spectral coaddition, producing <code>pfsCoadd</code>. 
+<p><strong>science</strong>: </p>
+<blockquote>
+<p>It adds the spectral coaddition, producing <code>pfsCoadd</code>. 
 This can be used to process multiple science exposures together.</p>
+</blockquote>
 </li>
 </ul>
 <h2 id="define-collections">Define Collections</h2>

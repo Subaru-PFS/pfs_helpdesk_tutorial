@@ -5,7 +5,7 @@
 
 ---
 
-When working with local data, you must first download them from the Subaru data archive for your open-use programs, specifically from the [STARS2](https://stars2.naoj.hawaii.edu) database. The archive provides access to science images, calibration data, and `pfsConfig` files.
+When working with local data, you must first download them from the Subaru data archive for your open-use programs, specifically from the [STARS2](https://stars2.naoj.hawaii.edu) database. The archive provides access to science images, calibration data, and `PfsConfig` files.
 
 !!! note
     Details on data retrieval will be provided by the STARS team on the day following your observation.
@@ -38,7 +38,7 @@ Platform-Specific Instructions:
 ---
 
 We can ingest data into the `butler` repository. 
-There are two kinds of data that we need to ingest: raw images and the `pfsConfig` files. 
+There are two kinds of data that we need to ingest: raw images and the `PfsConfig` files. 
 These are ingested using two separate commands:
 
 ``` bash
@@ -48,7 +48,7 @@ DATADIR="$WORKDIR/pfs/data"
 
 # Ingest the raw images taken on Oct. 2024
 $ butler ingest-raws $DATASTORE $DATADIR/raw/2024-10-*/*/PFS[A-B]*.fits --ingest-task lsst.obs.pfs.gen3.PfsRawIngestTask --transfer link --fail-fast
-# Ingest the pfsConfig files for the Oct. 2024 run
+# Ingest the PfsConfig files for the Oct. 2024 run
 $ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $DATADIR/raw/2024-10-*/pfsConfig/pfsConfig-*.fits --transfer link
 ```
 
@@ -59,15 +59,19 @@ $ ingestPfsConfig.py $DATASTORE PFS PFS/raw/pfsConfig $DATADIR/raw/2024-10-*/pfs
 
 The details of ingested data can be refered to the [Appendix](05_01_app_datamodel.md) or the [datamodel](https://github.com/Subaru-PFS/datamodel/tree/master). 
 
-For example, the files have the meanings are:
+For example, the file names have the meanings:
 
-- `PFSA00066611.fits`: Raw science exposure, `visit=666`, taken on the `site=summit` with `spectrograph=1` using the blue `arm` (`armNum=1`) 
+- **PFSA12345611.fits**:
+  > Raw `science` exposure, `visit=123456`, taken on the `site=summit` with `spectrograph=1` using the blue arm (`armNum=1`) 
 
-- `PFSB00123423.fits`: Raw up-the-ramp exposure, `visit=1234`, taken at the `site=summit` with `spectrograph=2` using the IR `arm` (`armNum=3`)
+- **PFSB12345623.fits**: 
+  > Raw `up-the-ramp` exposure, `visit=123456`, taken at the `site=summit` with `spectrograph=2` using the IR arm (`armNum=3`)
 
-- `pfsConfig-0xad349fe21234abcd-001234.fits`: The realisation of a `PfsDesign` with `pfsDesignId=ad349fe21234abcd` for `visit=1234`.
+- **pfsConfig-0xad349fe21234abcd-123456.fits**:
+  > The realisation of a `PfsDesign` with `pfsDesignId=ad349fe21234abcd` for `visit=123456`.
 
-- `PFSF00123400.fits`: The realisation of a `PfsDesign` used in the observatory for proposal ID `00` in `visit=1234`, and the ingestion process is similar to `pfsConfig`.
+- **PFSF12345600.fits**: 
+  > The realisation of a `PfsDesign` used by the observatory for `visit=123456`. In the final two digits, `00` means the original full `PfsConfig` (`PFSF`) file; `01`-`99` are for the customized `PFSF` with the fibers belonging to only a specific proposal ID and calibration fibers (sky, flux, and etc.). The observatory will provide the customized `PFSF` file with `01`-`99` in the final two digits. If the `PFSF` file contain only one proposal ID or calibration frame the `00` files will be distributed. The ingestion process is similar to that for a `PfsConfig` file.
   
 The parameters in the commands include:
 
@@ -75,7 +79,7 @@ The parameters in the commands include:
 - `--fail-fast`: The process will immediately stop the ingestion process if an error occurs. This is useful for debugging. If this is not considered a useful feature, exclude this option.
 
 The ingestion process places the files (referred to as “datasets” in the `butler`) in the repository and records them in the registry database. Each file is placed in a **collection**, which can be thought of as a *directory* in the `butler` (and in the case of the datastore on a traditional filesystem, it is implemented as a directory).
-The raw data is placed in the collection <instrument\>/raw/all, while we’ve specified above that the `pfsConfig` files are placed in the collection `PFS/raw/pfsConfig`.
+The raw data is placed in the collection <instrument\>/raw/all, while we’ve specified above that the `PfsConfig` files are placed in the collection `PFS/raw/pfsConfig`.
 
 There are different kinds of [collections](https://pipelines.lsst.io/modules/lsst.daf.butler/organizing.html#collections):
 
@@ -88,7 +92,7 @@ Each dataset is specified by a “`dataId`”, which is a dictionary of key-valu
 For example, 
 
 - `raw` image may have a `dataId` like {'`instrument`': '`PFS`', '`visit`': `123`, '`arm`': '`r`', '`spectrograph`': `3`}. 
-- `pfsConfig` file is valid for an entire exposure, so may have a `dataId` like {'`instrument`': '`PFS`', '`visit`': `123`}.
+- `PfsConfig` file is valid for an entire exposure, so may have a `dataId` like {'`instrument`': '`PFS`', '`visit`': `123`}.
 
 **IMPORTANT**: In general, users should treat the files in the datastore as a `butler` implementation detail, and use the `butler` commands and Python API to access the data products. 
 There are some kinds of datastores that do not use a traditional filesystem (e.g., the S3 datastore), and so the files may not be directly accessible.
