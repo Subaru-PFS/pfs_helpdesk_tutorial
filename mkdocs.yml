@@ -34,7 +34,7 @@ theme:
   logo: img/logo.png
   custom_dir: overrides
 extra:
-  helpdesk_email: "pfs_helpdesk@ml.nao.ac.jp"
+  helpdesk_email: "pfs-data-analysis-help@ml.nao.ac.jp"
 extra_css:
   - css/pfs.css
 markdown_extensions:
