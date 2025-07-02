@@ -86,6 +86,10 @@ You will have the figure showing spectra from the three arms (`b`, `r`, and `n`)
 
 ![Output of pfsArm](img/out_pfsArm.png)
 
+!!! note
+    The barycentric correction has been applied to `pfsArm` and all the subsequence files. Also, the wavelengths are all in vacuum.
+
+
 ## Check `pfsMerged` data
 
 ---
