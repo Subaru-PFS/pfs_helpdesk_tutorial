@@ -1,7 +1,35 @@
 # (Optional) Build Calibration Frames
 
 !!! Note
-    Before running the science data processing, the pipeline requires calibration data. **The observatory provides calibration products from the PFS Science Platform (SP) for each run**, so users do not necessarily need to generate the calibration data themselves. The simplest approach is to use these pre-provided calibration products, in which case **this section can be skipped**.
+    Before running the science data processing, the pipeline requires calibration data. **The observatory provides calibration products from the PFS Science Platform (SP) for each run**, so users do not necessarily need to generate the calibration data themselves. The simplest approach is to use these pre-provided calibration products, in which case **the majority of this section can be skipped**.
+
+
+## Importing Calibs from PFS SP
+
+There is a set of calibration data available for each observing run from PFS SP (<https://hscpfs.mtk.nao.ac.jp>).
+A calib set is copied to the SP typically a few weeks after a run (i.e., not during or right after a run).
+The calibs are stored under the observatory filler directory, which everyone has access to, e.g.,
+`/shared/pfs/programs/S25A-000QF/2d/run21_June2025/calibs`. The exact name differ for each run and semester.
+For S25B semester, the proposal ID will be `S25B-000QF`, and the run ID will be `run24_xxx`.
+The directory name should be obvious in any case.
+
+You can copy the entire directory to your disk (see the SP getting-started document for how to copy files from SP).
+You can then import the calibration data:
+
+```
+export NEW_DATASTORE='new_datastore'
+butler create $NEW_DATASTORE --seed-config $OBS_PFS_DIR/gen3/butler.yaml --dimension-config $OBS_PFS_DIR/gen3/dimensions.yaml --override
+butler register-instrument $NEW_DATA_STORE lsst.obs.pfs.PrimeFocusSpectrograph
+butler import --transfer copy --export-file path/to/calibs/export.yaml $NEW_DATA_STORE calibs/
+```
+
+In addition to the calibs, you will also need `pfsConfig` files made for your program. These custom `pfsConfig` files are available under your program directory, e.g., `/shared/pfs/programs/S25A-000QF/2d/customPfsConfig`. Copy these files to yoru disk and then ingest them (see the [data ingestion page](02_02_run_ingestion.md)). Now, you are ready to launch your own processing run.
+
+
+---
+
+## Building Calibs by Yourself
+
 
 First, let's assume the following default setup: the user is working in the public directory `$WORKDIR/pfs/` and using a publicly installed pipeline.
 
@@ -14,6 +42,9 @@ RERUN="u/(username)"
 ```
 
 In this case, you may want to set up the rerun directory specified by your username so that multiple users won't mix things up.
+
+Note that even if you go over all of the following processes, there may still be missing calibrations such as near-IR darks. Active development work is under way, we expect the calibrations will evolve rapidly. If you encounter any issues due to missing calibs, please contact us.
+
 
 ## Build Bias
 
