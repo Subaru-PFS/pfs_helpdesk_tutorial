@@ -6,28 +6,29 @@
 
 The basic information of the PFS 2D DRP for this section includes:
 
-1. LSST version: v28 (as of 2025/03/17)
-2. pfs_pipe2d branch: master
+1. LSST version: v30 (as of 2026/03/15, started from `w.2026.07`)
+2. pfs_pipe2d branch: the latest weekly release
 
-**Step 1**: We should fetch pfs_pipe2d Gen3:
+**Step 1**: Fetch pfs_pipe2d Gen3:
 
-```
-$ cd $WORKDIR/(username)/
-$ git clone http://github.com/Subaru-PFS/pfs_pipe2d
-```
-
-**Step 2**: We should check out to the lastest version:
-
-```
-$ cd pfs_pipe2d
-$ git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
+```bash
+cd $WORKDIR/$(whoami)/
+git clone http://github.com/Subaru-PFS/pfs_pipe2d
 ```
 
-**Step 3**: We should create the target folder and start the installation:
+**Step 2**: Check out the latest version:
+
+```bash
+cd pfs_pipe2d
+git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
 ```
-$ mkdir -p $WORKDIR/(username)/pfs/stack_28
-$ cd $WORKDIR/(username)/pfs_pipe2d/bin
-$ ./install_pfs.sh -t current $WORKDIR/(username)/pfs/stack_28
+
+**Step 3**: Create the target folder and start the installation:
+
+```bash
+mkdir -p $WORKDIR/$(whoami)/pfs/stack_30
+cd $WORKDIR/$(whoami)/pfs_pipe2d/bin
+./install_pfs.sh -t current $WORKDIR/$(whoami)/pfs/stack_30
 ```
 
 ## Install Flux Model Data
@@ -38,31 +39,31 @@ $ ./install_pfs.sh -t current $WORKDIR/(username)/pfs/stack_28
 
 Source the appropriate `loadLSST.*` script for your shell.
 
-```
-$ source $WORKDIR/(username)/packages/stack_28/loadLSST.bash
-$ setup pfs_pipe2d
-```
-
-**Step 2**: We should fetch the flux model data:
-
-``` bash
-$ mkdir -p $WORKDIR/(username)/source/
-$ cd $WORKDIR/(username)/source/
-$ wget https://hscdata.mtk.nao.ac.jp/hsc_bin_dist/pfs/fluxmodeldata-ambre-20230608.tar.gz
-$ tar xzf fluxmodeldata-ambre-20230608.tar.gz -C .
+```bash
+source $WORKDIR/$(whoami)/packages/stack_30/loadLSST.bash
+setup pfs_pipe2d
 ```
 
-**Step 3**: We can start the installation process
+**Step 2**: Fetch the flux model data:
 
-```
-$ cd $WORKDIR/(username)/source/fluxmodeldata-ambre-20230608
-$ ./install.py --prefix=$WORKDIR/(username)/packages/
+```bash
+mkdir -p $WORKDIR/$(whoami)/source/
+cd $WORKDIR/$(whoami)/source/
+wget https://hscdata.mtk.nao.ac.jp/hsc_bin_dist/pfs/fluxmodeldata-ambre-20230608.tar.gz
+tar xzf fluxmodeldata-ambre-20230608.tar.gz -C .
 ```
 
-Then we should declare the `fluxmodeldata` package to `eups` by the following command:
+**Step 3**: Start the installation:
 
+```bash
+cd $WORKDIR/$(whoami)/source/fluxmodeldata-ambre-20230608
+./install.py --prefix=$WORKDIR/$(whoami)/packages/
 ```
-$ eups declare fluxmodeldata 20230608 -r /path/to/fluxmodeldata
+
+Then, declare the `fluxmodeldata` package to `eups`:
+
+```bash
+eups declare fluxmodeldata 20230608-full -t current -r /path/to/fluxmodeldata
 ```
 
 ## (Optional) Individual Users: Install `drp_pfs_data` Package
@@ -75,11 +76,11 @@ $ eups declare fluxmodeldata 20230608 -r /path/to/fluxmodeldata
 If the PFS pipeline was installed for all users on a server in a public directory, e.g., `$WORKDIR/pfs/`, then for individual users, a local version of `drp_pfs_data` package -- other than the one included in the `pfs_pipe2d` installation above -- is needed.
 
 We can install the local `drp_pfs_data` package as follows:
- 
-```
-$ cd $WORKDIR/(username)/packages/
-$ git clone https://github.com/Subaru-PFS/drp_pfs_data.git --single-branch
-$ cd drp_pfs_data
-$ git fetch --tags
-$ git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
+
+```bash
+cd $WORKDIR/$(whoami)/packages/
+git clone https://github.com/Subaru-PFS/drp_pfs_data.git --single-branch
+cd drp_pfs_data
+git fetch --tags
+git checkout $(git describe --tags `git rev-list --tags --max-count=1`)
 ```

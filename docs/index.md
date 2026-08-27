@@ -1,10 +1,8 @@
 # PFS Introduction
 
-This webpage is mainly for introducing the information of Subaru Prime Focus Spectrograph (PFS) data reduction and data inspection.
-Regarding the Subaru PFS instrument, one can check more information on the [PFS intrument page](https://www.naoj.org/Observing/Instruments/PFS/instrument/). 
-Here, we selected the necessary information that you may need to understand the PFS pipeline.
+This webpage is an introduction to the Subaru Prime Focus Spectrograph (PFS) data reduction pipeline and data inspection tools. Detailed information regarding the Subaru PFS instrument can be found on the [PFS instrument page](https://www.naoj.org/Observing/Instruments/PFS/instrument/). Here, we present the necessary information that you may need to understand the PFS pipeline.
 
-**If you have any questions regarding this tutorial, contact us at: [pfs-data-analysis-help@ml.nao.ac.jp](pfs-data-analysis-help@ml.nao.ac.jp)**
+**If you have any questions regarding this tutorial, contact us at: [pfs-data-analysis-help@ml.nao.ac.jp](mailto:pfs-data-analysis-help@ml.nao.ac.jp)**
 
 ## Overview
 
@@ -46,8 +44,7 @@ Fiber distribution on the PFI focal plane highlighting the broken/disabled fiber
 
 ### Spectrograph System (SpS)
 
-The four identical spectrograph modules provide the simultaneous measurement of ~2400 spectra. Each spectrograph module has three independent channels (blue, red, and near-infrared) separated by two dichroic mirrors so that the whole system can cover a wide wavelength range from 0.38 μm to 1.26 μm in one exposure. 
-More related parameters are summarized in the table below:
+The four identical spectrograph modules provide the simultaneous measurement of ~2400 spectra. Each spectrograph module has three independent channels (blue, red, and near-infrared) separated by two dichroic mirrors so that the whole system can cover a wide wavelength range from 0.38 μm to 1.26 μm in one exposure. More related parameters are summarized in the table below:
 
 | Parameter           | Specification                    |
 |---------------------|----------------------------------|
@@ -59,7 +56,7 @@ More related parameters are summarized in the table below:
 | Grating Type        | Volume Phase Holographic (VPH)   |
 | Operating Temperature | 5 ± 1 °C                       |
 
-The three channels are also called `arms` in the pipeline, and in the Red-arm, there are two chices of the resolutions (**Low** and **Medium**). 
+The three channels are also called `arms` in the pipeline, and in the red arm, there are two choices of resolution (**Low** and **Medium**). 
 You can find the parameters listed below:
 
 | Parameter               | Blue           | Red (Low Res.) | Red (Med Res.) | NIR            |
@@ -72,7 +69,7 @@ You can find the parameters listed below:
 
 The total throughputs of these channels:
 
-![Sps Througput](img/pfs_thr_tot_commissioning.png)
+![SpS Throughput](img/pfs_thr_tot_commissioning.png)
 
 ### Fiber System
 
@@ -118,6 +115,7 @@ Examples of the FITS header for PFS data are accessible from the list below.
 
 ---
 
+- Masayuki Tanaka et al., ["Prime Focus Spectrograph on the Subaru Telescope: Overview of Science Operations", arXiv:2606.14012 (2026)](https://ui.adsabs.harvard.edu/abs/2026arXiv260614012T/abstract)
 - Naoyuki Tamura et al., ["Prime Focus Spectrograph (PFS) for Subaru Telescope: progressing final steps to science operation", SPIE 13096, 1309605 (2024)](https://ui.adsabs.harvard.edu/abs/2024SPIE13096E..05T/abstract)
 - Naoyuki Tamura et al., ["Prime Focus Spectrograph (PFS) for the Subaru Telescope: its start of the last development phase", SPIE 12184, 1218410 (2022)](https://ui.adsabs.harvard.edu/abs/2022SPIE12184E..10T/abstract)
 - Shiang-Yu Wang et al., ["Prime focus spectrograph (PFS) for the Subaru Telescope: the prime focus instrument", SPIE 12184, 121846R (2022)](https://ui.adsabs.harvard.edu/abs/2022SPIE12184E..6RW/abstract)
