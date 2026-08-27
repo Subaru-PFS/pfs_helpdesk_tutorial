@@ -1,17 +1,17 @@
 
 # PFS 2D Pipeline Overview
 
-The latest PFS 2D data reduction pipeline (DRP) is now based on the third generation (Gen3) LSST middleware. The PFS pipeline organizes data using key terms: 
+The latest PFS 2D data reduction pipeline (DRP) is now based on the third generation (Gen3) LSST middleware. The PFS pipeline organizes data using key terms:
 
 - `visit` refers to a unique exposure identifier.
 
 - `spectrograph` defines the spectrograph module with an integer ranging from `1`–`4`.
 
-- `arm` defines spectrograph's blue, red, near-IR, and medium-resolution red arms (`b`, `r`, `n`, `m`).
+- `arm` defines the spectrograph's blue, red, near-IR, and medium-resolution red arms (`b`, `r`, `n`, `m`).
 
 - `catId` specifies the catalog source of an object.
 
-- `objId` is a unique (within a catalog) 64-bit identifier for an astronomical source. 
+- `objId` is a unique (within a catalog) 64-bit identifier for an astronomical source.
 
 - `pfsDesignId` encodes the fiber configuration.
 
@@ -23,14 +23,14 @@ More details can be found in [Appendix](05_01_app_datamodel.md).
 
 ---
 
-The PFS 2D DRP generally follows the following flowchart.
+The PFS 2D DRP workflow is shown in the flowchart below.
 
->> ![Focal plane map](img/pipe2d_flowchart_gen3.png)
+![PFS 2D DRP Workflow Flowchart](img/pipe2d_flowchart_gen3.png)
 
-!!! Products
-    - `pfsArm`: These are wavelength-calibrated but not combined or flux-calibrated single spectra from a single visit and a single arm.
-    - `pfsMerged`: These are arm-combined spectra from a single visit, wavelength calibrated but not flux calibrated.
-    - `pfsCalibrated`: These are flux-calibrated arm-merged spectra from a single visit.
+!!! note "Products"
+    - `pfsArm`: These are wavelength-calibrated but not sky subtracted or flux calibrated single spectra from a single visit and a single arm.
+    - `pfsMerged`: These are arm-merged, wavelength calibrated and sky subtracted (but not flux calibrated) spectra from a single visit.
+    - `pfsCalibrated`: These are flux-calibrated, arm-merged, wavelength calibrated, and sky subtracted spectra from a single visit.
     - `pfsCoadd`: These are coadded spectra, and the final products for science.
 
 <!-- ## Gen3 PFS 2D DRP
@@ -62,13 +62,11 @@ The products should especially ackknowledge the efforts by Jim Bosch, Nate Lust,
 his helpful writeup on using Gen3 for the [MERIAN project](https://hackmd.io/@lsk/merian).
 Significant contributions have also been made by Robert Lupton, Kiyoto Yabe, and Masayuki Tanaka. 
 
-
 !!! note
     This tutorial is based on the documents, *PFS 2D-DRP Gen3 Transition* (by Paul Price) delivered on September 20, 2024 and the *PFS EDR2 Document* delivered on March 4, 2023. The process introduced in this tutorial mostly follows an [earlier tutorial](https://github.com/yirene/pipe2d_tutorial/blob/main/pipe2d_tutorial.md) for Gen2 pipeline, but some tweaks are included, especially considering that we have started the transition to Gen3 from October 2024. The installation, data reduction, and product retrieval implemented on Gen3 are demonstrated by Zhuoming Li and Yongming Liang. 
     
 !!! warning
     The configurations implemented in this tutorial may still be revised in the future for better compatibility. 
-
 
 <!-- !!! note Large-Scale Cluster
     The latest pipeline is expected to be installed on Large-Scale Cluster (LSC) at NAOJ, and the users can directly utilize the ready environment, with only minor preparations to set up local `drp_pfs_data` (from cloning it from PFS GitHub). -->
